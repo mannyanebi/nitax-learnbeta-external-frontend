@@ -10,6 +10,15 @@ import preview_subject from '../../assets/svgs/empty_state.svg'
 import Image from "next/image";
 import Logo from "@/components/brand/Logo";
 
+const GradeCheckCardSkeleton = () => {
+  return (
+    <Flex className={`border-2 space-x-2 items-center border-[#E2E2E2] p-4`}>
+      <Skeleton className="h-5 w-5 rounded-full" />
+      <Skeleton className="h-3 w-40 rounded-full" />
+    </Flex>
+  )
+}
+
 const GradeCheckCard = ({ item, grade }: any) => {
   return (
     <Box className={`border-2 transition duration-75 delay-75 ease-linear ${grade === item.value ? 'border-[#FAA61A]' : 'border-[#E2E2E2]'} hover:border-[#FAA61A] p-4`}>
@@ -203,6 +212,12 @@ const Overview = () => {
                 item={item} 
               />
             ))}
+
+            {[1,2,3,4,5,6].map((radio, i) => (
+              <GradeCheckCardSkeleton key={i} />
+            ))
+
+            }
           </Radio.Group>
         </Box>
 

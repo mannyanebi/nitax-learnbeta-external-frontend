@@ -52,7 +52,7 @@ const SubjectCard: React.FC<Props> = ({ free }) => {
           </Box>
 
           <Flex className="flex-grow justify-end">
-            <Link href="#">
+            <Link href="/dashboard/subjects/123456">
               <UnstyledButton className="w-48 text-center hover:text-white rounded-full py-2 text-[#FAA61A] hover:bg-[#FAA61A] font-semibold text-sm bg-[#FEEDD1] transition duration-75 delay-75 ease-linear">
                 Continue Learning
               </UnstyledButton>

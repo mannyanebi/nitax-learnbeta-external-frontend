@@ -33,7 +33,7 @@ const Subjects = () => {
           </Text>
         </Box>
 
-        {/* <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 sm:gap-4 max-w-[70rem] sm:grid-cols-2 xl:grid-cols-3">
+        <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 sm:gap-4 max-w-[70rem] sm:grid-cols-2 xl:grid-cols-3">
           <SubjectCard free={true} />
           <SubjectCard free={true} />
           <SubjectCard free={true} />
@@ -44,9 +44,9 @@ const Subjects = () => {
           <SubjectCardSkeleton />
           <SubjectCardSkeleton />
           <SubjectCardSkeleton />
-        </Box> */}
+        </Box>
 
-        <Box className="w-full mx-auto mt-10">
+        {/* <Box className="w-full mx-auto mt-10">
           <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] rounded-2xl'>
             <Box>
               <Image
@@ -60,7 +60,7 @@ const Subjects = () => {
               </Text>
             </Box>
           </Center>
-        </Box>
+        </Box> */}
 
         <Box>
           <Text className="text-[#666666] font-semibold mt-6">
