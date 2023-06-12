@@ -119,7 +119,7 @@ export default function Subject (){
 
           <Flex className="mt-8 justify-center">
             <Link 
-              href={`/dashboard/subjects/${router.query.id}/lessons/${selected}`}
+              href={`/dashboard/subjects/${router.query.subjectId}/lessons/${selected}`}
             >
               <UnstyledButton
                 disabled={!selected && true}
