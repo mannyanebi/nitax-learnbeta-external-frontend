@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { BackgroundImage, Box, Skeleton, Center, Divider, Flex, Text, Modal } from "@mantine/core";
+import { BackgroundImage, Box, Skeleton, UnstyledButton, Radio, Center, Divider, Flex, Text, Modal } from "@mantine/core";
 import SubjectCard, { SubjectCardSkeleton } from "@/components/subjects/SubjectCard";
 import Link from "next/link";
 import { useDisclosure } from '@mantine/hooks';
@@ -10,8 +10,63 @@ import preview_subject from '../../assets/svgs/empty_state.svg'
 import Image from "next/image";
 import Logo from "@/components/brand/Logo";
 
+const GradeCheckCardSkeleton = () => {
+  return (
+    <Flex className={`border-2 space-x-2 items-center border-[#E2E2E2] p-4`}>
+      <Skeleton className="h-5 w-5 rounded-full" />
+      <Skeleton className="h-3 w-40 rounded-full" />
+    </Flex>
+  )
+}
+
+const GradeCheckCard = ({ item, grade }: any) => {
+  return (
+    <Box className={`border-2 transition duration-75 delay-75 ease-linear ${grade === item.value ? 'border-[#FAA61A]' : 'border-[#E2E2E2]'} hover:border-[#FAA61A] p-4`}>
+      <Radio 
+        value={item.value} 
+        color="yellow" 
+        label={
+          <Text className="text-[#555555] font-semibold">
+            {item.label}
+          </Text>
+        } 
+      />
+    </Box>
+  )
+}
+
 const Overview = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [grade, setGrade] = useState('');
+
+  useEffect(() => open(), [])
+
+  const grades = [
+    {
+      value: 'grade1',
+      label: 'Grade 1'
+    },
+    {
+      value: 'grade2',
+      label: 'Grade 2'
+    },
+    {
+      value: 'grade3',
+      label: 'Grade 3'
+    },
+    {
+      value: 'grade4',
+      label: 'Grade 4'
+    },
+    {
+      value: 'grade5',
+      label: 'Grade 5'
+    },
+    {
+      value: 'grade6',
+      label: 'Grade 6'
+    },
+  ]
 
   return (
     <DashboardLayout>
@@ -124,7 +179,7 @@ const Overview = () => {
       </Box>
 
       <Modal 
-        opened={true} 
+        opened={opened} 
         onClose={close}
         withCloseButton={false}
         fullScreen
@@ -143,6 +198,53 @@ const Overview = () => {
           <Text className="lg:text-lg mt-3">
             You are almost there, select your grade to get started 
           </Text>
+
+          <Radio.Group 
+            onChange={setGrade} 
+            value={grade} 
+            name="grade" 
+            className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[70rem] mx-auto"
+          >
+            {grades.map((item) => (
+              <GradeCheckCard 
+                grade={grade}
+                key={item.value} 
+                item={item} 
+              />
+            ))}
+
+            {[1,2,3,4,5,6].map((radio, i) => (
+              <GradeCheckCardSkeleton key={i} />
+            ))
+
+            }
+          </Radio.Group>
+        </Box>
+
+        <Box className="mt-10 text-center">
+          {/* <UnstyledButton
+            disabled={mutation.isLoading}
+            type="submit"
+            className="px-4 w-60 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+          >
+            {mutation.isLoading ?
+              <Icon
+                className={`animate-spin mx-auto`}
+                icon="icomoon-free:spinner2"
+                color="#white"
+                width="20"
+                height="20"
+              /> :
+              'Continue'
+            }
+          </UnstyledButton> */}
+
+          <UnstyledButton
+            onClick={close}
+            className="px-4 w-60 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+          >
+            Continue
+          </UnstyledButton>
         </Box>
       </Modal>
     </DashboardLayout>
