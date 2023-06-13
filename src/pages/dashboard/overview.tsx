@@ -39,7 +39,9 @@ const Overview = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [grade, setGrade] = useState('');
 
-  useEffect(() => open(), [])
+  useEffect(() => {
+    open()
+  }, [])
 
   const grades = [
     {

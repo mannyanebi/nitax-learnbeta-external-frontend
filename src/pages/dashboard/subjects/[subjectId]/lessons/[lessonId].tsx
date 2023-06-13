@@ -57,6 +57,7 @@ export default function Lesson() {
       }
     ]
   }
+
   const [lessonFinished, setLessonFinished] = useState(false);
   const [currentTopic, setCurrentTopic] = useState(() => {
     const firstIncompleteTopic = lesson.topics.find(topic => !topic.completed);
@@ -172,7 +173,7 @@ export default function Lesson() {
                     </UnstyledButton>
                   )}
 
-                  <Link href='#skip_assessment'>
+                  <Link href={`/dashboard/subjects/${router.query.subjectId}`}>
                     <UnstyledButton
                       type="button"
                       onClick={handleNext}
@@ -182,7 +183,7 @@ export default function Lesson() {
                     </UnstyledButton>
                   </Link>
 
-                  <Link href='/dashboard/lessons/1234/assessment'>
+                  <Link href={`/dashboard/lessons/${router.query.lessonId}/quiz`}>
                     <UnstyledButton
                       type="button"
                       onClick={handleNext}

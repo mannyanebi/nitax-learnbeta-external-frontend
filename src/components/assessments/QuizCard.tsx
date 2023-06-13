@@ -3,7 +3,7 @@ import { Box, Text, Radio } from "@mantine/core"
 
 const OptionCard = ({ option, answer }: any) => {
   return (
-    <Box className={`border-2 transition duration-75 delay-75 ease-linear ${answer === option ? 'border-[#FAA61A]' : 'border-[#E2E2E2]'} hover:border-[#FAA61A] p-4`}>
+    <Box className={`border-2 transition duration-75 delay-75 ${answer === option ? 'border-[#FAA61A]' : 'border-[#E2E2E2]'} ease-linear hover:border-[#FAA61A] p-4`}>
       <Radio
         value={option}
         color="yellow"
@@ -14,10 +14,16 @@ const OptionCard = ({ option, answer }: any) => {
         }
       />
     </Box>
-  )
-}
+  );
+};
 
-export default function AssessmentCard({ question, questions, currentQuestionIndex }: any){
+export default function QuizCard({ 
+  question, 
+  questions, 
+  currentQuestionIndex, 
+  setAnswer, 
+  answer 
+}: any){
   return (
     <Box>
       <Box className="text-center">
@@ -32,22 +38,26 @@ export default function AssessmentCard({ question, questions, currentQuestionInd
 
       <Box className="p-10 bg-[#F8F8F8] rounded-xl mt-10">
         <Radio.Group
-          // onChange={setGrade}
-          // value={grade}
+          value={answer}
+          onChange={setAnswer}
           name="answer"
           className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[70rem] mx-auto"
         >
           <OptionCard 
-            option={question.options.option_a}
+            answer={answer}
+            option={question.options.option_a.toString()}
           />
           <OptionCard
-            option={question.options.option_b}
+            answer={answer}
+            option={question.options.option_b.toString()}
           />
           <OptionCard
-            option={question.options.option_b}
+            answer={answer}
+            option={question.options.option_c.toString()}
           />
           <OptionCard
-            option={question.options.option_d}
+            answer={answer}
+            option={question.options.option_d.toString()}
           />
         </Radio.Group>
       </Box>
