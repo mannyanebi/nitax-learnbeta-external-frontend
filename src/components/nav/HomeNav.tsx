@@ -10,7 +10,7 @@ const HomeNav = () => {
 
   return (
     <React.Fragment>
-      <NavElement className="w-full max-w-[90rem] mx-auto sticky bg-white top-0 h-[70px] px-4 sm:px-6 lg:px-8 md:border-none border-b-2 border-[#E2E2E2]">
+      <NavElement className="w-full max-w-[85rem] mx-auto sticky bg-white top-0 h-[70px] z-50 px-4 sm:px-6 lg:px-8 md:border-none border-b-2 border-[#E2E2E2]">
         <Flex className="items-center h-full justify-between">
           <Box>
             <Link href='/dashboard/overview'>
