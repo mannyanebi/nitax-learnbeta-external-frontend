@@ -1,9 +1,6 @@
 import React from 'react';
-import { Box, Flex, Text, Skeleton, Progress, UnstyledButton } from "@mantine/core";
+import { Box, Text } from "@mantine/core";
 import Image from "next/image";
-import lock_icon from '../../assets/svgs/lock.svg'
-import subjectIcon from '../../assets/svgs/subject_icon.svg'
-import Link from 'next/link';
 
 type Props = {
   item: {
