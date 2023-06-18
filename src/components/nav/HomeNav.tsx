@@ -14,7 +14,7 @@ const HomeNav = () => {
         <NavElement className="w-full max-w-[85rem] mx-auto bg-white h-[70px] px-4 sm:px-6 lg:px-8 md:border-none border-b-2 border-[#E2E2E2]">
           <Flex className="items-center h-full justify-between">
             <Box>
-              <Link href='/dashboard/overview'>
+              <Link href='/'>
                 <Logo />
               </Link>
             </Box>

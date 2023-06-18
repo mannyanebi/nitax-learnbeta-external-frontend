@@ -1,12 +1,13 @@
 import React from "react"
-import { Box, Text, UnstyledButton } from "@mantine/core"
+import { Box, Text, UnstyledButton, BackgroundImage } from "@mantine/core"
+import bgImage from '../../assets/svgs/contact_us_bg.svg'
 import Form from "../custom/Form"
 import Input from "../custom/Input"
 import TextArea from "../custom/TextArea"
 
 export default function ContactUs (){
   return (
-    <Box className="py-20 px-4 sm:px-6 lg:px-8">
+    <BackgroundImage src={bgImage.src} className="py-20 px-4 sm:px-6 bg-no-repeat bg-cover bg-left lg:bg-center lg:px-8">
       <Box className='max-w-[38rem] mx-auto'>
         <Text className='font-bold text-3xl xl:text-4xl text-[#00433F] text-center'>
           Contact Us
@@ -44,6 +45,6 @@ export default function ContactUs (){
           </Box>
         </Form>
       </Box>
-    </Box>
+    </BackgroundImage>
   )
 }

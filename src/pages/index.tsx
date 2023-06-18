@@ -11,6 +11,7 @@ import ReviewsCarousel from '@/components/landing/ReviewsCarousel';
 import MockupBackground from '@/components/landing/MockupBackground';
 import WelcomeFace from '@/components/landing/WelcomeFace';
 import ServicesSection from '@/components/landing/ServicesSection';
+import GetStarted from '@/components/landing/GetStarted';
 
 export default function Home() {
   return (
@@ -32,6 +33,8 @@ export default function Home() {
 
         <ReviewsCarousel />
       </Box>
+
+      <GetStarted />
 
       <FAQ />
 

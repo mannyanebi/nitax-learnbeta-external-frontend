@@ -26,13 +26,13 @@ const Footer = () => {
 
           <Box className="text-center lg:space-x-28 space-y-6 lg:space-y-0 lg:flex">
             <Box>
-              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='#'>
+              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='/privacy_policy'>
                 Privacy Policy
               </Link>
             </Box>
 
             <Box>
-              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='#'>
+              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='/service_terms'>
                 Terms of service
               </Link>
             </Box>
@@ -45,7 +45,7 @@ const Footer = () => {
 
             <Flex className="space-x-5 justify-center lg:mt-2 mt-3">
               <Box>
-                <Link href='#'>
+                <Link target='_blank' href='https://www.twitter.com/'>
                   <Image
                     alt="icon"
                     src={twitter}
@@ -55,7 +55,7 @@ const Footer = () => {
               </Box>
 
               <Box>
-                <Link href='#'>
+                <Link target='_blank' href='https://www.facebook.com/'>
                   <Image
                     alt="icon"
                     src={facebook}
@@ -65,7 +65,7 @@ const Footer = () => {
               </Box>
 
               <Box>
-                <Link href='#'>
+                <Link target='_blank' href='https://www.linkedin.com/'>
                   <Image
                     alt="icon"
                     src={linkedin}
