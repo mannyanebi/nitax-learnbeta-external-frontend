@@ -89,125 +89,131 @@ export default function Theory (){
       <ProfileNav />
 
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4 hidden lg:block">
-        <Box className='w-fit'>
-          <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-            <Flex className="max-w-[97rem] mx-auto space-x-2">
-              <Center className="bg-[#FEEDD1] rounded-full p-2">
-                <Image
-                  priority
-                  src={backArrow}
-                  alt='back icon'
-                  className="w-2 h-2"
-                />
-              </Center>
+        <Box className="max-w-[95rem] mx-auto ">
+          <Box className='w-fit'>
+            <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+              <Flex className="max-w-[97rem] mx-auto space-x-2">
+                <Center className="bg-[#FEEDD1] rounded-full p-2">
+                  <Image
+                    priority
+                    src={backArrow}
+                    alt='back icon'
+                    className="w-2 h-2"
+                  />
+                </Center>
 
-              <Text className="font-bold">Lessons</Text>
-            </Flex>
-          </Link>
+                <Text className="font-bold">Lessons</Text>
+              </Flex>
+            </Link>
+          </Box>
         </Box>
       </Box>
 
       {/* Empty state start */}
       {/* <Box className="w-full px-4 sm:px-6 lg:px-8 mt-10 mb-20">
-        <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
-          <Center>
-            <Box className="text-center">
-              <Box>
-                <Image
-                  alt='icon'
-                  priority
-                  src={preview_subject}
-                  className='w-[20rem] mx-auto'
-                />
+        <Box className="max-w-[95rem] mx-auto ">
+          <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
+            <Center>
+              <Box className="text-center">
+                <Box>
+                  <Image
+                    alt='icon'
+                    priority
+                    src={preview_subject}
+                    className='w-[20rem] mx-auto'
+                  />
+                </Box>
+
+                <Text className="font-semibold text-xl mt-8">
+                  This lesson has no Theory
+                </Text>
+
+                <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
+                  <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                    <UnstyledButton
+                      className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
+                    >
+                      Return to lessons
+                    </UnstyledButton>
+                  </Link>
+                </Flex>
               </Box>
-
-              <Text className="font-semibold text-xl mt-8">
-                This lesson has no Theory 
-              </Text>
-
-              <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
-                <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                  <UnstyledButton
-                    className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                  >
-                    Return to lessons
-                  </UnstyledButton>
-                </Link>
-              </Flex>
-            </Box>
-          </Center>
+            </Center>
+          </Box>
         </Box>
       </Box>   */}
       {/* Empty state end */}
 
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4 mb-20">
-        <Flex className="bg-[#FEEDD1] sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
-          <Text className='font-semibold text-2xl truncate'>
-            Assessment
-          </Text>
+        <Box className="max-w-[95rem] mx-auto">
+          <Flex className="bg-[#FEEDD1] sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
+            <Text className='font-semibold text-2xl truncate'>
+              Assessment
+            </Text>
 
-          <Text className='font-semibold text-[#FAA61A] text-lg truncate'>
-            Introduction to Mathematics
-          </Text>
-        </Flex>
+            <Text className='font-semibold text-[#FAA61A] text-lg truncate'>
+              Introduction to Mathematics
+            </Text>
+          </Flex>
 
-        <Box className="mt-10 max-w-[60rem] mx-auto w-full">
-          <TheoryCard
-            answer={answer}
-            setAnswer={setAnswer}
-            question={currentQuestion}
-            questions={question}
-            setShowAnswer={setShowAnswer}
-            showAnswer={showAnswer}
-            questionAnswered={questionAnswered}
-            currentQuestionIndex={currentQuestionIndex}
-          />
+          <Box className="mt-10 max-w-[60rem] mx-auto w-full">
+            <TheoryCard
+              answer={answer}
+              setAnswer={setAnswer}
+              question={currentQuestion}
+              questions={question}
+              setShowAnswer={setShowAnswer}
+              showAnswer={showAnswer}
+              questionAnswered={questionAnswered}
+              currentQuestionIndex={currentQuestionIndex}
+            />
 
-          <Flex className="sm:space-x-3 mt-10 flex-col space-y-3 sm:flex-row sm:space-y-0 sm:justify-end items-end w-full">
-            {currentQuestionIndex > 0 && (
-              <UnstyledButton
-                type="button"
-                onClick={handlePrevious}
-                className="px-10 h-12 text-center w-60 font-bold text-[#777777] transition duration-75 delay-75 ease-linear hover:bg-[#FAA61A] rounded-full py-2 hover:text-white"
-              >
-                Previous Question
-              </UnstyledButton>
-            )}
-
-            <Flex className="space-x-3">
-              {questionAnswered ? (
-                <Box>
-                  {currentQuestionIndex === question.length - 1 ?
-                    <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                      <UnstyledButton
-                        type="button"
-                        className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
-                      >
-                       Back to lessons
-                      </UnstyledButton>
-                    </Link> :  
-
-                    <UnstyledButton
-                      type="button"
-                      onClick={handleNext}
-                      className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
-                    >
-                      Next Question
-                    </UnstyledButton>
-                  }
-                </Box>
-              ) : (
+            <Flex className="sm:space-x-3 mt-10 flex-col space-y-3 sm:flex-row sm:space-y-0 sm:justify-end items-end w-full">
+              {currentQuestionIndex > 0 && (
                 <UnstyledButton
-                  disabled={!answer && true}
                   type="button"
-                  onClick={handleSubmit}
-                  className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                  onClick={handlePrevious}
+                  className="px-10 h-12 text-center w-60 font-bold text-[#777777] transition duration-75 delay-75 ease-linear hover:bg-[#FAA61A] rounded-full py-2 hover:text-white"
                 >
-                  Submit answer
+                  Previous Question
                 </UnstyledButton>
               )}
+
+              <Flex className="space-x-3">
+                {questionAnswered ? (
+                  <Box>
+                    {currentQuestionIndex === question.length - 1 ?
+                      <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                        <UnstyledButton
+                          type="button"
+                          className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                        >
+                          Back to lessons
+                        </UnstyledButton>
+                      </Link> :
+
+                      <UnstyledButton
+                        type="button"
+                        onClick={handleNext}
+                        className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                      >
+                        Next Question
+                      </UnstyledButton>
+                    }
+                  </Box>
+                ) : (
+                  <UnstyledButton
+                    disabled={!answer && true}
+                    type="button"
+                    onClick={handleSubmit}
+                    className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                  >
+                    Submit answer
+                  </UnstyledButton>
+                )}
+              </Flex>
             </Flex>
-          </Flex>
+          </Box>
         </Box>
       </Box>  
    </PageLayout>   
