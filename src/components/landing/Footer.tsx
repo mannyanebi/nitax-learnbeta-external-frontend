@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import twitter from '../../assets/svgs/twitter_icon.svg'
 import facebook from '../../assets/svgs/facebook_icon.svg'
-import linkedin from '../../assets/svgs/linkedin_icon.svg'
+import linkedin_icon from '../../assets/svgs/linkedIn_icon.svg'
 
 const Footer = () => {
   const year = new Date().getFullYear()
@@ -68,7 +68,7 @@ const Footer = () => {
                 <Link target='_blank' href='https://www.linkedin.com/'>
                   <Image
                     alt="icon"
-                    src={linkedin}
+                    src={linkedin_icon}
                     className='h-[30px] w-[30px] lg:h-[24px] lg:w-[24px] rounded-full hover:brightness-75 transition delay-75 duration-75 ease-linear'
                   />
                 </Link>
