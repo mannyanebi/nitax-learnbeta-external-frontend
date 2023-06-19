@@ -26,13 +26,13 @@ const Footer = () => {
 
           <Box className="text-center lg:space-x-28 space-y-6 lg:space-y-0 lg:flex">
             <Box>
-              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='/privacy_policy'>
+              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='/policy'>
                 Privacy Policy
               </Link>
             </Box>
 
             <Box>
-              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='/service_terms'>
+              <Link className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear" href='/terms'>
                 Terms of service
               </Link>
             </Box>

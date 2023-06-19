@@ -24,14 +24,14 @@ export default function ContactUs (){
             <Input
               placeholder="Enter email"
               type="email"
-              className={`w-full border-[#222222] placeholder:text-[#222222] focus:outline-[#014340] border-2 px-3 py-5 rounded-sm focus:text-[#014340] transition duration-75 delay-75 ease-linear placeholder:text-sm focus:placeholder:text-[#014340]`}
+              className='w-full border-black placeholder:text-black focus:outline-[#00433F] border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm'
             />
           </Box>
 
           <Box>
             <TextArea
               placeholder="How can we help?"
-              className={`w-full border-[#222222] placeholder:text-[#222222] min-h-[10rem] max-h-[15rem] focus:outline-[#014340] border-2 px-3 py-5 rounded-sm focus:text-[#014340] transition duration-75 delay-75 ease-linear placeholder:text-sm focus:placeholder:text-[#014340]`}
+              className={`w-full border-black placeholder:text-black min-h-[10rem] max-h-[15rem] focus:outline-[#00433F] border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm`}
             />
           </Box>
 

@@ -29,7 +29,7 @@ const PrivacyPolicy = () => {
                   className='w-[20rem] mx-auto'
                 />
                 <Text className='text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center'>
-                  Page comming soon...
+                  Privacy Policy page comming soon...
                 </Text>
               </Box>
             </Center>
