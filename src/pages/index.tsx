@@ -31,9 +31,9 @@ export default function Home() {
         <ServicesSection />
 
         <CourseAdCarousel />
-
-        <ReviewsCarousel />
       </Box>
+
+      <ReviewsCarousel />
 
       <OurStats />
 

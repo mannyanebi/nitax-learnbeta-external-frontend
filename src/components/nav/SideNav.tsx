@@ -112,7 +112,7 @@ const SideNav: React.FC<Props> = ({ mobile }) => {
             </Box>
           }
 
-          <Box className="px-6 absolute bottom-[20%]">
+          <Box className="px-6 absolute bottom-[15%]">
             <PremiumBanner />
           </Box>
         </Box>
