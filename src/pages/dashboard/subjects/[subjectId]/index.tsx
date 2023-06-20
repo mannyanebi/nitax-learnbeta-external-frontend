@@ -8,6 +8,7 @@ import ProfileNav from "@/components/nav/ProfileNav"
 import backArrow from '../../../../assets/svgs/backarrow_icon.svg'
 import { useRouter } from 'next/router';
 import preview_subject from '../../../../assets/svgs/empty_state.svg'
+import PageLayout from "@/layouts/PageLayout";
 import LessonsCard, { LessonsCardSkeleton } from "@/components/lessons/LessonsCard";
 
 export default function Subject (){
@@ -15,16 +16,15 @@ export default function Subject (){
   const [selected, setSelected] = useState('') 
 
   return (
-    <React.Fragment>
+    <PageLayout>
       <Head>
         <title>Dashboard | Subject</title>
       </Head>
 
       <ProfileNav />
 
-
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4 hidden lg:block">
-        <Box className="max-w-[95rem] mx-auto">
+        <Box className="max-w-[85rem] mx-auto">
           <Box className='w-fit'>
             <Link href='/dashboard/subjects'>
               <Flex className="max-w-[97rem] mx-auto space-x-2">
@@ -45,7 +45,7 @@ export default function Subject (){
       </Box>
 
       {/* <Box className="w-full mx-auto mt-10 px-4 sm:px-6 lg:px-8">
-        <Box className="max-w-[95rem] mx-auto">
+        <Box className="max-w-[85rem] mx-auto">
           <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] rounded-2xl'>
             <Box>
               <Image
@@ -63,7 +63,7 @@ export default function Subject (){
       </Box> */}
 
       {/* <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4">
-        <Box className="max-w-[95rem] mx-auto">
+        <Box className="max-w-[85rem] mx-auto">
           <Skeleton className="rounded-xl h-40 w-full" />
           <Skeleton className="rounded-xl h-4 w-40 mt-8" />
 
@@ -82,7 +82,7 @@ export default function Subject (){
 
       <Box className="mb-20">
         <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4">
-          <Box className="max-w-[95rem] mx-auto">
+          <Box className="max-w-[85rem] mx-auto">
             <BackgroundImage
               src={subject_banner.src}
               className='h-40 w-full px-6 lg:px-10 rounded-xl mt-4 text-white'
@@ -141,6 +141,6 @@ export default function Subject (){
           </Box>
         </Box>
       </Box>
-    </React.Fragment>  
+    </PageLayout>  
   )
 }

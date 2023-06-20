@@ -12,6 +12,7 @@ import MockupBackground from '@/components/landing/MockupBackground';
 import WelcomeFace from '@/components/landing/WelcomeFace';
 import ServicesSection from '@/components/landing/ServicesSection';
 import GetStarted from '@/components/landing/GetStarted';
+import OurStats from '@/components/landing/OurStats';
 
 export default function Home() {
   return (
@@ -33,6 +34,8 @@ export default function Home() {
 
         <ReviewsCarousel />
       </Box>
+
+      <OurStats />
 
       <GetStarted />
 

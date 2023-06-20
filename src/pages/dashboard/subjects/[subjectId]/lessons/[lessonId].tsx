@@ -108,7 +108,7 @@ export default function Lesson() {
       <ProfileNav />
 
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4 hidden lg:block">
-        <Box className="max-w-[95rem] mx-auto">
+        <Box className="max-w-[85rem] mx-auto">
           <Box className='w-fit'>
             <Link href={`/dashboard/subjects/${router.query.subjectId}`}>
               <Flex className="max-w-[97rem] mx-auto space-x-2">
@@ -129,7 +129,7 @@ export default function Lesson() {
       </Box>
 
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4">
-        <Box className="max-w-[95rem] mx-auto">
+        <Box className="max-w-[85rem] mx-auto">
           <Flex className="bg-[#FEEDD1] sm:items-center sm:justify-between flex-col sm:flex-row py-5 px-8 rounded-xl">
             <Text className='font-semibold text-[#FAA61A] text-lg truncate'>
               Introduction to Mathematics

@@ -18,7 +18,7 @@ const PremiumBanner = () => {
       </Text>
 
       <Box className="text-center mt-10">
-        <Link href='#' className="text-white font-semibold text-sm hover:underline">
+        <Link href='/profile?tab=subscriptions' className="text-white font-semibold text-sm hover:underline">
           Upgrade Plan
         </Link>
       </Box>
@@ -74,7 +74,7 @@ const SideNav: React.FC<Props> = ({ mobile }) => {
     <Box className="w-full max-w-[14rem] lg:max-w-[15rem] h-[100vh] fixed overflow-y-auto bg-[#00433F]">
       <Box className="h-full">
         <Box className={`${mobile && 'hidden'}`}>
-          <Center className="w-full h-[70px]">
+          <Center className="w-full h-[60px]">
             <Link href='/dashboard/overview'>
               <Logo variant="white" />
             </Link>

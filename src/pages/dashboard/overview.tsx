@@ -205,7 +205,7 @@ const Overview = () => {
             onChange={setGrade} 
             value={grade} 
             name="grade" 
-            className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[70rem] mx-auto"
+            className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[60rem] 2xl:max-w-[70rem] mx-auto"
           >
             {grades.map((item) => (
               <GradeCheckCard 

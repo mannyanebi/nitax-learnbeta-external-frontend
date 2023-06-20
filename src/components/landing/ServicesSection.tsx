@@ -24,7 +24,7 @@ export default function ServicesSection (){
 
       <Box className='mt-20'>
         <Box className='lg:space-y-0 lg:flex lg:space-x-8 space-y-16 lg:justify-center'>
-          <Box style={shadowStyle} className='rounded-2xl mx-auto lg:mx-0 max-w-[19rem] py-14 text-center px-8'>
+          <Box style={shadowStyle} className='rounded-2xl mx-auto lg:mx-0 max-w-[18rem] py-14 text-center px-6'>
             <Image
               alt='icon'
               priority
@@ -41,7 +41,7 @@ export default function ServicesSection (){
             </Text>
           </Box>
 
-          <Box style={shadowStyle} className='rounded-2xl mx-auto lg:mx-0 max-w-[19rem] py-14 text-center px-8'>
+          <Box style={shadowStyle} className='rounded-2xl mx-auto lg:mx-0 max-w-[18rem] py-14 text-center px-6'>
             <Image
               alt='icon'
               priority
@@ -58,7 +58,7 @@ export default function ServicesSection (){
             </Text>
           </Box>
 
-          <Box style={shadowStyle} className='rounded-2xl mx-auto lg:mx-0 max-w-[19rem] py-14 text-center px-8'>
+          <Box style={shadowStyle} className='rounded-2xl mx-auto lg:mx-0 max-w-[18rem] py-14 text-center px-6'>
             <Image
               alt='icon'
               priority

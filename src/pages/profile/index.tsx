@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Box, Tabs } from "@mantine/core";
 import PageLayout from "@/layouts/PageLayout";
@@ -6,6 +6,18 @@ import ProfileNav from "@/components/nav/ProfileNav";
 import ProfileBanner from "@/components/profile/ProfileBanner";
 
 const Profile = () => {
+  const [activeTab, setActiveTab] = useState<string | null>('profile');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has("tab")) {
+      const tabValue = params.get("tab");
+
+      setActiveTab(tabValue)
+    }
+  }, [])
+
   return (
     <PageLayout>
       <Head>
@@ -17,7 +29,8 @@ const Profile = () => {
       <Box className='mt-5 lg:mt-8 mb-20'>
         <Tabs
           unstyled
-          defaultValue="profile"
+          value={activeTab} 
+          onTabChange={setActiveTab}
           styles={(theme) => ({
             tab: {
               ...theme.fn.focusStyles(),
@@ -25,10 +38,12 @@ const Profile = () => {
               cursor: 'pointer',
               paddingLeft: '20px',
               paddingRight: '20px',
+              justifyContent: 'center',
               fontFamily: "Montserrat Variable, sans-serif",
               fontSize: theme.fontSizes.sm,
               display: 'flex',
               alignItems: 'center',
+              width: '170px',
 
               '&[data-active]': {
                 backgroundColor: 'white',
@@ -45,7 +60,7 @@ const Profile = () => {
               backgroundColor: '#F4F4F4',
               borderRadius: '9999px',
               padding: '5px',
-              height: '60px'
+              height: '50px',
             },
           })}
         >
