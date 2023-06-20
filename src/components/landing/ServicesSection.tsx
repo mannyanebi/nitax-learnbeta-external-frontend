@@ -11,7 +11,7 @@ export default function ServicesSection (){
   };
 
   return (
-    <Box>
+    <Box className="py-10">
       <Box className='max-w-[38rem] mx-auto'>
         <Text className='font-bold text-3xl xl:text-4xl text-[#00433F] text-center'>
           Get the most from LearnBeta

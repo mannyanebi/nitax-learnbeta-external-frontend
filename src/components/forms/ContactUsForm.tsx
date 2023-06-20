@@ -40,7 +40,7 @@ const ContactUsForm: React.FC<Props> = ({
           disabled={mutation.isLoading}
           placeholder="Enter email"
           type="email"
-          className='w-full border-black placeholder:text-black focus:outline-[#00433F] border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm'
+          className={`w-full border-black placeholder:text-black ${form.errors.email ? ' focus: !outline-red-500' : 'focus: !outline-[#00433F]'} border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm`}
         />
       </Box>
 
@@ -50,7 +50,7 @@ const ContactUsForm: React.FC<Props> = ({
           error={form.errors.message}
           disabled={mutation.isLoading}
           placeholder="How can we help?"
-          className={`w-full border-black placeholder:text-black min-h-[10rem] max-h-[15rem] focus:outline-[#00433F] border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm`}
+          className={`w-full border-black placeholder:text-black min-h-[10rem] max-h-[15rem] ${form.errors.message ? 'focus:!outline-red-500' : 'focus:!outline-[#00433F]'} border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm`}
         />
       </Box>
 

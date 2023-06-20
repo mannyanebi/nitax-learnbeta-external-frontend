@@ -12,7 +12,7 @@ export default function FAQ() {
   })
 
   return (
-    <BackgroundImage src={bg_hero.src} className="py-20 px-4 sm:px-6 bg-no-repeat bg-cover bg-left lg:bg-top lg:px-8">
+    <BackgroundImage src={bg_hero.src} className="py-10 px-4 sm:px-6 bg-no-repeat bg-cover bg-left lg:bg-top lg:px-8">
       <BackgroundImage src={bg_light_blue.src} className="max-w-[85rem] mx-auto py-20 lg:py-32 px-4 sm:px-6 bg-no-repeat bg-cover bg-left lg:bg-center lg:px-8">
         <Flex className="flex-col lg:flex-row lg:justify-between lg:space-x-20 items-start">
           <Box className='max-w-[38rem] lg:max-w-[20rem] mx-auto lg:mx-0'>
