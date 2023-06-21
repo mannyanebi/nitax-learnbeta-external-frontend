@@ -16,7 +16,15 @@ const uploadAvatar = async (payload: any) => {
   return res.data;
 };
 
+const sendMessage = async (payload: any) => {
+  const sendMessageURL = `${HOST}/`;
+  const res = await axios.post(sendMessageURL, payload);
+
+  return res.data;
+};
+
 export {
   verifyOldPassword,
-  uploadAvatar
+  uploadAvatar,
+  sendMessage
 }

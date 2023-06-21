@@ -1,13 +1,51 @@
 import React from "react"
-import { Box, Text, UnstyledButton, BackgroundImage } from "@mantine/core"
+import { Box, Text, BackgroundImage } from "@mantine/core"
 import bgImage from '../../assets/svgs/contact_us_bg.svg'
-import Form from "../custom/Form"
-import Input from "../custom/Input"
-import TextArea from "../custom/TextArea"
+import ContactUsForm from "../forms/ContactUsForm"
+import { useForm } from '@mantine/form';
+import { useMutation } from "react-query";
+import toast, { Toaster } from 'react-hot-toast';
+import { sendMessage } from "@/services/user";
+
+export interface ContactFormData {
+  email: string;
+  message: string;
+}
 
 export default function ContactUs (){
+  const form = useForm({
+    initialValues: {
+      email: '',
+      message: ''
+    },
+
+    validate: {
+      email: (value) => (
+        !value ? 'Email is required' :
+          !/^\S+@\S+$/.test(value) ? 'Invalid email' : null
+      ),
+      message: (value) => (
+        !value ? 'Message is required' : null
+      )
+    },
+  });
+
+  const mutation = useMutation((data: any) => sendMessage(data), {
+    onError: () => {
+      toast.error('Failed to send message! Try again')
+    },
+
+    onSuccess: () => {
+      toast.success('Message sent! We will be in touch soon.')
+    },
+  })
+
+  const handleSubmit = async (values: ContactFormData) => {
+    mutation.mutate(values)
+  }
+
   return (
-    <BackgroundImage src={bgImage.src} className="py-20 px-4 sm:px-6 bg-no-repeat bg-cover bg-left lg:bg-center lg:px-8">
+    <BackgroundImage src={bgImage.src} className="pt-10 lg:pt-20 pb-20 px-4 sm:px-6 bg-no-repeat bg-cover bg-left lg:bg-center lg:px-8">
       <Box className='max-w-[38rem] mx-auto'>
         <Text className='font-bold text-3xl xl:text-4xl text-[#00433F] text-center'>
           Contact Us
@@ -18,32 +56,17 @@ export default function ContactUs (){
         </Text>
       </Box>
 
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
+      />
+
       <Box className="mt-8">
-        <Form className="mx-auto max-w-[40rem] space-y-5">
-          <Box>
-            <Input
-              placeholder="Enter email"
-              type="email"
-              className='w-full border-black placeholder:text-black focus:outline-[#00433F] border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm'
-            />
-          </Box>
-
-          <Box>
-            <TextArea
-              placeholder="How can we help?"
-              className={`w-full border-black placeholder:text-black min-h-[10rem] max-h-[15rem] focus:outline-[#00433F] border-2 px-3 py-5 rounded-sm transition duration-75 delay-75 ease-linear placeholder:text-sm`}
-            />
-          </Box>
-
-          <Box className="text-center !mt-10">
-            <UnstyledButton 
-              type='button'
-              className='text-[#00433F] font-semibold bg-[#FFCB05] hover:bg-[#ffcd05c9] w-52 h-14 rounded-full text-center animate-bounce shadow-2xl transition duration-75 delay-75 ease-linear'
-            >
-              Send message
-            </UnstyledButton>
-          </Box>
-        </Form>
+        <ContactUsForm 
+          form={form}
+          mutation={mutation}
+          handleSubmit={handleSubmit}
+        />
       </Box>
     </BackgroundImage>
   )
