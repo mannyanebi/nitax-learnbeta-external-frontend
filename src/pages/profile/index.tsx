@@ -4,6 +4,7 @@ import { Box, Tabs } from "@mantine/core";
 import PageLayout from "@/layouts/PageLayout";
 import ProfileNav from "@/components/nav/ProfileNav";
 import ProfileBanner from "@/components/profile/ProfileBanner";
+import Subscriptions from "@/components/subscription/Subscriptions";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<string | null>('profile');
@@ -76,12 +77,20 @@ const Profile = () => {
             </Tabs.List>
           </Box>
 
-          <Tabs.Panel className="mt-5" value="profile" pt="xs">
+          <Tabs.Panel 
+            className="mt-5" 
+            value="profile" 
+            pt="xs"
+          >
             <ProfileBanner />
           </Tabs.Panel>
 
-          <Tabs.Panel className="mt-5" value="subscriptions" pt="xs">
-            fhbjkdnvl
+          <Tabs.Panel 
+            className="mt-5" 
+            value="subscriptions" 
+            pt="xs"
+          >
+            <Subscriptions />
           </Tabs.Panel>
         </Tabs>
       </Box>
