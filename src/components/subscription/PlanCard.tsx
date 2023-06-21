@@ -90,7 +90,7 @@ const PlanCard = ({ handleSubscribe }: any) => {
         opened={opened} 
         onClose={close}
       >
-        <Box className='px-2 pb-14 sm:px-8 md:px-10'>
+        <Box className='px-4 pb-14 sm:px-8 md:px-10'>
           <Text className='font-semibold text-center text-lg'>
             Premium Plan
           </Text>
