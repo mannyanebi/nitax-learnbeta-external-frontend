@@ -2,7 +2,19 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import { Box, UnstyledButton } from "@mantine/core";
 
-export default function Paystack({ handlePaystack, isLoading }: any){
+interface Props {
+  handlePaystack: () => void
+  isLoading: {
+    paystack: boolean,
+    voucher?: boolean,
+    airtime?: boolean
+  }
+}
+
+export default function Paystack({ 
+  handlePaystack, 
+  isLoading 
+}: Props){
   return (
     <Box className="text-center mt-[20%]">
       <UnstyledButton

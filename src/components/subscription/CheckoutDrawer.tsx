@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { Box, Drawer, Text, Flex, Radio, Select } from "@mantine/core"
-import { Icon } from '@iconify/react'
 import Paystack from "./Paystack";
 import Voucher from "./Voucher";
 import Airtime from "./Airtime";
@@ -13,14 +12,19 @@ export default function CheckoutDrawer({
   const [paymentMethod, setPaymentMethod] = useState('airtime');
   const [networkProvider, setNetworkProvider] = useState('mtn');
   const [billingPlan, setBillingPlan] = useState<string | null>(null);
-  const [error, setError] = useState({
-    billingPlan: false
-  })
-  const [isLoading, setIsLoading] = useState({
-    paystack: false
+  const [voucherCode, setVoucherCode] = useState('')
+  const [error, setError] = useState<any>({
+    billingPlan: false,
+    voucherCode: false,
   })
   const [errorMessage, setErrorMessage] = useState({
-    billingPlan: ''
+    billingPlan: '',
+    voucherCode: '',
+  })
+  const [isLoading, setIsLoading] = useState({
+    paystack: false,
+    voucher: false,
+    airtime: false
   })
 
   const handlePaystack = () => {
@@ -29,7 +33,6 @@ export default function CheckoutDrawer({
         ...error,
         billingPlan: true
       })
-
       setErrorMessage({
         ...errorMessage,
         billingPlan: 'Billing plan is required'
@@ -41,6 +44,37 @@ export default function CheckoutDrawer({
       })
 
       // handle payment
+      // onSuccess, toast success
+      // onError, toast error
+    }
+  }
+
+  const handleVoucher = () => {
+    if (!billingPlan) {
+      setError({
+        ...error,
+        billingPlan: true
+      })
+      setErrorMessage({
+        ...errorMessage,
+        billingPlan: 'Billing plan is required'
+      })
+    } else if (!voucherCode) {
+      setError({
+        ...error,
+        voucherCode: true
+      })
+      setErrorMessage({
+        ...errorMessage,
+        voucherCode: 'Voucher code is required'
+      })
+    } else {
+      setIsLoading({
+        ...isLoading,
+        voucher: true
+      })
+
+      // handle tx
       // onSuccess, toast success
       // onError, toast error
     }
@@ -75,7 +109,7 @@ export default function CheckoutDrawer({
           <Select
             size='xl'
             radius={8}
-            disabled={isLoading.paystack && true}
+            disabled={isLoading.paystack && true || isLoading.voucher && true}
             value={billingPlan} 
             placeholder='Billing Plan'
             onChange={(val) => {
@@ -138,7 +172,7 @@ export default function CheckoutDrawer({
           >
             <Flex className="space-x-4 sm:space-x-6 items-center">
               <Radio
-                disabled={isLoading.paystack && true}
+                disabled={isLoading.paystack && true || isLoading.voucher && true}
                 value="airtime"
                 color="yellow"
                 label={
@@ -153,13 +187,13 @@ export default function CheckoutDrawer({
                 }
               />
               <Radio
-                disabled={isLoading.paystack && true}
+                disabled={isLoading.paystack && true || isLoading.voucher && true}
                 value="paystack"
                 label="Paystack"
                 color="yellow"
               />
               <Radio
-                disabled={isLoading.paystack && true}
+                disabled={isLoading.paystack && true || isLoading.voucher && true}
                 value="voucher"
                 label="Voucher"
                 color="yellow"
@@ -183,7 +217,16 @@ export default function CheckoutDrawer({
         }
 
         {paymentMethod === 'voucher' &&
-          <Voucher />
+          <Voucher 
+            error={error}
+            setError={setError}
+            isLoading={isLoading}
+            voucherCode={voucherCode}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
+            handleVoucher={handleVoucher}
+            setVoucherCode={setVoucherCode}
+          />
         }
       </Box>
     </Drawer>
