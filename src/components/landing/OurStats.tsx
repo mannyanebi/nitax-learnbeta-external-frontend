@@ -7,7 +7,7 @@ import bg_rose from '../../assets/svgs/bg_rose.svg'
 export default function OurStats() {
   return (
     <Box className="py-10 px-4 sm:px-6 lg:px-8">
-      <BackgroundImage src={bg_rose.src} className="max-w-[85rem] mx-auto py-20 lg:py-32 px-4 sm:px-6 bg-no-repeat bg-cover bg-bottom lg:bg-center lg:px-20">
+      <BackgroundImage src={bg_rose.src} className="max-w-[65rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto py-20 lg:py-32 px-4 sm:px-6 bg-no-repeat bg-cover bg-bottom lg:bg-center lg:px-20">
         <Box className="lg:flex lg:items-center">
           <Box className='max-w-[38rem] lg:max-w-[20rem] xl:max-w-[28rem] lg:mx-0 mx-auto'>
             <Text className='font-bold text-3xl xl:text-4xl text-[#00433F] text-center lg:text-left'>

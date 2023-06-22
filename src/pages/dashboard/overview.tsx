@@ -45,28 +45,53 @@ const Overview = () => {
 
   const grades = [
     {
-      value: 'grade1',
-      label: 'Grade 1'
+      value: 'primary1',
+      label: 'Primary 1'
     },
     {
-      value: 'grade2',
-      label: 'Grade 2'
+      value: 'primary2',
+      label: 'Primary 2'
     },
     {
-      value: 'grade3',
-      label: 'Grade 3'
+      value: 'primary3',
+      label: 'Primary 3'
     },
     {
-      value: 'grade4',
-      label: 'Grade 4'
+      value: 'primary4',
+      label: 'Primary 4'
     },
     {
-      value: 'grade5',
-      label: 'Grade 5'
+      value: 'primary5',
+      label: 'Primary 5'
     },
     {
-      value: 'grade6',
-      label: 'Grade 6'
+      value: 'primary6',
+      label: 'Primary 6'
+    },
+
+    {
+      value: 'jss1',
+      label: 'JSS 1'
+    },
+    {
+      value: 'jss2',
+      label: 'JSS 2'
+    },
+    {
+      value: 'jss3',
+      label: 'JSS 3'
+    },
+    {
+      value: 'sss1',
+      label: 'SSS 1'
+    },
+    {
+      value: 'sss2',
+      label: 'SSS 2'
+    },
+    {
+      value: 'sss3',
+      label: 'SSS 3'
     },
   ]
 
@@ -215,11 +240,9 @@ const Overview = () => {
               />
             ))}
 
-            {[1,2,3,4,5,6].map((radio, i) => (
+            {/* {[1,2,3,4,5,6].map((radio, i) => (
               <GradeCheckCardSkeleton key={i} />
-            ))
-
-            }
+            ))} */}
           </Radio.Group>
         </Box>
 

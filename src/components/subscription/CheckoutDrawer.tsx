@@ -98,7 +98,7 @@ export default function CheckoutDrawer({
   return (
     <Drawer
       opened={opened}
-      size="40rem"
+      size="38rem"
       position='right'
       withCloseButton={true}
       padding={30}
