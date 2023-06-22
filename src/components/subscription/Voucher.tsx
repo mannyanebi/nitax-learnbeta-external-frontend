@@ -66,9 +66,10 @@ export default function Voucher({
         </Text>
       </Box>
 
-      <Box className="mt-[20%] text-center">
+      <Box className="mt-[15%] text-center">
         <UnstyledButton
           onClick={handleVoucher}
+          disabled={isLoading.voucher && true}
           className="px-4 w-72 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
         >
           {isLoading.voucher ?

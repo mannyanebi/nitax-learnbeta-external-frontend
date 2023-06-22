@@ -17,7 +17,7 @@ export default function Subscriptions() {
 
   return (
     <Box className="px-4 sm:px-6 lg:px-8">
-      <Box className="max-w-[75rem] 2xl:max-w-[85rem] mx-auto space-y-10 w-full">
+      <Box className="max-w-[63rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto space-y-10 w-full">
         <Box>
           <Divider
             my="xs"

@@ -108,10 +108,10 @@ export default function Lesson() {
       <ProfileNav />
 
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4 hidden lg:block">
-        <Box className="max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[63rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
           <Box className='w-fit'>
             <Link href={`/dashboard/subjects/${router.query.subjectId}`}>
-              <Flex className="max-w-[75rem] 2xl:max-w-[85rem] mx-auto space-x-2">
+              <Flex className="max-w-[63rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto space-x-2">
                 <Center className="bg-[#FEEDD1] rounded-full p-2">
                   <Image
                     priority
@@ -129,7 +129,7 @@ export default function Lesson() {
       </Box>
 
       <Box className="w-full px-4 sm:px-6 lg:px-8 mt-4">
-        <Box className="max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[63rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
           <Flex className="bg-[#FEEDD1] sm:items-center sm:justify-between flex-col sm:flex-row py-5 px-8 rounded-xl">
             <Text className='font-semibold text-[#FAA61A] text-lg truncate'>
               Introduction to Mathematics
@@ -159,9 +159,11 @@ export default function Lesson() {
             </Box>
 
             <Box className="lg:ml-[28%] mb-20">
-              <LessonTranscript
-                topic={currentTopic}
-              />
+              <Box className='lg:pl-5'>
+                <LessonTranscript
+                  topic={currentTopic}
+                />
+              </Box>
 
               <Flex className="mt-10 justify-end">
                 {lessonFinished ?

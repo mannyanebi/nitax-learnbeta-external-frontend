@@ -7,7 +7,7 @@ import kid_hero from '../../assets/svgs/kid.svg'
 
 export default function WelcomeFace() {
   return (
-    <BackgroundImage src={doodleBg.src} className='pt-8 bg-no-repeat w-full max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 bg-cover bg-center'>
+    <BackgroundImage src={doodleBg.src} className='pt-8 bg-no-repeat w-full max-w-[65rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 bg-cover bg-center'>
       <Box className='lg:flex lg:items-center lg:space-x-3'>
         <Box className='lg:w-full'>
           <Text className='font-bold text-4xl text-[#00433F] text-center xl:text-5xl lg:text-left'>
