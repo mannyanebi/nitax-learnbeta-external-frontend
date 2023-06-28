@@ -12,7 +12,7 @@ const Footer = () => {
 
   return (
     <Box className="bg-[#00433F]">
-      <Box className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+      <Box className="max-w-[65rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto px-4 sm:px-8 md:px-10 pt-10 pb-6">
         <Box className='w-full max-w-[15rem] lg:flex lg:max-w-none mx-auto space-y-6 lg:items-center lg:justify-between'>
           <Box className="lg:w-[15rem]">
             <Box className="justify-center lg:justify-start flex">

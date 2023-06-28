@@ -33,7 +33,7 @@ export default function ServicesSection (){
             />
 
             <Text className='font-semibold text-xl text-[#00433F]'>
-              Verity of subjects
+              Variety of subjects
             </Text>
 
             <Text className='mt-2 text-[#696984] text-sm'>

@@ -62,7 +62,7 @@ export default function Voucher({
         />
 
         <Text className="font-semibold text-right text-sm text-[#777777] mt-4">
-          = ₦ 5,000
+          = &#x20A6; 5,000
         </Text>
       </Box>
 

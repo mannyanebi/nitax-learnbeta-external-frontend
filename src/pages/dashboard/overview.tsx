@@ -103,7 +103,7 @@ const Overview = () => {
 
       <BackgroundImage
         src={hero_banner.src}
-        className="h-44 bg-right md:hidden text-white font-bold px-4 sm:px-6 lg:px-8"
+        className="h-44 bg-right md:hidden text-white font-bold px-4 sm:px-8"
       >
         <Flex className="h-full items-center">
           <Box>
@@ -118,7 +118,7 @@ const Overview = () => {
         </Flex>
       </BackgroundImage>
 
-      <Box className="px-4 sm:px-6 lg:px-8 mt-5 lg:mt-8">
+      <Box className="px-4 sm:px-8 md:pl-8 md:pr-14 lg:pr-20 mt-5 lg:mt-8">
         <BackgroundImage
           src={hero_banner.src}
           className="h-40 bg-right md:block hidden rounded-xl text-white font-bold px-10"
@@ -137,7 +137,7 @@ const Overview = () => {
         </BackgroundImage>
 
         <Box className="w-full mx-auto mt-10">
-          <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] rounded-2xl'>
+          <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl'>
             <Box>
               <Image
                 alt='icon'
@@ -168,7 +168,7 @@ const Overview = () => {
             />
           </Box>
 
-          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 sm:gap-4 max-w-[70rem] sm:grid-cols-2 xl:grid-cols-3">
+          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
             <SubjectCard free={true} />
             <SubjectCard free={true} />
             <SubjectCard free={true} />
@@ -193,7 +193,7 @@ const Overview = () => {
             />
           </Box>
 
-          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 sm:gap-4 max-w-[70rem] sm:grid-cols-2 xl:grid-cols-3">
+          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
             <SubjectCard free={true} />
             <SubjectCard free={true} />
             <SubjectCard free={true} />
@@ -206,48 +206,51 @@ const Overview = () => {
       </Box>
 
       <Modal 
+        padding={0}
         opened={opened} 
         onClose={close}
         withCloseButton={false}
         fullScreen
       >
-        <Flex className="justify-end">
-          <Link href='/'>
-            <Logo />
-          </Link>
-        </Flex>
+        <Box className="px-4 sm:px-8 md:px-10">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto">
+            <Flex className="justify-end">
+              <Link href='/'>
+                <Logo />
+              </Link>
+            </Flex>
 
-        <Box className="text-center lg:my-20 my-10">
-          <Text className="font-semibold text-2xl lg:text-3xl">
-            Welcome to LearnBeta 
-          </Text>
+            <Box className="text-center lg:my-20 my-10">
+              <Text className="font-semibold text-2xl lg:text-3xl">
+                Welcome to LearnBeta
+              </Text>
 
-          <Text className="lg:text-lg mt-3">
-            You are almost there, select your grade to get started 
-          </Text>
+              <Text className="lg:text-lg mt-3">
+                You are almost there, select your grade to get started
+              </Text>
 
-          <Radio.Group 
-            onChange={setGrade} 
-            value={grade} 
-            name="grade" 
-            className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[60rem] 2xl:max-w-[70rem] mx-auto"
-          >
-            {grades.map((item) => (
-              <GradeCheckCard 
-                grade={grade}
-                key={item.value} 
-                item={item} 
-              />
-            ))}
+              <Radio.Group
+                onChange={setGrade}
+                value={grade}
+                name="grade"
+                className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[55rem] xl:max-w-[60rem] 2xl:max-w-[70rem] mx-auto"
+              >
+                {grades.map((item) => (
+                  <GradeCheckCard
+                    grade={grade}
+                    key={item.value}
+                    item={item}
+                  />
+                ))}
 
-            {/* {[1,2,3,4,5,6].map((radio, i) => (
+                {/* {[1,2,3,4,5,6].map((radio, i) => (
               <GradeCheckCardSkeleton key={i} />
             ))} */}
-          </Radio.Group>
-        </Box>
+              </Radio.Group>
+            </Box>
 
-        <Box className="mt-10 text-center">
-          {/* <UnstyledButton
+            <Box className="mt-10 text-center">
+              {/* <UnstyledButton
             disabled={mutation.isLoading}
             type="submit"
             className="px-4 w-60 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
@@ -264,12 +267,14 @@ const Overview = () => {
             }
           </UnstyledButton> */}
 
-          <UnstyledButton
-            onClick={close}
-            className="px-4 w-60 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
-          >
-            Continue
-          </UnstyledButton>
+              <UnstyledButton
+                onClick={close}
+                className="px-4 w-60 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+              >
+                Continue
+              </UnstyledButton>
+            </Box>
+          </Box>
         </Box>
       </Modal>
     </DashboardLayout>

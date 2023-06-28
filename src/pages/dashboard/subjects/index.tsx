@@ -3,7 +3,7 @@ import Head from "next/head";
 import SubjectCard, { SubjectCardSkeleton } from "@/components/subjects/SubjectCard";
 import { Box, Divider, Flex, Center, Text } from "@mantine/core";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import preview_subject from '../../assets/svgs/empty_state.svg'
+import preview_subject from '../../../assets/svgs/empty_state.svg'
 import Image from "next/image";
 
 const Subjects = () => {
@@ -13,7 +13,7 @@ const Subjects = () => {
         <title>Dashboard | Subjects</title>
       </Head>
 
-      <Box className="px-4 sm:px-6 lg:px-8 mt-5 lg:mt-8">
+      <Box className="px-4 sm:px-8 md:pl-8 md:pr-14 lg:pr-20 mt-5 lg:mt-8">
         <Box>
           <Divider
             className="mt-5 lg:mt-8"
@@ -33,7 +33,7 @@ const Subjects = () => {
           </Text>
         </Box>
 
-        <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 sm:gap-4 max-w-[70rem] sm:grid-cols-2 xl:grid-cols-3">
+        <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
           <SubjectCard free={true} />
           <SubjectCard free={true} />
           <SubjectCard free={true} />
@@ -47,7 +47,7 @@ const Subjects = () => {
         </Box>
 
         {/* <Box className="w-full mx-auto mt-10">
-          <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] rounded-2xl'>
+          <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl'>
             <Box>
               <Image
                 alt='icon'
@@ -67,7 +67,7 @@ const Subjects = () => {
             Subjects in Paid Plan
           </Text>
 
-          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6 sm:gap-4 max-w-[70rem] sm:grid-cols-2 xl:grid-cols-3">
+          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
             <SubjectCard free={false} />
             <SubjectCard free={false} />
             <SubjectCard free={false} />
