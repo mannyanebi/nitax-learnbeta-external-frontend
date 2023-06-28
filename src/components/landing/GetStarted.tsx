@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { BackgroundImage, Flex, UnstyledButton, Text, Box } from "@mantine/core"
 import Link from "next/link"
 import bgImage from '../../assets/svgs/bg_objects.svg'
@@ -25,7 +25,7 @@ const SubscribeCard = ({ plan, price, description }: any) => {
       </Text>
 
       <Text className="font-bold text-[#666666] text-2xl">
-        #{price}
+        &#x20A6;{price}
       </Text>
 
       <Box className={`h-3 w-3 bg-${color}-500 rounded-full mx-auto`} />
@@ -69,7 +69,7 @@ const SubscribeCard = ({ plan, price, description }: any) => {
 
 export default function GetStarted() {
   return (
-    <BackgroundImage src={bgImage.src} className="py-20 px-4 sm:px-6 bg-no-repeat bg-cover bg-center lg:px-8">
+    <BackgroundImage src={bgImage.src} className="py-20 px-4 sm:px-8 bg-no-repeat bg-cover bg-center md:px-10">
       <Box className='max-w-[38rem] mx-auto'>
         <Text className='font-bold text-3xl xl:text-4xl text-[#00433F] text-center'>
           Get started today

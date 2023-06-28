@@ -42,7 +42,7 @@ export default function ReviewsCarousel() {
   ]
 
   return (
-    <BackgroundImage src={bg_play.src} className="py-10 px-4 sm:px-6 lg:px-8 bg-center">
+    <BackgroundImage src={bg_play.src} className="py-10 px-4 sm:px-8 md:px-10 bg-center">
       <Box className="max-w-[65rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto">
         <Box className='max-w-[38rem] mx-auto'>
           <Text className='font-bold text-3xl xl:text-4xl text-[#00433F] text-center'>

@@ -135,7 +135,7 @@ export default function CheckoutDrawer({
             </Text>
 
             <Text className="font-semibold">
-              ₦ 5,000
+              &#x20A6; 5,000
             </Text>
           </Flex>
 

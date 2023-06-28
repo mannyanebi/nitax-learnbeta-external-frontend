@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
 
       <HomeNav />
 
-      <BackgroundImage src={bgImage.src} className="py-20 px-4 sm:px-6 bg-no-repeat bg-cover bg-center lg:px-8">
+      <BackgroundImage src={bgImage.src} className="py-20 px-4 sm:px-8 bg-no-repeat bg-cover bg-center md:px-10">
         <Box className="mx-auto max-w-[50rem]">
           <Box className="w-full mx-auto mt-10">
             <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] rounded-2xl'>

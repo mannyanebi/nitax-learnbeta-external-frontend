@@ -18,9 +18,7 @@ export const SubjectCardSkeleton = () => {
   );
 }
 
-interface Props {
-  free: boolean
-}
+interface Props { free: boolean }
 
 const SubjectCard: React.FC<Props> = ({ free }) => {
   return (
@@ -51,7 +49,7 @@ const SubjectCard: React.FC<Props> = ({ free }) => {
             </Box>
           </Box>
 
-          <Flex className="flex-grow justify-end">
+          <Flex className="flex-grow justify-end mt-2">
             <Link href="/dashboard/subjects/123456">
               <UnstyledButton className="w-48 text-center hover:text-white rounded-full py-2 text-[#FAA61A] hover:bg-[#FAA61A] font-semibold text-sm bg-[#FEEDD1] transition duration-75 delay-75 ease-linear">
                 Continue Learning
