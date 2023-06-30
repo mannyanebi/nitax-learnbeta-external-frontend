@@ -168,7 +168,7 @@ const Overview = () => {
             />
           </Box>
 
-          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
+          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
             <SubjectCard free={true} />
             <SubjectCard free={true} />
             <SubjectCard free={true} />
@@ -193,7 +193,7 @@ const Overview = () => {
             />
           </Box>
 
-          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
+          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
             <SubjectCard free={true} />
             <SubjectCard free={true} />
             <SubjectCard free={true} />
@@ -213,7 +213,7 @@ const Overview = () => {
         fullScreen
       >
         <Box className="px-4 sm:px-8 md:px-10">
-          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
             <Flex className="justify-end">
               <Link href='/'>
                 <Logo />

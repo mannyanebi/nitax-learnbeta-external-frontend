@@ -41,7 +41,7 @@ export default function QuizCard({
           value={answer}
           onChange={setAnswer}
           name="answer"
-          className="sm:grid sm:grid-cols-2 lg:grid-cols-3 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[70rem] mx-auto"
+          className="sm:grid sm:grid-cols-2 mt-10 space-y-5 sm:space-y-0 sm:gap-5 max-w-[70rem] mx-auto"
         >
           <OptionCard 
             answer={answer}

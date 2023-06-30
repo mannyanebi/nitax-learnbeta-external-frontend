@@ -107,7 +107,7 @@ export default function Quiz() {
       <ProfileNav />
 
       <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 hidden lg:block">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Box className='w-fit'>
             <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
               <Flex className="max-w-[97rem] mx-auto space-x-2">
@@ -129,7 +129,7 @@ export default function Quiz() {
 
       {/* Empty state start */}
       {/* <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
             <Center>
               <Box className="text-center">
@@ -171,7 +171,7 @@ export default function Quiz() {
       {/* Empty state end */}
 
       <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 mb-20">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto ">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto ">
           <Flex className="bg-[#FEEDD1] sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
             <Text className='font-semibold text-2xl truncate'>
               Assessment
@@ -182,7 +182,7 @@ export default function Quiz() {
             </Text>
           </Flex>
 
-          <Box className="mt-10 max-w-[60rem] mx-auto w-full">
+          <Box className="mt-10 max-w-[50rem] mx-auto w-full">
             <QuizCard
               answer={answer}
               setAnswer={setAnswer}
@@ -236,7 +236,7 @@ export default function Quiz() {
           <ProfileNav />
 
           <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
-            <Flex className="bg-[#FEEDD1] max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
+            <Flex className="bg-[#FEEDD1] max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
               <Text className='font-semibold text-2xl truncate'>
                 Assessment
               </Text>
@@ -246,7 +246,7 @@ export default function Quiz() {
               </Text>
             </Flex>
 
-            <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] rounded-xl mx-auto">
+            <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-[40rem] lg:max-w-[45rem] rounded-xl mx-auto">
               <Center>
                 <Box className="text-center">
                   <Text className="font-semibold text-xl">

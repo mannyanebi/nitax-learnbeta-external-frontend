@@ -17,7 +17,7 @@ export default function Subscriptions() {
 
   return (
     <Box className="px-4 sm:px-8 md:px-10">
-      <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto space-y-10 w-full">
+      <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto space-y-10 w-full">
         <Box>
           <Divider
             my="xs"
@@ -67,7 +67,7 @@ export default function Subscriptions() {
             label="Subscription Plans"
           />
 
-          <Box className="sm:grid lg:grid-cols-4 lg:gap-10 xl:grid-cols-5 sm:grid-cols-3 sm:gap-4 sm:space-y-0 mt-8 space-y-5 flex-col flex sm:flex-none items-center">
+          <Box className="sm:grid lg:grid-cols-4 lg:gap-10 sm:grid-cols-3 sm:gap-4 sm:space-y-0 mt-8 space-y-5 flex-col flex sm:flex-none items-center">
             <PlanCard 
               handleSubscribe={handleSubscribe} 
             />
