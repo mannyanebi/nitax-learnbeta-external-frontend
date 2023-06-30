@@ -14,32 +14,38 @@ export default function CourseAdCarousel() {
     {
       title: 'Mathematics',
       description: 'The study of numbers, shapes and their relationships',
-      img: math
+      img: math,
+      students: 50
     },
     {
       title: 'Social Studies',
       description: 'The study of society and it’s interactions',
-      img: health
+      img: health,
+      students: 150
     },
     {
       title: 'Health Science',
       description: 'The study of healthy living',
-      img: social
+      img: social,
+      students: 45
     },
     {
       title: 'Social Studies',
       description: 'The study of society and it’s interactions',
-      img: math
+      img: math,
+      students: 100,
     },
     {
       title: 'Computer Science',
       description: 'The study of computers and information technology',
-      img: health
+      img: health,
+      students: 53
     },
     {
       title: 'Agric Science',
       description: 'The study of crops and animals',
-      img: social
+      img: social,
+      students: 90
     },
   ]
   return (

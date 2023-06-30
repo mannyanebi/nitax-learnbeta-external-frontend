@@ -92,7 +92,7 @@ const UpdatePassword = () => {
       <ProfileNav />
 
       <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 hidden lg:block">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Box className='w-fit'>
             <Link href='/profile'>
               <Flex className="max-w-[87rem] mx-auto space-x-2">
@@ -112,7 +112,7 @@ const UpdatePassword = () => {
       </Box>
 
       <Box className="w-full px-4 sm:px-8 md:px-10 mt-14 lg:mt-24">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           {step === 'old_password' &&
             <OldPasswordForm 
               oldPasswordForm={oldPasswordForm}

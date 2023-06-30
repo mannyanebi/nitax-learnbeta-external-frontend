@@ -24,7 +24,7 @@ export default function Subject (){
       <ProfileNav />
 
       <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 hidden lg:block">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Box className='w-fit'>
             <Link href='/dashboard/subjects'>
               <Flex className="max-w-[97rem] mx-auto space-x-2">
@@ -45,7 +45,7 @@ export default function Subject (){
       </Box>
 
       {/* <Box className="w-full mx-auto mt-10 px-4 sm:px-8 md:px-10">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] rounded-2xl'>
             <Box>
               <Image
@@ -63,7 +63,7 @@ export default function Subject (){
       </Box> */}
 
       {/* <Box className="w-full px-4 sm:px-8 md:px-10 mt-4">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Skeleton className="rounded-xl h-40 w-full" />
           <Skeleton className="rounded-xl h-4 w-40 mt-8" />
 
@@ -82,7 +82,7 @@ export default function Subject (){
 
       <Box className="mb-20">
         <Box className="w-full px-4 sm:px-8 md:px-10 mt-4">
-          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
             <BackgroundImage
               src={subject_banner.src}
               className='h-40 w-full px-6 lg:px-10 lg:bg-right rounded-xl mt-4 text-white'

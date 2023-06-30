@@ -33,7 +33,7 @@ const Subjects = () => {
           </Text>
         </Box>
 
-        <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
+        <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
           <SubjectCard free={true} />
           <SubjectCard free={true} />
           <SubjectCard free={true} />
@@ -67,7 +67,7 @@ const Subjects = () => {
             Subjects in Paid Plan
           </Text>
 
-          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[60rem] 2xl:max-w-[67rem] sm:grid-cols-2 xl:grid-cols-3">
+          <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
             <SubjectCard free={false} />
             <SubjectCard free={false} />
             <SubjectCard free={false} />

@@ -64,10 +64,10 @@ const ProfileBanner = () => {
   return (
     <Box className="px-4 sm:px-8 md:px-8">
       <Box className="hidden lg:block">
-        <BackgroundImage className="rounded-xl px-16 h-32 xl:px-28 2xl:max-w-[75rem] max-w-[55rem] xl:max-w-[65rem] mx-auto" src={yellowBg.src}>
+        <BackgroundImage className="rounded-xl px-16 h-32 xl:px-28 max-w-[54.5rem] mx-auto" src={yellowBg.src}>
         </BackgroundImage>
 
-        <Box className="w-full 2xl:max-w-[65rem] xl:max-w-[55rem] max-w-[55rem] px-16 xl:px-0 mt-[-5.2rem] mx-auto">
+        <Box className="w-full max-w-[55rem] xl:max-w-[47.5rem] px-16 xl:px-0 mt-[-4.5rem] mx-auto">
           <Flex className="space-x-8">
             <Box>
               <Box className="relative w-fit">
@@ -76,7 +76,7 @@ const ProfileBanner = () => {
                   alt='profile icon'
                   width={160}
                   height={160}
-                  className="object-cover object-center w-[10rem] h-[10rem] shadow-md rounded-full mx-auto"
+                  className="object-cover object-center w-[8rem] h-[8rem] shadow-md rounded-full mx-auto"
                 />
 
                 {/* <UnstyledButton
@@ -123,7 +123,7 @@ const ProfileBanner = () => {
               </Form> */}
             </Box>
 
-            <Text className="font-bold text-white mt-4 text-4xl">
+            <Text className="font-bold text-white mt-4 text-3xl">
               Emeka Francis
             </Text>
           </Flex>
@@ -183,7 +183,7 @@ const ProfileBanner = () => {
         </Box>
       </Box>
 
-      <Box className="space-y-4 mx-auto max-w-sm mt-6">
+      <Box className="space-y-4 mx-auto max-w-[22rem] mt-6">
         <Box>
           <Text className="text-sm font-light truncate">Full Name</Text>
 
