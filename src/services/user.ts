@@ -23,8 +23,20 @@ const sendMessage = async (payload: any) => {
   return res.data;
 };
 
+const getUserProfile = async (token: any) => {
+  const getStudentProfileURL = `${HOST}/api/v1/student/profile`;
+  const config = {
+    headers: { Authorization: token }
+  }
+
+  const res = await axios.get(getStudentProfileURL, config);
+
+  return res.data;
+};
+
 export {
   verifyOldPassword,
   uploadAvatar,
-  sendMessage
+  sendMessage,
+  getUserProfile
 }

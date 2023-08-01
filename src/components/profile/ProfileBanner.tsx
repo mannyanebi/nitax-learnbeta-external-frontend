@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { BackgroundImage, Box, Flex, Text, UnstyledButton } from "@mantine/core";
 import yellowBg from '../../assets/svgs/hero_banner.svg'
 import Image from "next/image";
 import noProfile from '../../assets/imgs/no_profile.png'
 import editIcon from '../../assets/svgs/edit_icon.svg'
 import Link from "next/link";
+import { useQuery } from "react-query";
 import Form from "../custom/Form";
 import Input from "../custom/Input";
 import { useMutation } from "react-query";
 import { uploadAvatar } from "@/services/user";
+import { UserContext } from "@/contexts/UserContext";
+import { getUserProfile } from "@/services/user";
+import cookie from "cookiejs";
+import { useRouter } from "next/router";
+import { logoutUser } from "@/services/auth";
 
 const ProfileBanner = () => {
+  const { user, setUser } = useContext(UserContext)
+  const Router = useRouter();
+
+  const token = `bearer ${user?.data?.access_token}`
+
+  const userProfile = useQuery('userProfile', () => getUserProfile(token))
+
   const [avatar, setAvatar] = useState<any>(noProfile)
   const [fileInputState, setFileInputState] = useState('')
   const [selectedFile, setSelectedFile] = useState()
@@ -60,6 +73,16 @@ const ProfileBanner = () => {
       // update admin state with new profile img url
     },
   })
+
+  const mutation = useMutation(() => logoutUser(token))
+
+  const handleLogout = () => {
+    mutation.mutate()
+
+    cookie.remove('learnbeta_admin')
+    setUser(null)
+    Router.push('/auth/signin')
+  }
 
   return (
     <Box className="px-4 sm:px-8 md:px-8">
@@ -124,7 +147,13 @@ const ProfileBanner = () => {
             </Box>
 
             <Text className="font-bold text-white mt-4 text-3xl">
-              Emeka Francis
+              {userProfile.data &&
+                userProfile.data.data.name
+              }
+
+              {userProfile.isLoading &&
+                'Student'
+              }
             </Text>
           </Flex>
         </Box>
@@ -133,7 +162,17 @@ const ProfileBanner = () => {
       <Box className="lg:hidden">
         <BackgroundImage className="rounded-xl py-6 px-4 max-w-[40rem] lg:max-w-[62rem] xl:max-w-[75rem] 2xl:max-w-[85rem] mx-auto" src={yellowBg.src}>
           <Text className="font-bold text-white text-3xl">
-            Emeka Francis
+            {userProfile.data &&
+              userProfile.data.data.name
+            }
+
+            {userProfile.isLoading &&
+              'Student'
+            }
+
+            {userProfile.isError && 
+              userProfile.refetch()
+            }
           </Text>
         </BackgroundImage>
 
@@ -189,7 +228,13 @@ const ProfileBanner = () => {
 
           <Flex className="border-2 rounded-lg mt-2 p-4 border-[#E2E2E2] text-[#555555]">
             <Text>
-              Emeka Francis
+              {userProfile.data &&
+                userProfile.data.data.name
+              }
+
+              {userProfile.isLoading &&
+                'Loading...'
+              }
             </Text>
           </Flex>
         </Box>
@@ -199,7 +244,13 @@ const ProfileBanner = () => {
 
           <Flex className="border-2 rounded-lg mt-2 p-4 border-[#E2E2E2] text-[#555555]">
             <Text className="truncate">
-              emekafrancis@gmail.com
+              {userProfile.data &&
+                userProfile.data.data.email
+              }
+
+              {userProfile.isLoading &&
+                'Loading...'
+              }
             </Text>
           </Flex>
         </Box>
@@ -209,7 +260,13 @@ const ProfileBanner = () => {
 
           <Flex className="border-2 rounded-lg mt-2 p-4 border-[#E2E2E2] text-[#555555]">
             <Text className="truncate">
-              +2349046578375
+              {userProfile.data &&
+                userProfile.data.data.phone_number
+              }
+
+              {userProfile.isLoading &&
+                'Loading...'
+              }
             </Text>
           </Flex>
         </Box>
@@ -219,7 +276,13 @@ const ProfileBanner = () => {
 
           <Flex className="border-2 rounded-lg mt-2 p-4 border-[#E2E2E2] text-[#555555]">
             <Text className="truncate">
-              Lagos, Nigeria
+              {userProfile.data &&
+                userProfile.data.data.location
+              }
+
+              {userProfile.isLoading &&
+                'Loading...'
+              }
             </Text>
           </Flex>
         </Box>
@@ -241,7 +304,7 @@ const ProfileBanner = () => {
         </Box>
 
         <Box className="text-center !mt-10">
-          <UnstyledButton className="bg-[#FBDEE2] hover:bg-[#EA596E] text-[#EA596E] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition font-semibold duration-75 delay-[40ms] ease-linear">
+          <UnstyledButton onClick={handleLogout} type='button' className="bg-[#FBDEE2] hover:bg-[#EA596E] text-[#EA596E] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition font-semibold duration-75 delay-[40ms] ease-linear">
             Log out
           </UnstyledButton>
         </Box>

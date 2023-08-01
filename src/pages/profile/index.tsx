@@ -5,6 +5,7 @@ import PageLayout from "@/layouts/PageLayout";
 import ProfileNav from "@/components/nav/ProfileNav";
 import ProfileBanner from "@/components/profile/ProfileBanner";
 import Subscriptions from "@/components/subscription/Subscriptions";
+import AppLayout from "@/layouts/AppLayout";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<string | null>('profile');
@@ -21,79 +22,81 @@ const Profile = () => {
 
   return (
     <PageLayout>
-      <Head>
-        <title>Profile</title>
-      </Head>
+      <AppLayout>
+        <Head>
+          <title>Profile</title>
+        </Head>
 
-      <ProfileNav />
+        <ProfileNav />
 
-      <Box className='mt-5 lg:mt-8 mb-20'>
-        <Tabs
-          unstyled
-          value={activeTab} 
-          onTabChange={setActiveTab}
-          styles={(theme) => ({
-            tab: {
-              ...theme.fn.focusStyles(),
-              color: '#777777',
-              cursor: 'pointer',
-              paddingLeft: '20px',
-              paddingRight: '20px',
-              justifyContent: 'center',
-              fontFamily: "Montserrat Variable, sans-serif",
-              fontSize: theme.fontSizes.sm,
-              display: 'flex',
-              alignItems: 'center',
-              width: '170px',
+        <Box className='mt-5 lg:mt-8 mb-20'>
+          <Tabs
+            unstyled
+            value={activeTab}
+            onTabChange={setActiveTab}
+            styles={(theme) => ({
+              tab: {
+                ...theme.fn.focusStyles(),
+                color: '#777777',
+                cursor: 'pointer',
+                paddingLeft: '20px',
+                paddingRight: '20px',
+                justifyContent: 'center',
+                fontFamily: "Montserrat Variable, sans-serif",
+                fontSize: theme.fontSizes.sm,
+                display: 'flex',
+                alignItems: 'center',
+                width: '170px',
 
-              '&[data-active]': {
-                backgroundColor: 'white',
-                borderColor: 'white',
-                fontWeight: 600,
-                color: '#FAA61A',
+                '&[data-active]': {
+                  backgroundColor: 'white',
+                  borderColor: 'white',
+                  fontWeight: 600,
+                  color: '#FAA61A',
+                  borderRadius: '9999px',
+                  boxShadow: '0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                }
+              },
+
+              tabsList: {
+                display: 'flex',
+                backgroundColor: '#F4F4F4',
                 borderRadius: '9999px',
-                boxShadow: '0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-              }
-            },
-
-            tabsList: {
-              display: 'flex',
-              backgroundColor: '#F4F4F4',
-              borderRadius: '9999px',
-              padding: '5px',
-              height: '50px',
-            },
-          })}
-        >
-          <Box className="p-1 w-fit mx-auto">
-            <Tabs.List>
-              <Tabs.Tab value="profile">
-                Profile
-              </Tabs.Tab>
-
-              <Tabs.Tab value="subscriptions">
-                Subscriptions
-              </Tabs.Tab>
-            </Tabs.List>
-          </Box>
-
-          <Tabs.Panel 
-            className="mt-5" 
-            value="profile" 
-            pt="xs"
+                padding: '5px',
+                height: '50px',
+              },
+            })}
           >
-            <ProfileBanner />
-          </Tabs.Panel>
+            <Box className="p-1 w-fit mx-auto">
+              <Tabs.List>
+                <Tabs.Tab value="profile">
+                  Profile
+                </Tabs.Tab>
 
-          <Tabs.Panel 
-            className="mt-5" 
-            value="subscriptions" 
-            pt="xs"
-          >
-            <Subscriptions />
-          </Tabs.Panel>
-        </Tabs>
-      </Box>
+                <Tabs.Tab value="subscriptions">
+                  Subscriptions
+                </Tabs.Tab>
+              </Tabs.List>
+            </Box>
+
+            <Tabs.Panel
+              className="mt-5"
+              value="profile"
+              pt="xs"
+            >
+              <ProfileBanner />
+            </Tabs.Panel>
+
+            <Tabs.Panel
+              className="mt-5"
+              value="subscriptions"
+              pt="xs"
+            >
+              <Subscriptions />
+            </Tabs.Panel>
+          </Tabs>
+        </Box>
+      </AppLayout>
     </PageLayout>
   )
 }

@@ -12,6 +12,7 @@ import NewPasswordForm from "@/components/forms/NewPasswordForm";
 import { verifyOldPassword } from "@/services/user";
 import { useForm } from '@mantine/form';
 import { updatePassword } from "@/services/auth";
+import AppLayout from "@/layouts/AppLayout";
 
 export type OldPasswordData = { old_password: string }
 export type NewPasswordData = { new_password: string }
@@ -85,52 +86,53 @@ const UpdatePassword = () => {
 
   return (
     <PageLayout>
-      <Head>
-        <title>Profile | Update Password</title>
-      </Head>
+      <AppLayout>
+        <Head>
+          <title>Profile | Update Password</title>
+        </Head>
 
-      <ProfileNav />
+        <ProfileNav />
 
-      <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 hidden lg:block">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
-          <Box className='w-fit'>
-            <Link href='/profile'>
-              <Flex className="max-w-[87rem] mx-auto space-x-2">
-                <Center className="bg-[#FEEDD1] rounded-full p-2">
-                  <Image
-                    src={backArrow}
-                    alt='back icon'
-                    className="w-2 h-2"
-                  />
-                </Center>
+        <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 hidden lg:block">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
+            <Box className='w-fit'>
+              <Link href='/profile'>
+                <Flex className="max-w-[87rem] mx-auto space-x-2">
+                  <Center className="bg-[#FEEDD1] rounded-full p-2">
+                    <Image
+                      src={backArrow}
+                      alt='back icon'
+                      className="w-2 h-2"
+                    />
+                  </Center>
 
-                <Text className="font-bold">Account</Text>
-              </Flex>
-            </Link>
+                  <Text className="font-bold">Account</Text>
+                </Flex>
+              </Link>
+            </Box>
           </Box>
         </Box>
-      </Box>
 
-      <Box className="w-full px-4 sm:px-8 md:px-10 mt-14 lg:mt-24">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
-          {step === 'old_password' &&
-            <OldPasswordForm 
-              oldPasswordForm={oldPasswordForm}
-              oldPasswordMutation={oldPasswordMutation}
-              handleOldPassword={handleOldPassword}
-            />
-          }
+        <Box className="w-full px-4 sm:px-8 md:px-10 mt-14 lg:mt-24">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
+            {step === 'old_password' &&
+              <OldPasswordForm
+                oldPasswordForm={oldPasswordForm}
+                oldPasswordMutation={oldPasswordMutation}
+                handleOldPassword={handleOldPassword}
+              />
+            }
 
-          {step === 'new_password' &&
-            <NewPasswordForm
-              newPasswordForm={newPasswordForm}
-              newPasswordMutation={newPasswordMutation}
-              handleNewPassword={handleNewPassword}
-            />
-          }
+            {step === 'new_password' &&
+              <NewPasswordForm
+                newPasswordForm={newPasswordForm}
+                newPasswordMutation={newPasswordMutation}
+                handleNewPassword={handleNewPassword}
+              />
+            }
+          </Box>
         </Box>
-      </Box>
-
+      </AppLayout>
     </PageLayout>
   )
 }

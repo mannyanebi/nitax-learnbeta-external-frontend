@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useQuery } from "react-query";
 import { BackgroundImage, Box, Center, Flex, Text } from "@mantine/core";
 import Logo from "../brand/Logo";
 import noProfile from '../../assets/imgs/no_profile.png'
@@ -6,6 +7,8 @@ import Link from 'next/link'
 import NavLink from "./NavLink";
 import Image from 'next/image'
 import upgrade_banner from '../../assets/svgs/upgrade_banner.svg'
+import { UserContext } from "@/contexts/UserContext";
+import { getUserProfile } from "@/services/user";
 
 const PremiumBanner = () => {
   return (
@@ -29,6 +32,11 @@ const PremiumBanner = () => {
 type Props = { mobile?: boolean }
 
 const SideNav: React.FC<Props> = ({ mobile }) => {
+  const { user } = useContext(UserContext)
+  const token = `bearer ${user?.data?.access_token}`
+
+  const userProfile = useQuery('userProfile', () => getUserProfile(token))
+
   mobile = mobile ? mobile : false
 
   const [activePage, setActivePage] = useState({
@@ -105,7 +113,17 @@ const SideNav: React.FC<Props> = ({ mobile }) => {
                   />
 
                   <Text className="truncate font-bold text-white">
-                    Emeka Felix Uzodinma
+                    {userProfile.data &&
+                      userProfile.data.data.name
+                    }
+
+                    {userProfile.isLoading &&
+                      'Student'
+                    }
+
+                    {userProfile.isError && 
+                      userProfile.refetch()
+                    }
                   </Text>
                 </Flex>
               </Link>
