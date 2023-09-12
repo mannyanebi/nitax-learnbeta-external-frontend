@@ -15,6 +15,8 @@ export default function Subject (){
   const router = useRouter();
   const [selected, setSelected] = useState('') 
 
+  console.log(router.query.subjectId)
+
   return (
     <PageLayout>
       <Head>

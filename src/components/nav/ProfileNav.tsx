@@ -14,7 +14,7 @@ import { getUserProfile } from "@/services/user";
 
 const ProfileNav = () => {
   const { user } = useContext(UserContext)
-  const token = `bearer ${user?.data?.access_token}`
+  const token = `Bearer ${user?.data?.access_token}`
 
   const userProfile = useQuery('userProfile', () => getUserProfile(token))
 

@@ -18,12 +18,12 @@ export const SubjectCardSkeleton = () => {
   );
 }
 
-interface Props { free: boolean }
+interface Props { subject: any }
 
-const SubjectCard: React.FC<Props> = ({ free }) => {
+const SubjectCard: React.FC<Props> = ({ subject }) => {
   return (
     <React.Fragment>
-      {free ?
+      {subject.has_access ?
         <Box className="border-2 rounded-xl border-[#E2E2E2] p-5 h-[18.5rem] flex flex-col">
           <Box className="w-full h-[127px] rounded-xl overflow-hidden">
             <Image

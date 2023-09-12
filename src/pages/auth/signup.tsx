@@ -1,33 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@mantine/core";
 import toast, { Toaster } from 'react-hot-toast';
 import AuthLayout from "@/layouts/AuthLayout";
 import SignupForm from "@/components/forms/SignupForm";
 import { useForm } from '@mantine/form';
 import { useMutation } from "react-query";
-import { signin } from "@/services/auth";
+import { signup } from "@/services/auth";
 import Head from "next/head";
 import Router from "next/router";
 
 export interface SignupData {
-  fullName: string;
+  name: string;
   email: string;
   phoneNumber: string;
-  location: string;
+  location: string | null;
   password: string;
 }
 
+export interface FormValuesType {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  location: string | null;
+  password: string,
+  checked: boolean
+}
+
 const Signup = () => {
-  const [checked, setChecked] = useState(false);
+  const formValues: FormValuesType = {
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+    location: '',
+    password: '',
+    checked: false
+  }
 
   const form = useForm({
-    initialValues: {
-      fullName: '',
-      email: '',
-      phoneNumber: '',
-      location: '',
-      password: ''
-    },
+    initialValues: formValues,
 
     validate: {
       fullName: (value) => (
@@ -53,10 +63,13 @@ const Signup = () => {
         !/[A-Z]/.test(value) ?
         'Password must contain at least one uppercase letter' : null
       ),
+      checked: (value) => (
+        !value ? 'You need to agree to the terms' : null
+      ),
     },
   });
 
-  const mutation = useMutation((data: any) => signin(data), {
+  const mutation = useMutation((data: any) => signup(data), {
     onError: (error: any) => {
       form.setErrors({
         email: error.response.data.message
@@ -64,12 +77,25 @@ const Signup = () => {
     },
 
     onSuccess: (data) => {
-      
+      form.reset()
+      toast.success(data.message)
+
+      setTimeout(() => {
+        Router.push('/auth/signin')
+      }, 2000)      
     }
   })
 
-  const handleSignup = async (values: SignupData) => {
-    mutation.mutate(values)
+  const handleSignup = async () => {
+    let data: SignupData = {
+      name: form.values.fullName,
+      email: form.values.email,
+      phoneNumber: form.values.phoneNumber,
+      location: form.values.location,
+      password: form.values.password
+    }
+
+    mutation.mutate(data)
   }
 
   return (
@@ -87,8 +113,6 @@ const Signup = () => {
         <SignupForm
           form={form}
           mutation={mutation}
-          checked={checked}
-          setChecked={setChecked}
           handleSignup={handleSignup}
         />
       </Box>

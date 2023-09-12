@@ -2,7 +2,9 @@ import { NextResponse, NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   let isLoggedIn = false
+
   const authPages = ['/auth/signin', '/auth/signup', '/auth/forgot_password']
+
   const user = request.cookies.get('learnbeta_user')
 
   if (user) {

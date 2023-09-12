@@ -3,7 +3,14 @@ import axios from "axios";
 const HOST = process.env.HOST;
 
 const signin = async (payload: any) => {
-  const signinURL = `${HOST}/`;
+  const signinURL = `${HOST}/api/v1/auth/login`;
+  const res = await axios.post(signinURL, payload);
+
+  return res.data;
+};
+
+const signup = async (payload: any) => {
+  const signinURL = `${HOST}/api/v1/auth/register`;
   const res = await axios.post(signinURL, payload);
 
   return res.data;
@@ -61,6 +68,7 @@ const logoutUser = async (token: any) => {
 
 export { 
   signin, 
+  signup,
   forgotPassword, 
   verifyOTP, 
   resetPassword,

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useQuery } from "react-query";
 import { BackgroundImage, Box, Center, Flex, Text } from "@mantine/core";
 import Logo from "../brand/Logo";
 import noProfile from '../../assets/imgs/no_profile.png'
@@ -8,7 +7,6 @@ import NavLink from "./NavLink";
 import Image from 'next/image'
 import upgrade_banner from '../../assets/svgs/upgrade_banner.svg'
 import { UserContext } from "@/contexts/UserContext";
-import { getUserProfile } from "@/services/user";
 
 const PremiumBanner = () => {
   return (
@@ -33,9 +31,8 @@ type Props = { mobile?: boolean }
 
 const SideNav: React.FC<Props> = ({ mobile }) => {
   const { user } = useContext(UserContext)
-  const token = `bearer ${user?.data?.access_token}`
 
-  const userProfile = useQuery('userProfile', () => getUserProfile(token))
+  console.log(user)
 
   mobile = mobile ? mobile : false
 
@@ -113,26 +110,18 @@ const SideNav: React.FC<Props> = ({ mobile }) => {
                   />
 
                   <Text className="truncate font-bold text-white">
-                    {userProfile.data &&
-                      userProfile.data.data.name
-                    }
-
-                    {userProfile.isLoading &&
-                      'Student'
-                    }
-
-                    {userProfile.isError && 
-                      userProfile.refetch()
-                    }
+                    {user.data.student.name}
                   </Text>
                 </Flex>
               </Link>
             </Box>
           }
 
-          <Box className="px-6 absolute bottom-[15%]">
-            <PremiumBanner />
-          </Box>
+          {!user.data.student.subscription?.is_expired &&
+            <Box className="px-6 absolute bottom-[15%]">
+              <PremiumBanner />
+            </Box>
+          }
         </Box>
       </Box>
     </Box>

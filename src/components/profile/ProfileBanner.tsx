@@ -20,7 +20,7 @@ const ProfileBanner = () => {
   const { user, setUser } = useContext(UserContext)
   const Router = useRouter();
 
-  const token = `bearer ${user?.data?.access_token}`
+  const token = `Bearer ${user?.data?.access_token}`
 
   const userProfile = useQuery('userProfile', () => getUserProfile(token))
 

@@ -13,7 +13,7 @@ import { getUserProfile } from "@/services/user";
 
 const TopNav = () => {
   const { user } = useContext(UserContext)
-  const token = `bearer ${user?.data?.access_token}`
+  const token = `Bearer ${user?.data?.access_token}`
 
   const userProfile = useQuery('userProfile', () => getUserProfile(token))
 
@@ -29,12 +29,12 @@ const TopNav = () => {
             </Link>
           </Box>
 
-          <Burger 
-            className="md:hidden" 
-            size='md' 
-            color="#FAA61A" 
-            opened={opened} 
-            onClick={toggle} 
+          <Burger
+            className="md:hidden"
+            size='md'
+            color="#FAA61A"
+            opened={opened}
+            onClick={toggle}
           />
 
           <Box className="hidden md:block">
@@ -58,7 +58,7 @@ const TopNav = () => {
                   'Student'
                 }
 
-                {userProfile.isError && 
+                {userProfile.isError &&
                   userProfile.refetch()
                 }
               </Text>
