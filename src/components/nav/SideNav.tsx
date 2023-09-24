@@ -32,8 +32,6 @@ type Props = { mobile?: boolean }
 const SideNav: React.FC<Props> = ({ mobile }) => {
   const { user } = useContext(UserContext)
 
-  console.log(user)
-
   mobile = mobile ? mobile : false
 
   const [activePage, setActivePage] = useState({
@@ -117,11 +115,11 @@ const SideNav: React.FC<Props> = ({ mobile }) => {
             </Box>
           }
 
-          {!user.data.student.subscription?.is_expired &&
+          {(!user.data?.student?.subscription || user.data.student.subscription.is_expired) && (
             <Box className="px-6 absolute bottom-[15%]">
               <PremiumBanner />
             </Box>
-          }
+          )}
         </Box>
       </Box>
     </Box>

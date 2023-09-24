@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { Box, Text, UnstyledButton, Skeleton, List, Modal } from "@mantine/core";
+import React, { useContext, useState } from "react";
+import { Box, Text, UnstyledButton, Skeleton, Modal } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
+import { UserContext } from "@/contexts/UserContext";
 
 export const PlanCardSkeleton = () => {
   return (
@@ -18,7 +19,8 @@ export const PlanCardSkeleton = () => {
   )
 }
 
-const PlanCard = ({ handleSubscribe }: any) => {
+const PlanCard = ({ handleSubscribe, sub }: any) => {
+  const { user } = useContext(UserContext)
   const [opened, { open, close }] = useDisclosure(false);
 
   const colors = [
@@ -35,20 +37,15 @@ const PlanCard = ({ handleSubscribe }: any) => {
 
   const [color] = useState(getRandomColor())
 
-  const planObject = {
-    id: 1,
-    name: 'Handy'
-  }
-
   return (
     <React.Fragment>
       <Box className='w-full border-2 max-w-[14rem] sm:max-w-none bg-white rounded-3xl border-[#E2E2E2] p-6 text-center space-y-5'>
         <Text className={`text-${color}-500 font-semibold text-lg`}>
-          Premium Plan
+          {sub.name}
         </Text>
 
         <Text className="font-bold text-[#666666] text-2xl">
-          &#x20A6;5,000
+          &#x20A6;{sub.price}
         </Text>
 
         <Box className={`h-3 w-3 bg-${color}-500 rounded-full mx-auto`} />
@@ -63,7 +60,7 @@ const PlanCard = ({ handleSubscribe }: any) => {
             textOverflow: 'ellipsis',
           }}
         >
-          Access to all subjects and their lessons
+          {sub.description}
         </Text>
 
         <Box className="hidden">
@@ -92,49 +89,25 @@ const PlanCard = ({ handleSubscribe }: any) => {
       >
         <Box className='px-4 pb-14 sm:px-8 md:px-10'>
           <Text className='font-semibold text-center text-lg'>
-            Premium Plan
+            {sub.name}
           </Text>
 
           <Text className='font-semibold mt-10'>
-            Items contained in plan
+            Plan package
           </Text>
 
-          <List 
-            className="mt-6 list-disc space-y-5" 
-            withPadding
-          >
-            <List.Item>
-              <Text>
-                This is item one listed for the user to see
-              </Text>
-            </List.Item>
-
-            <List.Item>
-              <Text>
-                This is item one listed for the user to see
-              </Text>
-            </List.Item>
-
-            <List.Item>
-              <Text>
-                This is item one listed for the user to see
-              </Text>
-            </List.Item>
-
-            <List.Item>
-              <Text>
-                This is item one listed for the user to see
-              </Text>
-            </List.Item>
-          </List>
+          <Box className="mt-6">
+            {sub.description}
+          </Box>
 
           <Box className="text-center mt-14">
             <UnstyledButton
+              disabled={user?.data?.student?.subscription ? !user?.data?.student?.subscription?.is_expired : false}
               onClick={() => {
                 close()
-                handleSubscribe(planObject)
+                handleSubscribe(sub)
               }}
-              className="px-8 w-72 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+              className="px-8 w-72 h-14 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
             >
               Subscribe to Plan
             </UnstyledButton>

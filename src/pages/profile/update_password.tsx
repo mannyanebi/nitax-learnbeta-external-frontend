@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useMutation } from "react-query";
 import OldPasswordForm from "@/components/forms/OldPasswordForm";
 import NewPasswordForm from "@/components/forms/NewPasswordForm";
-import { verifyOldPassword } from "@/services/user";
 import { useForm } from '@mantine/form';
 import { updatePassword } from "@/services/auth";
 import AppLayout from "@/layouts/AppLayout";
@@ -51,7 +50,7 @@ const UpdatePassword = () => {
     },
   });
 
-  const oldPasswordMutation = useMutation((data: any) => verifyOldPassword(data), {
+  const oldPasswordMutation = useMutation((data: any) => updatePassword(data), {
     onError: (error: any) => {
       oldPasswordForm.setErrors({
         old_password: error.response.data.message

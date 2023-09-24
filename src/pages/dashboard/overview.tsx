@@ -1,15 +1,21 @@
 import React, { useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import Head from "next/head";
-import { BackgroundImage, Box, Center, Flex, Text } from "@mantine/core";
+import { BackgroundImage, Box, Center, Divider, Flex, Text } from "@mantine/core";
 import hero_banner from '../../assets/svgs/hero_banner.svg'
 import DashboardLayout from "@/layouts/DashboardLayout";
 import preview_subject from '../../assets/svgs/empty_state.svg'
 import Image from "next/image";
+import { useQuery } from "react-query";
+import { getGradeLevelSubjects } from "@/services/subjects";
+import SubjectCard, { SubjectCardSkeleton } from "@/components/subjects/SubjectCard";
+import RefetchButton from "@/components/onboarding/RefetchButton";
 
 const Overview = () => {
   const { user, setUser } = useContext(UserContext)
   const token = `Bearer ${user?.data?.access_token}`
+
+  const gradeLevelSubjects = useQuery('gradeLevelSubjects', () => getGradeLevelSubjects(token))
 
   return (
     <DashboardLayout>
@@ -24,7 +30,7 @@ const Overview = () => {
         <Flex className="h-full items-center">
           <Box>
             <Text className="text-3xl">
-              Hi, {user.data.student.name}!
+              Hi, {user?.data?.student?.name}!
             </Text>
 
             <Text className="mt-2">
@@ -42,7 +48,7 @@ const Overview = () => {
           <Flex className="h-full items-center">
             <Box>
               <Text className="text-3xl">
-                Hi, {user.data.student.name}!
+                Hi, {user?.data?.student?.name}!
               </Text>
 
               <Text className="mt-2">
@@ -52,23 +58,7 @@ const Overview = () => {
           </Flex>
         </BackgroundImage>
 
-        <Box className="w-full mx-auto mt-10">
-          <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl'>
-            <Box>
-              <Image
-                alt='icon'
-                priority
-                src={preview_subject}
-                className='w-[20rem] mx-auto'
-              />
-              <Text className='text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center'>
-                Select a subject to start with on the Subjects tab
-              </Text>
-            </Box>
-          </Center>
-        </Box>
-
-        {/* <Box>
+        <Box>
           <Box>
             <Divider
               className="mt-5 lg:mt-8"
@@ -85,14 +75,45 @@ const Overview = () => {
           </Box>
 
           <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
-            <SubjectCard free={true} />
-            <SubjectCard free={true} />
-            <SubjectCard free={true} />
+            {gradeLevelSubjects.data && gradeLevelSubjects.data.data.length > 0 &&
+              gradeLevelSubjects.data.data
+                .filter((subject: any) => subject.has_access === true && subject.progress > 0)
+                .map((subject: any) => (
+                  <SubjectCard key={subject.id} subject={subject} />
+                ))
+            }
 
-            <SubjectCardSkeleton />
-            <SubjectCardSkeleton />
-            <SubjectCardSkeleton />
+            {gradeLevelSubjects.isLoading &&
+              [1, 2, 3].map((num: number) => (
+                <SubjectCardSkeleton key={num} />
+              ))
+            }
           </Box>
+
+          {gradeLevelSubjects.data && gradeLevelSubjects.data.data.length < 1 &&
+            <Box className="w-full mx-auto">
+              <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl'>
+                <Box>
+                  <Image
+                    alt='icon'
+                    priority
+                    src={preview_subject}
+                    className='w-[20rem] mx-auto'
+                  />
+                  <Text className='text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center'>
+                    There are no subjects in your grade yet
+                  </Text>
+                </Box>
+              </Center>
+            </Box>
+          }
+
+          {gradeLevelSubjects.isError &&
+            <RefetchButton
+              message="Failed to fetch subjects in your grade"
+              retry={() => gradeLevelSubjects.refetch()}
+            />
+          }
 
           <Box>
             <Divider
@@ -110,15 +131,28 @@ const Overview = () => {
           </Box>
 
           <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
-            <SubjectCard free={true} />
-            <SubjectCard free={true} />
-            <SubjectCard free={true} />
+            {gradeLevelSubjects.data && gradeLevelSubjects.data.data.length > 0 &&
+              gradeLevelSubjects.data.data
+                .filter((subject: any) => subject.has_access === true && subject.progress === 0)
+                .map((subject: any) => (
+                  <SubjectCard key={subject.id} subject={subject} />
+                ))
+            }
 
-            <SubjectCardSkeleton />
-            <SubjectCardSkeleton />
-            <SubjectCardSkeleton />
+            {gradeLevelSubjects.isLoading &&
+              [1, 2, 3].map((num: number) => (
+                <SubjectCardSkeleton key={num} />
+              ))
+            }
           </Box>
-        </Box> */}
+
+          {gradeLevelSubjects.isError &&
+            <RefetchButton
+              message="Failed to fetch subjects in your grade"
+              retry={() => gradeLevelSubjects.refetch()}
+            />
+          }
+        </Box>
       </Box>
     </DashboardLayout>
   )

@@ -48,8 +48,6 @@ const Signin = () => {
       const now = new Date()
       let user = data
 
-      console.log(data)
-
       if (checked) {
         user.expiry = now.getTime() + 86400000 // 1 day
       } else {

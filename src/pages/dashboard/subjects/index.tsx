@@ -14,9 +14,8 @@ import premium_icon from '../../../assets/svgs/premium.svg'
 const Subjects = () => {
   const { user } = useContext(UserContext)
   const token = `Bearer ${user?.data?.access_token}`
-
   const gradeLevelSubjects = useQuery('gradeLevelSubjects', () => getGradeLevelSubjects(token))
-
+  
   return (
     <DashboardLayout>
       <Head>

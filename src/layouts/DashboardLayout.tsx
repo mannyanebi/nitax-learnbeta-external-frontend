@@ -13,9 +13,7 @@ type Props = { children: React.ReactNode }
 
 const DashboardLayout: React.FC<Props> = ({ children }) => {
   const { user, setUser } = useContext(UserContext)
-
   const userEnrolled = user?.data?.student?.grade_level_name
-
   const [opened, { open, close }] = useDisclosure(false);
 
   useEffect(() => {

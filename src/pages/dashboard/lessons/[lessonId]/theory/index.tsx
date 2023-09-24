@@ -1,45 +1,82 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Head from "next/head";
 import ProfileNav from "@/components/nav/ProfileNav";
 import PageLayout from "@/layouts/PageLayout";
 import Image from "next/image";
 import Link from "next/link";
 import backArrow from '../../../../../assets/svgs/backarrow_icon.svg'
+import { UserContext } from "@/contexts/UserContext"
 import preview_subject from '../../../../../assets/svgs/empty_state.svg'
 import { useRouter } from 'next/router';
-import { Box, Center, Flex, UnstyledButton, Text } from "@mantine/core";
+import { Box, Center, Flex, UnstyledButton, Text, Skeleton } from "@mantine/core";
 import TheoryCard from "@/components/assessments/TheoryCard";
+import { useMutation, useQuery } from "react-query";
+import { getTheoryAssessments, submitTheoryResponse } from "@/services/assessments";
+import toast, { Toaster } from "react-hot-toast";
+import { Icon } from "@iconify/react";
+import RefetchButton from "@/components/onboarding/RefetchButton";
 
 export default function Theory (){
   const router = useRouter();
+  const { user } = useContext(UserContext)
+  const token = `Bearer ${user?.data?.access_token}`
+  const lessonId = router.query.lessonId ? (router.query.lessonId as string) : '';
+  const [questions, setQuestions] = useState<any>({})
+  const theoryAssessments = useQuery(['theoryAssessments', Number(lessonId)], () => getTheoryAssessments(token, lessonId), {
+    enabled: false, // Disable automatic fetching
+  })
   const [answer, setAnswer] = useState<any>('')
   const [showAnswer, setShowAnswer] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  const question = [
-    {
-      id: 1,
-      question: 'What is the history of mathematics according to Joe Biden?',
-      answer: 'The history of mathematics deals with the origin of discoveries in mathematics and the mathematical methods and notation of the past. Before the modern age and the worldwide spread of knowledge, written examples of new mathematical developments have come to light only in a few locales.'
-    },
-    {
-      id: 2,
-      question: "What is humanity's purpose on earth",
-      answer: "To understand. In everything we move through each experience we encounter to become who we are meant to be. Love is the great conduit of what makes us aware of how we fit into who we choose to vibrate with. Not all vibrations work though, and that is the lesson."
-    },
-    {
-      id: 3,
-      question: 'List the continents in the world and 3 countries in each',
-      answer: 'Asia has the second-highest number of countries of any continent, but exactly how many that is can be tricky to determine. The United Nations recognizes 49 countries in Asia, which is the most widely accepted number.'
-    }
-  ]
-
   const [answeredResponses, setAnsweredResponses] = useState<any>([])
-  const currentQuestion = question[currentQuestionIndex];
-  const questionAnswered = answeredResponses.some((answer: any) => answer.questionId === currentQuestion.id)
+  const currentQuestion = questions.data?.[currentQuestionIndex];
+  const questionAnswered = answeredResponses.some((answer: any) => answer.assessment_id === currentQuestion.id)
+
+  useEffect(() => {
+    if (lessonId) {
+      theoryAssessments.refetch();
+    }
+  }, [lessonId]);
+
+  useEffect(() => {
+    if (theoryAssessments.isSuccess) {
+      setQuestions(theoryAssessments.data)
+    }
+  }, [theoryAssessments.isSuccess, theoryAssessments.data])
+
+  useEffect(() => {
+    const answeredQuestion = answeredResponses.find(
+      (answer: any) => answer.assessment_id === currentQuestion.id
+    );
+
+    if (answeredQuestion) {
+      setAnswer(answeredQuestion.response);
+    } else {
+      setAnswer('');
+    }
+  }, [currentQuestionIndex]);
+
+  const submitResponsesMutation = useMutation((data: any) => submitTheoryResponse(token, data), {
+    onError: (error: any) => {
+      handleNext()
+      toast.error(error.response.data.errors);
+    },
+
+    onSuccess: (data: any) => {
+      let answerObj: any = {
+        assessment_id: currentQuestion.id,
+        response: data.data.response
+      }
+
+      answeredResponses.push(answerObj);
+      setAnsweredResponses([...answeredResponses]);
+
+      toast.success('Submitted');
+    }
+  })
 
   const handleNext = () => {
-    if (currentQuestionIndex < question.length - 1) {
+    if (currentQuestionIndex < questions.data.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setAnswer('');
       setShowAnswer(false)
@@ -55,30 +92,13 @@ export default function Theory (){
 
   const handleSubmit = () => {
     let answerObj: any = {
-      questionId: currentQuestion.id,
-      studentAnswer: answer
+      lesson_id: Number(lessonId),
+      assessment_id: currentQuestion.id,
+      response: answer
     }
-    // submit answerObj
-    // apend response.correctAnswer to answerObj
-    // like this: answerObj.correctAnswer = response.correctAnswer
-    // push answerObj to answeredResponses
 
-    answerObj.correctAnswer = `For question ${currentQuestion.id}, the answer is A`
-    answeredResponses.push(answerObj);
-    setAnsweredResponses([...answeredResponses]);
+    submitResponsesMutation.mutate(answerObj)
   }
-
-  useEffect(() => {
-    const answeredQuestion = answeredResponses.find(
-      (answer: any) => answer.questionId === currentQuestion.id
-    );
-
-    if (answeredQuestion) {
-      setAnswer(answeredQuestion.studentAnswer);
-    } else {
-      setAnswer('');
-    }
-  }, [currentQuestionIndex]);
 
   return (
     <PageLayout>
@@ -109,113 +129,188 @@ export default function Theory (){
         </Box>
       </Box>
 
-      {/* Empty state start */}
-      {/* <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto ">
-          <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
-            <Center>
-              <Box className="text-center">
-                <Box>
-                  <Image
-                    alt='icon'
-                    priority
-                    src={preview_subject}
-                    className='w-[20rem] mx-auto'
-                  />
-                </Box>
+      {theoryAssessments.isLoading &&
+        <Box className="w-full px-4 sm:px-8 md:px-10 mt-10">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto ">
+            <Skeleton className="h-14 rounded-xl" />
 
-                <Text className="font-semibold text-xl mt-8">
-                  This lesson has no Theory
-                </Text>
+            <Skeleton className="h-6 mt-10 w-14 mx-auto rounded-xl" />
 
-                <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
-                  <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                    <UnstyledButton
-                      className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                    >
-                      Return to lessons
-                    </UnstyledButton>
-                  </Link>
-                </Flex>
-              </Box>
-            </Center>
+            <Box className="max-w-[50rem] mx-auto">
+              <Skeleton className="h-[20rem] mt-10" />
+
+              <Flex className="justify-end">
+                <Skeleton className="h-12 rounded-full mt-10 w-40" />
+              </Flex>
+            </Box>
           </Box>
         </Box>
-      </Box>   */}
-      {/* Empty state end */}
+      }
 
-      <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 mb-20">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
-          <Flex className="bg-[#FEEDD1] sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
-            <Text className='font-semibold text-2xl truncate'>
-              Assessment
-            </Text>
-
-            <Text className='font-semibold text-[#FAA61A] text-lg truncate'>
-              Introduction to Mathematics
-            </Text>
-          </Flex>
-
-          <Box className="mt-10 max-w-[50rem] mx-auto w-full">
-            <TheoryCard
-              answer={answer}
-              setAnswer={setAnswer}
-              question={currentQuestion}
-              questions={question}
-              setShowAnswer={setShowAnswer}
-              showAnswer={showAnswer}
-              questionAnswered={questionAnswered}
-              currentQuestionIndex={currentQuestionIndex}
-            />
-
-            <Flex className="sm:space-x-3 mt-10 flex-col space-y-3 sm:flex-row sm:space-y-0 sm:justify-end items-end w-full">
-              {currentQuestionIndex > 0 && (
-                <UnstyledButton
-                  type="button"
-                  onClick={handlePrevious}
-                  className="px-10 h-12 text-center w-60 font-bold text-[#777777] transition duration-75 delay-75 ease-linear hover:bg-[#FAA61A] rounded-full py-2 hover:text-white"
-                >
-                  Previous Question
-                </UnstyledButton>
-              )}
-
-              <Flex className="space-x-3">
-                {questionAnswered ? (
+      {theoryAssessments.isError &&
+        <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
+            <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
+              <Center>
+                <Box className="text-center">
                   <Box>
-                    {currentQuestionIndex === question.length - 1 ?
-                      <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                        <UnstyledButton
-                          type="button"
-                          className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
-                        >
-                          Back to lessons
-                        </UnstyledButton>
-                      </Link> :
-
-                      <UnstyledButton
-                        type="button"
-                        onClick={handleNext}
-                        className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
-                      >
-                        Next Question
-                      </UnstyledButton>
-                    }
+                    <Image
+                      alt='icon'
+                      priority
+                      src={preview_subject}
+                      className='w-[20rem] mx-auto'
+                    />
                   </Box>
-                ) : (
+
+                  <Text className="font-semibold text-xl mt-8">
+                    {(theoryAssessments.error as any)?.response?.data?.errors}
+                  </Text>
+
+                  <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
+                    <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                      <UnstyledButton
+                        className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
+                      >
+                        Return to lessons
+                      </UnstyledButton>
+                    </Link>
+                  </Flex>
+                </Box>
+              </Center>
+            </Box>
+          </Box>
+        </Box>
+      }
+
+      {theoryAssessments.isError &&
+        <Box className="mx-auto mt-10">
+          <RefetchButton
+            message="Failed to fetch quiz questions"
+            retry={() => theoryAssessments.refetch()}
+          />
+        </Box>
+      }
+
+      {theoryAssessments.data &&
+        theoryAssessments.data.data.length < 1 &&
+        <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
+            <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
+              <Center>
+                <Box className="text-center">
+                  <Box>
+                    <Image
+                      alt='icon'
+                      priority
+                      src={preview_subject}
+                      className='w-[20rem] mx-auto'
+                    />
+                  </Box>
+
+                  <Text className="font-semibold text-xl mt-8">
+                    This lesson has no Theory
+                  </Text>
+
+                  <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
+                    <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                      <UnstyledButton
+                        className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
+                      >
+                        Return to lessons
+                      </UnstyledButton>
+                    </Link>
+                  </Flex>
+                </Box>
+              </Center>
+            </Box>
+          </Box>
+        </Box>
+      } 
+
+      {theoryAssessments.data && theoryAssessments.data.data.length > 0 &&
+        <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 mb-20">
+          <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
+            <Flex className="bg-[#FEEDD1] sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
+              <Text className='font-semibold text-2xl truncate'>
+                Assessment
+              </Text>
+            </Flex>
+
+            <Box className="mt-10 max-w-[50rem] mx-auto w-full">
+              <TheoryCard
+                answer={answer}
+                setAnswer={setAnswer}
+                question={currentQuestion}
+                questions={questions}
+                setShowAnswer={setShowAnswer}
+                showAnswer={showAnswer}
+                questionAnswered={questionAnswered}
+                currentQuestionIndex={currentQuestionIndex}
+              />
+
+              <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+              />
+
+              <Flex className="sm:space-x-3 mt-10 flex-col space-y-3 sm:flex-row sm:space-y-0 sm:justify-end items-end w-full">
+                {currentQuestionIndex > 0 && (
                   <UnstyledButton
-                    disabled={!answer && true}
                     type="button"
-                    onClick={handleSubmit}
-                    className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                    onClick={handlePrevious}
+                    className="px-10 h-12 text-center w-60 font-bold text-[#777777] transition duration-75 delay-75 ease-linear hover:bg-[#FAA61A] rounded-full py-2 hover:text-white"
                   >
-                    Submit answer
+                    Previous Question
                   </UnstyledButton>
                 )}
+
+                <Flex className="space-x-3">
+                  {questionAnswered ? (
+                    <Box>
+                      {currentQuestionIndex === questions.data.length - 1 ?
+                        <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                          <UnstyledButton
+                            type="button"
+                            className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                          >
+                            Back to lessons
+                          </UnstyledButton>
+                        </Link> :
+
+                        <UnstyledButton
+                          type="button"
+                          onClick={handleNext}
+                          className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                        >
+                          Next Question
+                        </UnstyledButton>
+                      }
+                    </Box>
+                  ) : (
+                    <UnstyledButton
+                      disabled={!answer || submitResponsesMutation.isLoading}
+                      type="button"
+                      onClick={handleSubmit}
+                      className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                    >
+                      {submitResponsesMutation.isLoading ?
+                        <Icon
+                          className={`animate-spin mx-auto`}
+                          icon="icomoon-free:spinner2"
+                          color="#white"
+                          width="20"
+                          height="20"
+                        /> :
+                        'Submit answer'
+                      }
+                    </UnstyledButton>
+                  )}
+                </Flex>
               </Flex>
-            </Flex>
+            </Box>
           </Box>
-        </Box>
-      </Box>  
+        </Box>  
+      }
    </PageLayout>   
   )
 }

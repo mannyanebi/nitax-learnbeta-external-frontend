@@ -15,7 +15,6 @@ const Profile = () => {
 
     if (params.has("tab")) {
       const tabValue = params.get("tab");
-
       setActiveTab(tabValue)
     }
   }, [])

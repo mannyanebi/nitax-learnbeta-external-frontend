@@ -1,11 +1,12 @@
 import React from "react"
 import { Box, Text, Radio } from "@mantine/core"
 
-const OptionCard = ({ option, answer }: any) => {
+const OptionCard = ({ option, answer, submitResponsesMutation }: any) => {
   return (
-    <Box className={`border-2 transition duration-75 delay-75 ${answer === option ? 'border-[#FAA61A]' : 'border-[#E2E2E2]'} ease-linear hover:border-[#FAA61A] p-4`}>
+    <Box className={`border-2 transition disabled:opacity-50 duration-75 delay-75 ${answer === option ? 'border-[#FAA61A]' : 'border-[#E2E2E2]'} ease-linear hover:border-[#FAA61A] p-4`}>
       <Radio
         value={option}
+        disabled={submitResponsesMutation.isLoading}
         color="yellow"
         label={
           <Text className="text-[#555555] font-semibold">
@@ -22,17 +23,18 @@ export default function QuizCard({
   questions, 
   currentQuestionIndex, 
   setAnswer, 
-  answer 
+  answer,
+  submitResponsesMutation
 }: any){
   return (
     <Box>
       <Box className="text-center">
         <Text className="text-[#777777] text-lg font-semibold">
-          {currentQuestionIndex + 1}/{questions.length}
+          {currentQuestionIndex + 1}/{questions?.data?.length}
         </Text>
 
         <Text className="mt-3  font-semibold text-2xl">
-          {question.question}
+          {question?.question}
         </Text>
       </Box>
 
@@ -45,19 +47,23 @@ export default function QuizCard({
         >
           <OptionCard 
             answer={answer}
-            option={question.options.option_a.toString()}
+            submitResponsesMutation={submitResponsesMutation}
+            option={question?.options.option_a.toString()}
           />
           <OptionCard
             answer={answer}
-            option={question.options.option_b.toString()}
+            submitResponsesMutation={submitResponsesMutation}
+            option={question?.options.option_b.toString()}
           />
           <OptionCard
             answer={answer}
-            option={question.options.option_c.toString()}
+            submitResponsesMutation={submitResponsesMutation}
+            option={question?.options.option_c.toString()}
           />
           <OptionCard
             answer={answer}
-            option={question.options.option_d.toString()}
+            submitResponsesMutation={submitResponsesMutation}
+            option={question?.options.option_d.toString()}
           />
         </Radio.Group>
       </Box>

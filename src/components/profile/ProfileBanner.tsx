@@ -42,7 +42,6 @@ const ProfileBanner = () => {
     if(file) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
-        console.log('Img',file)
         setAvatar(reader.result);
         setIsTouched(true)
       };
@@ -79,7 +78,7 @@ const ProfileBanner = () => {
   const handleLogout = () => {
     mutation.mutate()
 
-    cookie.remove('learnbeta_admin')
+    cookie.remove('learnbeta_user')
     setUser(null)
     Router.push('/auth/signin')
   }

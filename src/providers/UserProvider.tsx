@@ -20,8 +20,6 @@ const Provider: React.FC<UserProps> = ({ children }) => {
   )
 }
 
-const UserProvider = dynamic(() => Promise.resolve(Provider), {
-  ssr: false
-});
+const UserProvider = dynamic(() => Promise.resolve(Provider), { ssr: false });
 
 export default UserProvider

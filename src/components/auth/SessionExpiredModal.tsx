@@ -50,7 +50,7 @@ export default function SessionExpiredModal() {
     },
 
     onSuccess: () => {
-      cookie.remove('learnbeta_admin')
+      cookie.remove('learnbeta_user')
       setUser(null)
       Router.push('/auth/signin')
     }

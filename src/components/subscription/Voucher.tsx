@@ -8,11 +8,6 @@ interface Props {
     billingPlan?: boolean;
     voucherCode: boolean;
   },
-  isLoading: {
-    paystack?: boolean;
-    voucher: boolean;
-    airtime?: boolean;
-  },
   errorMessage: {
     billingPlan?: string;
     voucherCode: string;
@@ -21,18 +16,23 @@ interface Props {
   setError: any,
   setErrorMessage: any
   setVoucherCode: React.Dispatch<React.SetStateAction<string>>,
-  handleVoucher: () => void
+  handleVoucher: () => void;
+  checkVoucherMutation: any;
+  verifiedVoucher: any;
+  voucherPaymentMutation: any
 }
 
 export default function Voucher({
   error,
   setError,
   errorMessage,
-  isLoading,
   voucherCode,
   setVoucherCode,
   handleVoucher,
-  setErrorMessage
+  checkVoucherMutation,
+  voucherPaymentMutation,
+  setErrorMessage,
+  verifiedVoucher
 }: Props) {
   return (
     <Box className="mt-8">
@@ -57,22 +57,24 @@ export default function Voucher({
           }}
           error={errorMessage.voucherCode}
           placeholder="Enter voucher code"
-          disabled={isLoading.voucher && true}
+          disabled={checkVoucherMutation.isLoading || voucherPaymentMutation.isLoading}
           className={`w-full ${error.voucherCode ? 'border-red-500 focus:outline-red-500' : 'border-[#E2E2E2] focus:outline-[#FAA61A]'} border-2 px-3 py-5 text-[#555555] transition font-sans duration-75 rounded-lg delay-75 ease-linear placeholder:text-sm placeholder:text-[#555555]`}
         />
-
-        <Text className="font-semibold text-right text-sm text-[#777777] mt-4">
-          = &#x20A6; 5,000
-        </Text>
+        
+        {verifiedVoucher &&
+          <Text className="font-semibold text-right text-sm text-[#777777] mt-4">
+            = &#x20A6; {verifiedVoucher.data.value}
+          </Text>
+        }
       </Box>
 
       <Box className="mt-[15%] text-center">
         <UnstyledButton
           onClick={handleVoucher}
-          disabled={isLoading.voucher && true}
-          className="px-4 w-72 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+          disabled={checkVoucherMutation.isLoading || voucherPaymentMutation.isLoading}
+          className="px-4 w-72 h-14 text-center font-bold transition duration-75 disabled:opacity-50 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
         >
-          {isLoading.voucher ?
+          {checkVoucherMutation.isLoading || voucherPaymentMutation.isLoading ?
             <Icon
               className={`animate-spin mx-auto`}
               icon="icomoon-free:spinner2"
