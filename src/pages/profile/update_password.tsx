@@ -12,11 +12,13 @@ import NewPasswordForm from "@/components/forms/NewPasswordForm";
 import { useForm } from '@mantine/form';
 import { updatePassword } from "@/services/auth";
 import AppLayout from "@/layouts/AppLayout";
+import { useRouter } from "next/router";
 
 export type OldPasswordData = { old_password: string }
 export type NewPasswordData = { new_password: string }
 
 const UpdatePassword = () => {
+  const router = useRouter()
   const [step, setStep] = useState('old_password')
 
   const oldPasswordForm = useForm({
@@ -50,36 +52,24 @@ const UpdatePassword = () => {
     },
   });
 
-  const oldPasswordMutation = useMutation((data: any) => updatePassword(data), {
-    onError: (error: any) => {
-      oldPasswordForm.setErrors({
-        old_password: error.response.data.message
-      })
-    },
-
-    onSuccess: (data) => {
-      // set step to new_password
-    }
-  })
-
   const newPasswordMutation = useMutation((data: any) => updatePassword(data), {
     onError: (error: any) => {
       newPasswordForm.setErrors({
-        new_password: error.response.data.message
+        new_password: error.response.data.errors
       })
     },
 
-    onSuccess: (data) => {
-      // set step to old_password
-      // redirect to profile
+    onSuccess: () => {
+      setStep('old_password')
+      router.push('/profile')
     }
   })
 
-  const handleOldPassword = async (values: OldPasswordData) => {
-    oldPasswordMutation.mutate(values)
+  const handleOldPassword = () => {
+    setStep('new_password')
   }
 
-  const handleNewPassword = async (values: NewPasswordData) => {
+  const handleNewPassword = (values: NewPasswordData) => {
     newPasswordMutation.mutate(values)
   }
 
@@ -117,13 +107,13 @@ const UpdatePassword = () => {
             {step === 'old_password' &&
               <OldPasswordForm
                 oldPasswordForm={oldPasswordForm}
-                oldPasswordMutation={oldPasswordMutation}
                 handleOldPassword={handleOldPassword}
               />
             }
 
             {step === 'new_password' &&
               <NewPasswordForm
+                setStep={setStep}
                 newPasswordForm={newPasswordForm}
                 newPasswordMutation={newPasswordMutation}
                 handleNewPassword={handleNewPassword}

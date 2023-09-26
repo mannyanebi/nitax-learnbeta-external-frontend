@@ -42,9 +42,20 @@ const makeVoucherPayment = async (token: string, payload: any) => {
   return res.data;
 };
 
+const verifyPaystackPayment = async (token: string, payload: any) => {
+  const url = `${HOST}/api/v1/student/subscription/payment/paystack`;
+  const config = {
+    headers: { Authorization: token }
+  }
+  const res = await axios.post(url, payload, config);
+
+  return res.data;
+};
+
 export {
   getSubscriptionPlans,
   getCurrentPlan,
   verifyVoucher,
-  makeVoucherPayment
+  makeVoucherPayment,
+  verifyPaystackPayment
 }

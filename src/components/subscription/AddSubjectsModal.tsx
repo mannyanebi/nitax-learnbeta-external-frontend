@@ -37,7 +37,6 @@ export default function AddSubjectModal({
     },
 
     onSuccess: (data: any) => {
-      console.log('sujs added', data)
       toast.success('Subjects added successfully');
       close()
     }
@@ -53,7 +52,7 @@ export default function AddSubjectModal({
         setSelectedSubjects([...selectedSubjects, subjectId]);
       } else {
         // Display an error message or handle the case where the limit is reached
-        console.log('Maximum number of subjects reached');
+        return
       }
     } else {
       // If already present, remove it from the array

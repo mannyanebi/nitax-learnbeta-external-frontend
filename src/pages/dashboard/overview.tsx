@@ -12,7 +12,7 @@ import SubjectCard, { SubjectCardSkeleton } from "@/components/subjects/SubjectC
 import RefetchButton from "@/components/onboarding/RefetchButton";
 
 const Overview = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const token = `Bearer ${user?.data?.access_token}`
 
   const gradeLevelSubjects = useQuery('gradeLevelSubjects', () => getGradeLevelSubjects(token))
@@ -89,6 +89,29 @@ const Overview = () => {
               ))
             }
           </Box>
+ 
+          {gradeLevelSubjects.data && (
+            gradeLevelSubjects.data.data.length > 0 &&
+              gradeLevelSubjects.data.data
+                .filter((subject: any) => subject.has_access === true)
+                .every((subject: any) => subject.progress === 0) ? (
+              <Box className="w-full mx-auto">
+                <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl'>
+                  <Box>
+                    <Image
+                      alt='icon'
+                      priority
+                      src={preview_subject}
+                      className='w-[20rem] mx-auto'
+                    />
+                    <Text className='text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center'>
+                      Select a subject and start learning
+                    </Text>
+                  </Box>
+                </Center>
+              </Box>
+            ) : null
+          )}
 
           {gradeLevelSubjects.data && gradeLevelSubjects.data.data.length < 1 &&
             <Box className="w-full mx-auto">
@@ -139,12 +162,38 @@ const Overview = () => {
                 ))
             }
 
+            {gradeLevelSubjects.data &&
+              gradeLevelSubjects.data.data.length > 0 &&
+              (!user.data.student.subscription || user.data?.student?.subscription?.is_expired) ? (
+              gradeLevelSubjects.data.data.map((subject: any) => (
+                  <SubjectCard key={subject.id} subject={subject} />
+                ))
+            ) : null}
+
             {gradeLevelSubjects.isLoading &&
               [1, 2, 3].map((num: number) => (
                 <SubjectCardSkeleton key={num} />
               ))
             }
           </Box>
+
+          {gradeLevelSubjects.data && gradeLevelSubjects.data.data.length < 1 &&
+            <Box className="w-full mx-auto">
+              <Center className='h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl'>
+                <Box>
+                  <Image
+                    alt='icon'
+                    priority
+                    src={preview_subject}
+                    className='w-[20rem] mx-auto'
+                  />
+                  <Text className='text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center'>
+                    There are no subjects in your grade yet
+                  </Text>
+                </Box>
+              </Center>
+            </Box>
+          }
 
           {gradeLevelSubjects.isError &&
             <RefetchButton

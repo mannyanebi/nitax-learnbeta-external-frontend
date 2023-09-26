@@ -65,7 +65,7 @@ const OTPForm: React.FC<Props> = ({
         <UnstyledButton
           disabled={otpMutation.isLoading}
           type="submit"
-          className="px-4 w-40 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+          className="px-4 w-40 h-14 text-center font-bold transition disabled:opacity-50 duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
         >
           {otpMutation.isLoading ?
             <Icon

@@ -9,7 +9,7 @@ import { UserContext } from "@/contexts/UserContext"
 import AirtimeSummaryCard from "./AirtimeSummaryCard";
 import PaystackSummaryCard from './PaystackSummaryCard'
 import { useMutation } from "react-query";
-import { makeVoucherPayment, verifyVoucher } from "@/services/subscriptions";
+import { makeVoucherPayment, verifyPaystackPayment, verifyVoucher } from "@/services/subscriptions";
 import toast, { Toaster } from "react-hot-toast";
 import { usePaystackPayment } from 'react-paystack';
 import { convertNairaToKobo } from "@/helpers/functions/convertNairaToKobo";
@@ -47,7 +47,7 @@ export default function CheckoutDrawer({
   })
 
   const paystackConfig = {
-    reference: (new Date()).getTime().toString(),
+    reference: 'REF'+(new Date()).getTime().toString(),
     email: user?.data?.student?.email,
     amount: convertNairaToKobo(cart.price),
     publicKey: process.env.PAYSTACK_PUBLIC_KEY ? process.env.PAYSTACK_PUBLIC_KEY : ''
@@ -92,13 +92,13 @@ export default function CheckoutDrawer({
       paystack: true
     })
 
-    const onSuccess = (reference: any) => {
-      setStep('cart')
-      close()
-      setIsLoading({
-        ...isLoading,
-        paystack: false
-      })
+    const onSuccess = (invoice: any) => {
+      const payload = {
+        reference: invoice.reference,
+        subscription_plan_id: cart.id
+      }
+
+      paystackPaymentMutation.mutate(payload)
     };
 
     const onClose = () => {
@@ -133,6 +133,39 @@ export default function CheckoutDrawer({
       toast.success('Voucher redeemed! Making payments...')
 
       voucherPaymentMutation.mutate(payload)
+    }
+  })
+
+  const paystackPaymentMutation = useMutation((data: any) => verifyPaystackPayment(token, data), {
+    onError: (error: any) => {
+      toast.error(error.response.data.errors);
+      setIsLoading({
+        ...isLoading,
+        paystack: false
+      })
+    },
+
+    onSuccess: (data: any) => {
+      console.log('Payment success', data)
+      let user = getCookieItem('learnbeta_user')
+
+      user.data.student.subscription = data.data
+
+      setCookieItem('learnbeta_user', user) // update cookies with new data
+      setUser(user)
+
+      toast.success('Paystack payment successful');
+
+      if (cart.subjects_allowed === -1) {
+        setPaymentMethod('paystack')
+        close()
+        setStep('cart')
+      } else {
+        setPaymentMethod('paystack')
+        setStep('cart')
+        close()
+        openAddSubjects()
+      }
     }
   })
   

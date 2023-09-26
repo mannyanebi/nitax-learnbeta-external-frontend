@@ -17,21 +17,21 @@ const signup = async (payload: any) => {
 };
 
 const forgotPassword = async (payload: any) => {
-  const url = `${HOST}/`;
+  const url = `${HOST}/api/v1/auth/request-password-reset`;
   const res = await axios.post(url, payload);
 
   return res.data;
 };
 
 const verifyOTP = async (payload: any) => {
-  const url = `${HOST}/`;
+  const url = `${HOST}/api/v1/auth/verify-email`;
   const res = await axios.post(url, payload);
 
   return res.data;
 };
 
 const resetPassword = async (payload: any) => {
-  const url = `${HOST}/`;
+  const url = `${HOST}/api/v1/auth/reset-password`;
   const res = await axios.post(url, payload);
 
   return res.data;

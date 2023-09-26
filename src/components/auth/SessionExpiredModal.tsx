@@ -8,11 +8,13 @@ import { logoutUser, refreshToken } from "@/services/auth";
 import { useMutation } from "react-query";
 import toast from 'react-hot-toast';
 import cookie from "cookiejs";
+import { getCookieItem, setCookieItem } from "@/helpers/functions/cookie";
 
 export default function SessionExpiredModal() {
   const Router = useRouter();
   const { user, setUser } = useContext(UserContext)
   const token = `Bearer ${user?.data?.access_token}`
+  const refresh_token = `Bearer ${user?.data?.refresh_token}`
   const [opened, { open, close }] = useDisclosure(false);
 
   useEffect(() => {
@@ -56,13 +58,19 @@ export default function SessionExpiredModal() {
     }
   })
 
-  const refreshTokenMutation = useMutation(() => refreshToken(token), {
+  const refreshTokenMutation = useMutation(() => refreshToken(refresh_token), {
     onError: () => {
       renewAccessToken() // retry operation
     },
 
     onSuccess: (data) => {
-      // perform token update operations
+      let user = getCookieItem('learnbeta_user')
+
+      user.data.access_token = data.access_token 
+      user.data.refresh_token = data.refresh_token 
+
+      setCookieItem('learnbeta_user', user) // update cookies with new data
+      setUser(user)
     }
   })
 
