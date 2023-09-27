@@ -16,11 +16,11 @@ export default function TheoryCard({
     <Box>
       <Box className="text-center">
         <Text className="text-[#777777] text-lg font-semibold">
-          {currentQuestionIndex + 1}/{questions.length}
+          {currentQuestionIndex + 1}/{questions.data?.length}
         </Text>
 
         <Text className="mt-3 font-semibold text-2xl">
-          {question.question}
+          {question?.question}
         </Text>
       </Box>
 

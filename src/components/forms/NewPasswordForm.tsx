@@ -17,12 +17,14 @@ interface Props {
   }>,
   newPasswordMutation: UseMutationResult<any, any, any, unknown>,
   handleNewPassword: (values: NewPasswordData) => void;
+  setStep: React.Dispatch<React.SetStateAction<string>>
 }
 
 const NewPasswordForm: React.FC<Props> = ({
   newPasswordForm,
   newPasswordMutation,
-  handleNewPassword
+  handleNewPassword,
+  setStep
 }) => {
   return (
     <Form
@@ -79,12 +81,12 @@ const NewPasswordForm: React.FC<Props> = ({
           </List>
         </Box>
 
-        <Box className="space-y-4 mt-4 lg:!mt-28">
+        <Box className="space-y-4 mt-4 lg:!mt-28 text-center">
           <Box className="text-center mt-6">
             <UnstyledButton
               disabled={newPasswordMutation.isLoading}
               type="submit"
-              className="px-12 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+              className="px-12 h-14 text-center font-bold transition duration-75 delay-75 disabled:opacity-50 w-64 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
             >
               {newPasswordMutation.isLoading ?
                 <Icon
@@ -98,6 +100,11 @@ const NewPasswordForm: React.FC<Props> = ({
               }
             </UnstyledButton>
           </Box>
+
+
+          <UnstyledButton onClick={() => setStep('old_password')} className="text-center text-sm text-[#FAA61A] hover:underline">
+            Back to current password
+          </UnstyledButton>
         </Box>
       </Box>
     </Form>

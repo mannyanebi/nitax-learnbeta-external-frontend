@@ -4,7 +4,7 @@ import Head from "next/head";
 import toast, { Toaster } from 'react-hot-toast';
 import { useForm } from '@mantine/form';
 import { useMutation } from "react-query";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import ForgotPasswordForm from "@/components/forms/ForgotPasswordForm";
 import OTPForm from "@/components/forms/OTPForm";
 import ResetPasswordForm from "@/components/forms/ResetPasswordForm";
@@ -22,6 +22,7 @@ export interface ResetPasswordData {
 }
 
 const ForgotPassword = () => {
+  const router = useRouter()
   const [step, setStep] = useState('forgot_password')
 
   const forgotPasswordForm = useForm({
@@ -84,8 +85,9 @@ const ForgotPassword = () => {
       })
     },
 
-    onSuccess: (data) => {
-      // set step to enter_otp
+    onSuccess: () => {
+      toast.success('Email verified')
+      setStep('enter_otp')
     }
   })
 
@@ -96,9 +98,9 @@ const ForgotPassword = () => {
       })
     },
 
-    onSuccess: (data) => {
-      // toast success
-      // set step to reset_password
+    onSuccess: () => {
+      toast.success('OTP verified')
+      setStep('reset_password')
     }
   })
 
@@ -109,10 +111,10 @@ const ForgotPassword = () => {
       })
     },
 
-    onSuccess: (data) => {
-      // toast success
-      // set step to forgot_password
-      // redirect to login
+    onSuccess: () => {
+      toast.success('Password reset successful')
+      setStep('forgot_password')
+      router.push('/auth/signin')
     }
   })
 
@@ -120,12 +122,24 @@ const ForgotPassword = () => {
     forgotPasswordMutation.mutate(values)
   }
 
-  const handleOTP = async (values: OTPData) => {
-    otpMutation.mutate(values)
+  const handleOTP = async () => {
+    const payload = {
+      email: forgotPasswordForm.values.email,
+      code: otpForm.values.code
+    }
+
+    otpMutation.mutate(payload)
   }
 
-  const handleResetPassword = async (values: ResetPasswordData) => {
-    resetPasswordMutation.mutate(values)
+  const handleResetPassword = async () => {
+    const payload = {
+      email: forgotPasswordForm.values.email,
+      code: otpForm.values.code,
+      new_password: resetPasswordForm.values.new_password,
+      confirm_password: resetPasswordForm.values.confirm_password
+    }
+
+    resetPasswordMutation.mutate(payload)
   }
 
   return (

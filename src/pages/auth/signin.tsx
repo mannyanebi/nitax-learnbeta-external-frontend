@@ -18,7 +18,7 @@ export interface SigninData {
 
 const Signin = () => {
   const { setUser } = useContext(UserContext)
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const form = useForm({
     initialValues: {
@@ -40,21 +40,25 @@ const Signin = () => {
   const mutation = useMutation((data: any) => signin(data), {
     onError: (error: any) => {
       form.setErrors({
-        email: error.response.data.message
+        email: error.response.data.message // update error object path
       })
     },
 
     onSuccess: (data) => {
       const now = new Date()
-      const user = data
+      let user = data
 
-      user.expiry = now.getTime() + 86400000 // 1 day
+      if (checked) {
+        user.expiry = now.getTime() + 86400000 // 1 day
+      } else {
+        user.expiry = now.getTime() + 21600000 // 6 hrs
+      }
 
       setCookieItem('learnbeta_user', user)
       setUser(user)
 
       form.reset();
-      toast.success('Signin success!')
+      toast.success('Signin successful')
 
       const params = new URLSearchParams(window.location.search);
 

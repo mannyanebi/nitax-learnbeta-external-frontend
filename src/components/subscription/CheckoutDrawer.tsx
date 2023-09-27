@@ -1,22 +1,33 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { Box, Drawer, Text, Flex, Radio, Select, UnstyledButton, Collapse } from "@mantine/core"
 import Paystack from "./Paystack";
 import Voucher from "./Voucher";
 import Airtime from "./Airtime";
 import backArrow from '../../assets/svgs/back-arw.svg'
 import Image from "next/image";
+import { UserContext } from "@/contexts/UserContext"
 import AirtimeSummaryCard from "./AirtimeSummaryCard";
 import PaystackSummaryCard from './PaystackSummaryCard'
+import { useMutation } from "react-query";
+import { makeVoucherPayment, verifyPaystackPayment, verifyVoucher } from "@/services/subscriptions";
+import toast, { Toaster } from "react-hot-toast";
+import { usePaystackPayment } from 'react-paystack';
+import { convertNairaToKobo } from "@/helpers/functions/convertNairaToKobo";
+import { getCookieItem, setCookieItem } from "@/helpers/functions/cookie";
 
 export default function CheckoutDrawer({
   opened,
   close,
+  openAddSubjects,
   cart
 }: any) {
+  const { user, setUser } = useContext(UserContext)
+  const token = `Bearer ${user?.data?.access_token}`
   const [step, setStep] = useState('cart')
-  const [paymentMethod, setPaymentMethod] = useState('airtime');
+  const [paymentMethod, setPaymentMethod] = useState('paystack');
+  const [verifiedVoucher, setVerifiedVoucher] = useState<null | {}>(null)
   const [networkProvider, setNetworkProvider] = useState('mtn');
-  const [billingPlan, setBillingPlan] = useState<string | null>(null);
+  const [billingPlan, setBillingPlan] = useState<string | null>('monthly');
   const [voucherCode, setVoucherCode] = useState('')
   const [phoneNumber, setPhoneNumber] = useState<string | number>('')
   const [error, setError] = useState<any>({
@@ -35,27 +46,14 @@ export default function CheckoutDrawer({
     airtime: false
   })
 
-  const handlePaystack = () => {
-    if (!billingPlan){
-      setError({
-        ...error,
-        billingPlan: true
-      })
-      setErrorMessage({
-        ...errorMessage,
-        billingPlan: 'Billing plan is required'
-      })
-    }else{
-      setIsLoading({
-        ...isLoading,
-        paystack: true
-      })
+  const paystackConfig = {
+    reference: 'REF'+(new Date()).getTime().toString(),
+    email: user?.data?.student?.email,
+    amount: convertNairaToKobo(cart.price),
+    publicKey: process.env.PAYSTACK_PUBLIC_KEY ? process.env.PAYSTACK_PUBLIC_KEY : ''
+  };
 
-      // handle payment
-      // onSuccess, toast success
-      // onError, toast error
-    }
-  }
+  const initializePayment: any = usePaystackPayment(paystackConfig);
 
   const handleVoucher = () => {
     if (!billingPlan) {
@@ -77,14 +75,7 @@ export default function CheckoutDrawer({
         voucherCode: 'Voucher code is required'
       })
     } else {
-      setIsLoading({
-        ...isLoading,
-        voucher: true
-      })
-
-      // handle tx
-      // onSuccess, toast success
-      // onError, toast error
+      checkVoucherMutation.mutate()
     }
   }
 
@@ -94,6 +85,115 @@ export default function CheckoutDrawer({
       airtime: true
     })
   }
+
+  const handlePaystack = () => {
+    setIsLoading({
+      ...isLoading,
+      paystack: true
+    })
+
+    const onSuccess = (invoice: any) => {
+      const payload = {
+        reference: invoice.reference,
+        subscription_plan_id: cart.id
+      }
+
+      paystackPaymentMutation.mutate(payload)
+    };
+
+    const onClose = () => {
+      setIsLoading({
+        ...isLoading,
+        paystack: false
+      })
+    }
+
+    initializePayment(onSuccess, onClose);
+  };
+
+  const checkVoucherMutation = useMutation(() => verifyVoucher(token, voucherCode), {
+    onError: (error: any ) => {
+      setError({
+        ...error,
+        voucherCode: true
+      })
+      setErrorMessage({
+        ...errorMessage,
+        voucherCode: error.response.data.errors
+      })
+    },
+  
+    onSuccess: (data: any) => {
+      setVerifiedVoucher(data)
+      const payload = {
+        voucher_code: data.data.code,
+        subscription_plan_id: cart.id
+      }
+
+      toast.success('Voucher redeemed! Making payments...')
+
+      voucherPaymentMutation.mutate(payload)
+    }
+  })
+
+  const paystackPaymentMutation = useMutation((data: any) => verifyPaystackPayment(token, data), {
+    onError: (error: any) => {
+      toast.error(error.response.data.errors);
+      setIsLoading({
+        ...isLoading,
+        paystack: false
+      })
+    },
+
+    onSuccess: (data: any) => {
+      console.log('Payment success', data)
+      let user = getCookieItem('learnbeta_user')
+
+      user.data.student.subscription = data.data
+
+      setCookieItem('learnbeta_user', user) // update cookies with new data
+      setUser(user)
+
+      toast.success('Paystack payment successful');
+
+      if (cart.subjects_allowed === -1) {
+        setPaymentMethod('paystack')
+        close()
+        setStep('cart')
+      } else {
+        setPaymentMethod('paystack')
+        setStep('cart')
+        close()
+        openAddSubjects()
+      }
+    }
+  })
+  
+  const voucherPaymentMutation = useMutation((data: any) => makeVoucherPayment(token, data), {
+    onError: (error: any) => {
+      toast.error(error.response.data.errors);
+    },
+
+    onSuccess: (data: any) => {
+      let user = getCookieItem('learnbeta_user')
+
+      user.data.student.subscription = data.data 
+
+      setCookieItem('learnbeta_user', user) // update cookies with new data
+      setUser(user)
+
+      toast.success('Voucher payment successful');
+
+      if (cart.subjects_allowed === -1) {
+        setPaymentMethod('paystack')
+        close()
+      } else {
+        setPaymentMethod('paystack')
+        close()
+        openAddSubjects()
+      }
+    }
+  })
 
   return (
     <Drawer
@@ -135,7 +235,7 @@ export default function CheckoutDrawer({
             </Text>
 
             <Text className="font-semibold">
-              &#x20A6; 5,000
+              &#x20A6; {cart.price}
             </Text>
           </Flex>
 
@@ -206,7 +306,8 @@ export default function CheckoutDrawer({
             >
               <Flex className="space-x-4 sm:space-x-6 items-center">
                 <Radio
-                  disabled={isLoading.paystack && true || isLoading.voucher && true}
+                  // disabled={isLoading.paystack && true || isLoading.voucher && true}
+                  disabled
                   value="airtime"
                   color="yellow"
                   label={
@@ -266,8 +367,10 @@ export default function CheckoutDrawer({
           {paymentMethod === 'voucher' &&
             <Voucher
               error={error}
+              verifiedVoucher={verifiedVoucher}
+              checkVoucherMutation={checkVoucherMutation}
+              voucherPaymentMutation={voucherPaymentMutation}
               setError={setError}
-              isLoading={isLoading}
               voucherCode={voucherCode}
               errorMessage={errorMessage}
               setErrorMessage={setErrorMessage}
@@ -293,8 +396,9 @@ export default function CheckoutDrawer({
         in={step === 'paystackSummary' && true}
       >
         <PaystackSummaryCard
+          invoice={cart}
           isLoading={isLoading}
-          handleAirtmePayment={handleAirtmePayment}
+          handlePaystack={handlePaystack}
         />
       </Collapse>
     </Drawer>

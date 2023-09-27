@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BackgroundImage, Box, Center, Flex, Text } from "@mantine/core";
 import Logo from "../brand/Logo";
 import noProfile from '../../assets/imgs/no_profile.png'
@@ -6,6 +6,7 @@ import Link from 'next/link'
 import NavLink from "./NavLink";
 import Image from 'next/image'
 import upgrade_banner from '../../assets/svgs/upgrade_banner.svg'
+import { UserContext } from "@/contexts/UserContext";
 
 const PremiumBanner = () => {
   return (
@@ -29,6 +30,8 @@ const PremiumBanner = () => {
 type Props = { mobile?: boolean }
 
 const SideNav: React.FC<Props> = ({ mobile }) => {
+  const { user } = useContext(UserContext)
+
   mobile = mobile ? mobile : false
 
   const [activePage, setActivePage] = useState({
@@ -105,16 +108,18 @@ const SideNav: React.FC<Props> = ({ mobile }) => {
                   />
 
                   <Text className="truncate font-bold text-white">
-                    Emeka Felix Uzodinma
+                    {user.data.student.name}
                   </Text>
                 </Flex>
               </Link>
             </Box>
           }
 
-          <Box className="px-6 absolute bottom-[15%]">
-            <PremiumBanner />
-          </Box>
+          {(!user.data?.student?.subscription || user.data.student.subscription.is_expired) && (
+            <Box className="px-6 absolute bottom-[15%]">
+              <PremiumBanner />
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>

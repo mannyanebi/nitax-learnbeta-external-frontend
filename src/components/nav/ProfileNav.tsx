@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import NavElement from '../custom/NavElement'
 import Logo from "../brand/Logo";
 import Image from "next/image";
@@ -7,8 +7,17 @@ import { useDisclosure } from '@mantine/hooks';
 import { Box, Flex, Text, Burger } from "@mantine/core";
 import { SideNavDrawer } from "./SideNavDrawer";
 import Link from "next/link";
+import { useQuery } from "react-query";
+
+import { UserContext } from "@/contexts/UserContext";
+import { getUserProfile } from "@/services/user";
 
 const ProfileNav = () => {
+  const { user } = useContext(UserContext)
+  const token = `Bearer ${user?.data?.access_token}`
+
+  const userProfile = useQuery('userProfile', () => getUserProfile(token))
+
   const [opened, { toggle }] = useDisclosure(false);
 
   return (
@@ -39,7 +48,19 @@ const ProfileNav = () => {
                 />
               </Link>
 
-              <Text>Emeka Felix</Text>
+              <Text>
+                {userProfile.data &&
+                  userProfile.data.data.name
+                }
+
+                {userProfile.isLoading &&
+                  'Student'
+                }
+
+                {userProfile.isError &&
+                  userProfile.refetch()
+                }
+              </Text>
             </Flex>
           </Box>
         </Flex>

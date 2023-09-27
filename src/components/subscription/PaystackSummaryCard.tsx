@@ -1,9 +1,11 @@
 import React from "react";
 import { Box, Flex, Text, UnstyledButton } from "@mantine/core";
 import { Icon } from "@iconify/react";
+import { calculateFutureDate } from "@/helpers/functions/calculateFutureDate";
 
 interface Props {
-  handleAirtmePayment: () => void,
+  handlePaystack: () => void,
+  invoice: any,
   isLoading: {
     paystack: boolean;
     voucher: boolean;
@@ -12,8 +14,9 @@ interface Props {
 }
 
 export default function PaystackSummaryCard({
-  handleAirtmePayment,
-  isLoading
+  handlePaystack,
+  isLoading,
+  invoice
 }: Props) {
   return (
     <Box className="sm:mt-10 mt-5">
@@ -28,7 +31,7 @@ export default function PaystackSummaryCard({
           </Text>
 
           <Text className="font-semibold">
-            Premium Plan
+            {invoice.name}
           </Text>
         </Flex>
 
@@ -38,7 +41,7 @@ export default function PaystackSummaryCard({
           </Text>
 
           <Text className="font-semibold">
-            N5,000
+            N{invoice.price}
           </Text>
         </Flex>
 
@@ -68,18 +71,18 @@ export default function PaystackSummaryCard({
           </Text>
 
           <Text className="font-semibold">
-            15th June, 2023
+            {calculateFutureDate(invoice.duration)}
           </Text>
         </Flex>
       </Box>
 
       <Box className="sm:mt-20 mt-10 text-center">
         <UnstyledButton
-          disabled={isLoading.airtime && true}
-          onClick={handleAirtmePayment}
-          className="px-4 w-72 h-14 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+          disabled={isLoading.paystack}
+          onClick={handlePaystack}
+          className="px-4 w-72 h-14 disabled:opacity-50 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
         >
-          {isLoading.airtime ?
+          {isLoading.paystack ?
             <Icon
               className={`animate-spin mx-auto`}
               icon="icomoon-free:spinner2"
