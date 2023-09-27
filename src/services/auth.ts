@@ -37,9 +37,12 @@ const resetPassword = async (payload: any) => {
   return res.data;
 };
 
-const updatePassword = async (payload: any) => {
-  const url = `${HOST}/`;
-  const res = await axios.post(url, payload);
+const updatePassword = async (token: string, payload: any) => {
+  const url = `${HOST}/api/v1/student/change-password`;
+  const config = {
+    headers: { Authorization: token }
+  }
+  const res = await axios.post(url, payload, config);
 
   return res.data;
 };

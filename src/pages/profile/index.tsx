@@ -1,14 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Head from "next/head";
+import { UserContext } from "@/contexts/UserContext";
 import { Box, Tabs } from "@mantine/core";
 import PageLayout from "@/layouts/PageLayout";
 import ProfileNav from "@/components/nav/ProfileNav";
 import ProfileBanner from "@/components/profile/ProfileBanner";
 import Subscriptions from "@/components/subscription/Subscriptions";
 import AppLayout from "@/layouts/AppLayout";
+import { useMutation, useQuery } from "react-query";
+import { getGradeLevelSubjects, getSubscribedSubjects } from "@/services/subjects";
+import AddSubjectModal from "@/components/subscription/AddSubjectsModal";
+import { useDisclosure } from "@mantine/hooks";
 
 const Profile = () => {
+  const { user } = useContext(UserContext)
+  // const token = `Bearer ${user?.data?.access_token}`
   const [activeTab, setActiveTab] = useState<string | null>('profile');
+  // const [openedAddSubjects, { open: openAddSubjects, close: closeAddSubjects }] = useDisclosure(false);
+
+  // const subscribedSubjects = useQuery('subscribedSubjects', () => getGradeLevelSubjects(token))
+
+  // useEffect(() => {
+  //   if (
+  //     subscribedSubjects.isSuccess &&
+  //     subscribedSubjects.data &&
+  //     user.data.student.subscription &&
+  //     !user.data.student.subscription.is_expired &&
+  //     subscribedSubjects.data.data.length < 1
+  //   ) {
+  //     openAddSubjects();
+  //   }
+  // }, [subscribedSubjects.isSuccess, subscribedSubjects.data, user.data.student.subscription]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -27,6 +49,12 @@ const Profile = () => {
         </Head>
 
         <ProfileNav />
+
+        {/* <AddSubjectModal
+          cart={cart}
+          opened={openedAddSubjects}
+          close={closeAddSubjects}
+        /> */}
 
         <Box className='mt-5 lg:mt-8 mb-20'>
           <Tabs

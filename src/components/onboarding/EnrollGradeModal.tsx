@@ -4,7 +4,7 @@ import { Modal, Box, Flex, Text, UnstyledButton, Radio, Skeleton } from "@mantin
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import toast from 'react-hot-toast';
-import { useQuery, useMutation, UseMutationResult } from "react-query";
+import { useQuery, useMutation, UseMutationResult, useQueryClient } from "react-query";
 import { useState } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { getGradeLevels, onboardGrade } from "@/services/grades";
@@ -55,6 +55,8 @@ const GradeCheckCardSkeleton = () => {
 }
 
 export default function EnrollGradeModal({ opened, close }: Props) {
+  const queryClient = useQueryClient();
+
   const [grade, setGrade] = useState('');
 
   const { user, setUser } = useContext(UserContext)
@@ -79,6 +81,8 @@ export default function EnrollGradeModal({ opened, close }: Props) {
 
       toast.success(data.message)
 
+      queryClient.invalidateQueries('gradeLevelSubjects')
+
       setTimeout(() => {
         close()
       }, 2000)
@@ -86,7 +90,6 @@ export default function EnrollGradeModal({ opened, close }: Props) {
   })
 
   const handleOnboarding = () => {
-
     mutation.mutate()
   }
 

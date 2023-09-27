@@ -39,7 +39,7 @@ const PlanCard = ({ handleSubscribe, sub }: any) => {
 
   return (
     <React.Fragment>
-      <Box className='w-full border-2 max-w-[14rem] sm:max-w-none bg-white rounded-3xl border-[#E2E2E2] p-6 text-center space-y-5'>
+      <Box className='w-full border-2 max-w-[14rem] h-full sm:max-w-none bg-white rounded-3xl border-[#E2E2E2] p-6 text-center space-y-5'>
         <Text className={`text-${color}-500 font-semibold text-lg`}>
           {sub.name}
         </Text>

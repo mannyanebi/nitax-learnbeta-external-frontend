@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Box, Center, Flex, Text } from "@mantine/core";
@@ -13,11 +13,15 @@ import { useForm } from '@mantine/form';
 import { updatePassword } from "@/services/auth";
 import AppLayout from "@/layouts/AppLayout";
 import { useRouter } from "next/router";
+import { UserContext } from "@/contexts/UserContext";
+import toast, { Toaster } from "react-hot-toast";
 
 export type OldPasswordData = { old_password: string }
 export type NewPasswordData = { new_password: string }
 
 const UpdatePassword = () => {
+  const { user } = useContext(UserContext)
+  const token = `Bearer ${user?.data?.access_token}`
   const router = useRouter()
   const [step, setStep] = useState('old_password')
 
@@ -52,15 +56,21 @@ const UpdatePassword = () => {
     },
   });
 
-  const newPasswordMutation = useMutation((data: any) => updatePassword(data), {
+  const newPasswordMutation = useMutation((data: any) => updatePassword(token, data), {
     onError: (error: any) => {
-      newPasswordForm.setErrors({
-        new_password: error.response.data.errors
+      setStep('old_password')
+      newPasswordForm.reset()
+
+      oldPasswordForm.setErrors({
+        old_password: error.response.data.errors
       })
     },
 
     onSuccess: () => {
+      toast.success('Successfully updated password')
       setStep('old_password')
+      oldPasswordForm.reset()
+      newPasswordForm.reset()
       router.push('/profile')
     }
   })
@@ -69,8 +79,13 @@ const UpdatePassword = () => {
     setStep('new_password')
   }
 
-  const handleNewPassword = (values: NewPasswordData) => {
-    newPasswordMutation.mutate(values)
+  const handleNewPassword = () => {
+    const payload = {
+      current_password: oldPasswordForm.values.old_password,
+      new_password: newPasswordForm.values.new_password,
+      confirm_password: newPasswordForm.values.new_password
+    }
+    newPasswordMutation.mutate(payload)
   }
 
   return (
@@ -119,6 +134,11 @@ const UpdatePassword = () => {
                 handleNewPassword={handleNewPassword}
               />
             }
+
+            <Toaster
+              position="bottom-right"
+              reverseOrder={false}
+            />
           </Box>
         </Box>
       </AppLayout>

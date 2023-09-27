@@ -22,6 +22,7 @@ export default function Theory (){
   const token = `Bearer ${user?.data?.access_token}`
   const lessonId = router.query.lessonId ? (router.query.lessonId as string) : '';
   const [questions, setQuestions] = useState<any>({})
+  const [skipAble, setSkipAble] = useState(false)
   const theoryAssessments = useQuery(['theoryAssessments', Number(lessonId)], () => getTheoryAssessments(token, lessonId), {
     enabled: false, // Disable automatic fetching
   })
@@ -59,6 +60,7 @@ export default function Theory (){
   const submitResponsesMutation = useMutation((data: any) => submitTheoryResponse(token, data), {
     onError: (error: any) => {
       handleNext()
+      setSkipAble(true)
       toast.error(error.response.data.errors);
     },
 
@@ -212,7 +214,7 @@ export default function Theory (){
                   </Text>
 
                   <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
-                    <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                    <Link href={`/dashboard/subjects`}>
                       <UnstyledButton
                         className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
                       >
@@ -264,11 +266,22 @@ export default function Theory (){
                   </UnstyledButton>
                 )}
 
+                {skipAble &&
+                  <Link href={`/dashboard/subjects`}>
+                    <UnstyledButton
+                      type="button"
+                      className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                    >
+                      Back to lessons
+                    </UnstyledButton>
+                  </Link>
+                }
+
                 <Flex className="space-x-3">
                   {questionAnswered ? (
                     <Box>
                       {currentQuestionIndex === questions.data.length - 1 ?
-                        <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
+                        <Link href={`/dashboard/subjects`}>
                           <UnstyledButton
                             type="button"
                             className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"

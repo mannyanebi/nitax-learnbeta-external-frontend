@@ -62,7 +62,7 @@ export default function Subscriptions() {
           {currentPlan.isError &&
             <RefetchButton
               retry={() => currentPlan.refetch()}
-              message="Failed to fetch subscription plans!"
+              message="Failed to fetch your subscription plan!"
             />
           }
 

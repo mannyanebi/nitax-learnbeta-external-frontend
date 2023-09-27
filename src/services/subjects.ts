@@ -22,6 +22,16 @@ const getSubject = async (token: string, subjectId: string) => {
   return res.data;
 };
 
+const getSubscribedSubjects = async (token: string) => {
+  const url = `${HOST}/api/v1/student/subscription/subjects`;
+  const config = {
+    headers: { Authorization: token }
+  }
+  const res = await axios.get(url, config);
+
+  return res.data;
+};
+
 const addSubjectsToPlan = async (token: string, payload: any) => {
   const url = `${HOST}/api/v1/student/subscription/add-subjects`;
   const config = {
@@ -35,5 +45,6 @@ const addSubjectsToPlan = async (token: string, payload: any) => {
 export {
   getSubject,
   addSubjectsToPlan,
-  getGradeLevelSubjects
+  getGradeLevelSubjects,
+  getSubscribedSubjects
 }
