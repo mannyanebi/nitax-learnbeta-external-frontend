@@ -10,7 +10,6 @@ import OTPForm from "@/components/forms/OTPForm";
 import ResetPasswordForm from "@/components/forms/ResetPasswordForm";
 import {
   forgotPassword,
-  verifyOTP,
   resetPassword
 } from "@/services/auth";
 
@@ -91,23 +90,14 @@ const ForgotPassword = () => {
     }
   })
 
-  const otpMutation = useMutation((data: any) => verifyOTP(data), {
-    onError: (error: any) => {
-      otpForm.setErrors({
-        code: error.response.data.message
-      })
-    },
-
-    onSuccess: () => {
-      toast.success('OTP verified')
-      setStep('reset_password')
-    }
-  })
-
   const resetPasswordMutation = useMutation((data: any) => resetPassword(data), {
     onError: (error: any) => {
+      setStep('enter_otp')
+      resetPasswordForm.reset()
+      otpForm.reset()
+
       otpForm.setErrors({
-        new_password: error.response.data.message
+        code: error.response.data.message
       })
     },
 
@@ -123,12 +113,7 @@ const ForgotPassword = () => {
   }
 
   const handleOTP = () => {
-    const payload = {
-      email: forgotPasswordForm.values.email,
-      code: Number(otpForm.values.code)
-    }
-
-    otpMutation.mutate(payload)
+    setStep('reset_password')
   }
 
   const handleResetPassword = async () => {
@@ -165,7 +150,6 @@ const ForgotPassword = () => {
         <OTPForm
           otpForm={otpForm}
           handleOTP={handleOTP}
-          otpMutation={otpMutation}
         />
       }
 

@@ -15,7 +15,14 @@ const Overview = () => {
   const { user } = useContext(UserContext)
   const token = `Bearer ${user?.data?.access_token}`
 
-  const gradeLevelSubjects = useQuery('gradeLevelSubjects', () => getGradeLevelSubjects(token))
+  const gradeLevelSubjects = useQuery(
+    'gradeLevelSubjects',
+    () => getGradeLevelSubjects(token),
+    {
+      staleTime: 30000, // Set to 30 seconds (30,000 milliseconds)
+      refetchInterval: 30000, // Set to 30 seconds (30,000 milliseconds)
+    }
+  );
 
   return (
     <DashboardLayout>
