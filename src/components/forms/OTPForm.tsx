@@ -2,9 +2,7 @@ import React from "react";
 import { Box, Text, UnstyledButton, PinInput, Flex } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import Form from "../custom/Form";
-import { UseMutationResult } from "react-query";
 import { OTPData } from '../../pages/auth/forgot_password'
-import { Icon } from '@iconify/react'
 
 interface Props {
   otpForm: UseFormReturnType<{
@@ -15,13 +13,11 @@ interface Props {
     code: string;
   }>,
   handleOTP: (values: OTPData) => void,
-  otpMutation: UseMutationResult<any, any, any, unknown>
 }
 
 const OTPForm: React.FC<Props> = ({
   otpForm,
   handleOTP,
-  otpMutation
 }) => {
   return (
     <Form
@@ -49,7 +45,6 @@ const OTPForm: React.FC<Props> = ({
               },
             })}
             {...otpForm.getInputProps('code')}
-            disabled={otpMutation.isLoading}
             length={6}
           />
         </Flex>
@@ -63,20 +58,10 @@ const OTPForm: React.FC<Props> = ({
 
       <Box className="mt-10 text-center">
         <UnstyledButton
-          disabled={otpMutation.isLoading}
           type="submit"
           className="px-4 w-40 h-14 text-center font-bold transition disabled:opacity-50 duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
         >
-          {otpMutation.isLoading ?
-            <Icon
-              className={`animate-spin mx-auto`}
-              icon="icomoon-free:spinner2"
-              color="#white"
-              width="20"
-              height="20"
-            /> :
-            'Continue'
-          }
+          Continue
         </UnstyledButton>
       </Box>
     </Form>

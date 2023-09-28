@@ -24,6 +24,7 @@ const forgotPassword = async (payload: any) => {
 };
 
 const verifyOTP = async (payload: any) => {
+  console.log(payload)
   const url = `${HOST}/api/v1/auth/verify-email`;
   const res = await axios.post(url, payload);
 
