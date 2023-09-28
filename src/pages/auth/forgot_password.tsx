@@ -122,10 +122,10 @@ const ForgotPassword = () => {
     forgotPasswordMutation.mutate(values)
   }
 
-  const handleOTP = async () => {
+  const handleOTP = () => {
     const payload = {
       email: forgotPasswordForm.values.email,
-      code: otpForm.values.code
+      code: Number(otpForm.values.code)
     }
 
     otpMutation.mutate(payload)
