@@ -9,7 +9,7 @@ const ServiceTerms = () => {
   return (
     <PageLayout>
       <Head>
-        <title>Learn Beta | Service Terms</title>
+        <title>Learn Beta | Terms & Policy</title>
       </Head>
 
       <HomeNav />

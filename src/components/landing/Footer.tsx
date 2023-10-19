@@ -46,7 +46,7 @@ const Footer = () => {
             <Box>
               <Link
                 className="text-white hover:border-b-2 pb-1 font-semibold transition delay-75 duration-75 ease-linear"
-                href="/terms"
+                href="/faq"
               >
                 FAQ
               </Link>
