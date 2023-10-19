@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import NavElement from '../custom/NavElement'
+import NavElement from "../custom/NavElement";
 import Logo from "../brand/Logo";
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure } from "@mantine/hooks";
 import { Box, Flex, Modal, Burger, UnstyledButton } from "@mantine/core";
 import Link from "next/link";
 import { UserContext } from "@/contexts/UserContext";
 
 const HomeNav = () => {
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const [opened, { toggle }] = useDisclosure(false);
 
@@ -17,40 +17,47 @@ const HomeNav = () => {
         <NavElement className="w-full max-w-[65rem] xl:max-w-[80rem] 2xl:max-w-[85rem] mx-auto bg-white h-[70px] px-4 sm:px-8 md:px-10 md:border-none border-b-2 border-[#E2E2E2]">
           <Flex className="items-center h-full justify-between">
             <Box>
-              <Link href='/'>
+              <Link href="/">
                 <Logo />
               </Link>
             </Box>
 
             <Burger
               className="md:hidden"
-              size='md'
+              size="md"
               color="#FAA61A"
               opened={opened}
               onClick={toggle}
             />
 
             <Box className="hidden md:block">
-              {user ?
-                <Link href='/dashboard/overview'>
+              {user ? (
+                <Link href="/dashboard/overview">
                   <UnstyledButton className="bg-[#014340] hover:bg-[#014340de] py-3 w-40 font-bold rounded-full hover:shadow-sm text-center text-white transition duration-75 delay-[40ms] ease-linear">
                     Dashboard
                   </UnstyledButton>
-                </Link> :
+                </Link>
+              ) : (
                 <Flex className="items-center space-x-3 font-bold">
-                  <Link href='/auth/signin'>
+                  <Link href="/#about_us">
+                    <UnstyledButton className="bg-transparent hover:bg-[#014340] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear">
+                      About Us
+                    </UnstyledButton>
+                  </Link>
+
+                  <Link href="/auth/signin">
                     <UnstyledButton className="bg-transparent hover:bg-[#014340] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear">
                       Sign in
                     </UnstyledButton>
                   </Link>
 
-                  <Link href='/auth/signup'>
+                  <Link href="/auth/signup">
                     <UnstyledButton className="bg-[#014340] hover:bg-[#014340de] py-3 w-32 rounded-full hover:shadow-sm text-center text-white transition duration-75 delay-[40ms] ease-linear">
                       Sign up
                     </UnstyledButton>
                   </Link>
                 </Flex>
-              }
+              )}
             </Box>
           </Flex>
         </NavElement>
@@ -61,19 +68,19 @@ const HomeNav = () => {
         onClose={toggle}
         fullScreen
         withCloseButton={false}
-        transitionProps={{ transition: 'fade', duration: 200 }}
+        transitionProps={{ transition: "fade", duration: 200 }}
         padding={0}
       >
         <NavElement className="w-full max-w-[90rem] mx-auto sticky bg-white top-0 h-[70px] px-4 sm:px-6 lg:px-8 md:border-none border-b-2 border-[#E2E2E2]">
           <Flex className="items-center h-full justify-between">
             <Box>
-              <Link href='/dashboard/overview'>
+              <Link href="/dashboard/overview">
                 <Logo />
               </Link>
             </Box>
 
             <Burger
-              size='md'
+              size="md"
               color="#FAA61A"
               opened={opened}
               onClick={toggle}
@@ -81,39 +88,58 @@ const HomeNav = () => {
           </Flex>
         </NavElement>
 
-        {user ?
-          <Flex className="justify-center flex-col mt-10
-         space-y-6">
+        {user ? (
+          <Flex
+            className="justify-center flex-col mt-10
+         space-y-6"
+          >
             <Box className="mx-auto">
-              <Link href='/dashboard/overview'>
+              <Link href="/dashboard/overview">
                 <UnstyledButton className="bg-[#014340] hover:bg-[#014340de] py-3 w-40 rounded-full hover:shadow-sm text-center text-white transition duration-75 delay-[40ms] ease-linear">
                   Dashboard
                 </UnstyledButton>
               </Link>
             </Box>
-          </Flex> :
-          <Flex className="justify-center flex-col mt-10
-         space-y-6">
+          </Flex>
+        ) : (
+          <Flex className="justify-center flex-col mt-10 space-y-6">
             <Box className="mx-auto">
-              <Link href='/auth/signin'>
-                <UnstyledButton style={{ border: '1px solid #014340' }} className="bg-transparent hover:bg-[#014340] text-[#014340] py-3 w-60 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear">
+              <Link href="/#about_us">
+                <UnstyledButton
+                  style={{ border: "1px solid #014340" }}
+                  className="bg-transparent hover:bg-[#014340] text-[#014340] py-3 w-60 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear"
+                >
+                  About Us
+                </UnstyledButton>
+              </Link>
+            </Box>
+
+            <Box className="mx-auto">
+              <Link href="/auth/signin">
+                <UnstyledButton
+                  style={{ border: "1px solid #014340" }}
+                  className="bg-transparent hover:bg-[#014340] text-[#014340] py-3 w-60 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear"
+                >
                   Sign in
                 </UnstyledButton>
               </Link>
             </Box>
 
             <Box className="mx-auto">
-              <Link href='/auth/signup'>
-                <UnstyledButton style={{ border: '1px solid #014340' }} className="bg-[#014340] hover:bg-[#014340de] py-3 w-60 rounded-full hover:shadow-sm text-center text-white transition duration-75 delay-[40ms] ease-linear">
+              <Link href="/auth/signup">
+                <UnstyledButton
+                  style={{ border: "1px solid #014340" }}
+                  className="bg-[#014340] hover:bg-[#014340de] py-3 w-60 rounded-full hover:shadow-sm text-center text-white transition duration-75 delay-[40ms] ease-linear"
+                >
                   Sign up
                 </UnstyledButton>
               </Link>
             </Box>
           </Flex>
-        }
+        )}
       </Modal>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default HomeNav
+export default HomeNav;

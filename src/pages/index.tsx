@@ -1,18 +1,18 @@
-import React from 'react'
-import PageLayout from '@/layouts/PageLayout'
-import Head from 'next/head'
-import { Box } from '@mantine/core'
-import Footer from '@/components/landing/Footer';
-import CourseAdCarousel from '@/components/landing/CoursesAdCarousel';
-import FAQ from '@/components/landing/FAQ';
-import ContactUs from '@/components/landing/ContactUs';
-import HomeNav from '@/components/nav/HomeNav'
-import ReviewsCarousel from '@/components/landing/ReviewsCarousel';
-import MockupBackground from '@/components/landing/MockupBackground';
-import WelcomeFace from '@/components/landing/WelcomeFace';
-import ServicesSection from '@/components/landing/ServicesSection';
-import GetStarted from '@/components/landing/GetStarted';
-import OurStats from '@/components/landing/OurStats';
+import React from "react";
+import PageLayout from "@/layouts/PageLayout";
+import Head from "next/head";
+import { Box } from "@mantine/core";
+import Footer from "@/components/landing/Footer";
+import CourseAdCarousel from "@/components/landing/CoursesAdCarousel";
+import FAQ from "@/components/landing/FAQ";
+import ContactUs from "@/components/landing/ContactUs";
+import HomeNav from "@/components/nav/HomeNav";
+import ReviewsCarousel from "@/components/landing/ReviewsCarousel";
+import MockupBackground from "@/components/landing/MockupBackground";
+import WelcomeFace from "@/components/landing/WelcomeFace";
+import ServicesSection from "@/components/landing/ServicesSection";
+import GetStarted from "@/components/landing/GetStarted";
+import OurStats from "@/components/landing/OurStats";
 
 export default function Home() {
   return (
@@ -45,5 +45,5 @@ export default function Home() {
 
       <Footer />
     </PageLayout>
-  )
+  );
 }
