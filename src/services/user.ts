@@ -1,5 +1,6 @@
 import { IProfile, IUpdateProfile } from "@/store/@types/profile";
-import { setProfile } from "@/store/slices/profile";
+import { setProfile, setShow } from "@/store/slices/profile";
+import { setError } from "@/store/slices/subject";
 import axiosInstance from "@/utility/axiosInstane";
 import axiosUpload from "@/utility/axiosUpload";
 import { ThunkDispatch } from "@reduxjs/toolkit";
@@ -35,15 +36,17 @@ export const getUserProfile = async (token: any) => {
 
 /** Start state from here */
 export const get_user_profile = async (dispatch: Function) => {
+  dispatch(setShow());
   try {
     const response = await axiosInstance.get("/api/v1/student/profile");
 
     dispatch(setProfile(response.data));
   } catch (error) {
     if (isAxiosError(error)) {
-      return error?.response?.data;
+      dispatch(setError());
     }
   }
+  dispatch(setShow());
 };
 
 export const update_profile = async (
@@ -54,7 +57,11 @@ export const update_profile = async (
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("location", data.location);
-    if (data.image !== null) formData.append("image", data.image);
+    if (data.image !== null || typeof data.image !== "string")
+      formData.append("image", data.image);
+    else formData.append("image", "");
+
+    console.log(formData, data);
 
     const response = await axiosUpload.post(
       "/api/v1/student/profile/update",
@@ -65,7 +72,8 @@ export const update_profile = async (
     // dispatch(setProfile(response.data));
   } catch (error) {
     if (isAxiosError(error)) {
-      return error?.response?.data;
+      console.log("Error Data", error?.response);
+      return error?.response;
     }
   }
 };

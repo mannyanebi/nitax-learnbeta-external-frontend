@@ -1,8 +1,8 @@
-import { IServiceReponse } from "./misc";
+import { ILoading, IServiceReponse } from "./misc";
 
 export type IProfileState = {
   profile: IProfile | null;
-};
+} & ILoading;
 
 export type IUpdateProfile = {
   name: string;
@@ -12,17 +12,16 @@ export type IUpdateProfile = {
 
 export type IProfile = {
   data: {
-    data: {
-      id: string;
-      name: string;
-      email: string;
-      location: string;
-      image: null;
-      full_image_path: string;
-      grade_level_name: string;
-      subscription: string;
-    };
-    message: string;
-    status: string;
+    id: string;
+    name: string;
+    email: string;
+    location: string;
+    image: string;
+    full_image_path: string;
+    grade_level_name: string;
+    subscription: string;
+    phone_number: string;
   };
+  message: string;
+  status: string;
 };

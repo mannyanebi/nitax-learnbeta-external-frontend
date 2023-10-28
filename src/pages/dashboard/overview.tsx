@@ -14,26 +14,31 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import preview_subject from "../../assets/svgs/empty_state.svg";
 import Image from "next/image";
 import { useQuery } from "react-query";
-import { getGradeLevelSubjects } from "@/services/subjects";
+import {
+  getGradeLevelSubjects,
+  get_grade_level_subjects,
+} from "@/services/subjects";
 import SubjectCard, {
   SubjectCardSkeleton,
 } from "@/components/subjects/SubjectCard";
 import RefetchButton from "@/components/onboarding/RefetchButton";
+import { useAppDispatch, useAppSelector } from "@/store";
 
 const Overview = () => {
+  const dispatch = useAppDispatch();
+  const gradeLevelSubjects = useAppSelector(({ subject }) => subject.subjects);
+  const loading = useAppSelector(({ subject }) => subject.loading);
+  const error = useAppSelector(({ subject }) => subject.error);
+  const profile = useAppSelector(({ profile }) => profile.profile);
   const { user } = useContext(UserContext);
-  const token = `Bearer ${user?.data?.access_token}`;
 
-  const gradeLevelSubjects = useQuery(
-    "gradeLevelSubjects",
-    () => getGradeLevelSubjects(token),
-    {
-      staleTime: 30000, // Set to 30 seconds (30,000 milliseconds)
-      refetchInterval: 30000, // Set to 30 seconds (30,000 milliseconds)
-    }
-  );
+  const onLoad = React.useCallback(() => {
+    get_grade_level_subjects(dispatch);
+  }, [dispatch]);
 
-  console.log(gradeLevelSubjects);
+  React.useEffect(() => {
+    onLoad();
+  }, [onLoad]);
 
   return (
     <DashboardLayout>
@@ -47,7 +52,7 @@ const Overview = () => {
       >
         <Flex className="h-full items-center">
           <Box>
-            <Text className="text-3xl">Hi, {user?.data?.student?.name}!</Text>
+            <Text className="text-3xl">Hi, {profile?.data?.name}!</Text>
 
             <Text className="mt-2">
               Welcome to your study dashboard, where you can explore a world of
@@ -64,7 +69,7 @@ const Overview = () => {
         >
           <Flex className="h-full items-center">
             <Box>
-              <Text className="text-3xl">Hi, {user?.data?.student?.name}!</Text>
+              <Text className="text-3xl">Hi, {profile?.data?.name}!</Text>
 
               <Text className="mt-2">
                 Welcome to your study dashboard, where you can explore{" "}
@@ -92,20 +97,20 @@ const Overview = () => {
           </Box>
 
           <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
-            {gradeLevelSubjects.isLoading ? (
+            {loading ? (
               [1, 2, 3].map((num: number) => <SubjectCardSkeleton key={num} />)
-            ) : gradeLevelSubjects.isError ? (
+            ) : error ? (
               <RefetchButton
                 message="Failed to fetch subjects in your grade"
-                retry={() => gradeLevelSubjects.refetch()}
+                retry={onLoad}
               />
-            ) : gradeLevelSubjects.data.data.length ? (
-              gradeLevelSubjects.data.data
+            ) : gradeLevelSubjects.length ? (
+              gradeLevelSubjects
                 .filter((subject: any) => subject.has_access === true)
                 .map((subject: any) => (
                   <SubjectCard key={subject.id} subject={subject} />
                 ))
-            ) : gradeLevelSubjects.data.data.length < 1 ? (
+            ) : gradeLevelSubjects.length < 1 ? (
               <Box className="w-full mx-auto">
                 <Center className="h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl">
                   <Box>
@@ -121,16 +126,16 @@ const Overview = () => {
                   </Box>
                 </Center>
               </Box>
-            ) : gradeLevelSubjects.data.data.length > 0 ? (
-              gradeLevelSubjects.data.data
+            ) : gradeLevelSubjects.length > 0 ? (
+              gradeLevelSubjects
                 .filter((subject: any) => subject.has_access === true)
                 .every((subject: any) => subject.progress === 0)
             ) : null}
           </Box>
 
-          {/* {gradeLevelSubjects.data &&
-            (gradeLevelSubjects.data.data.length > 0 &&
-            gradeLevelSubjects.data.data
+          {gradeLevelSubjects &&
+            (gradeLevelSubjects.length > 0 &&
+            gradeLevelSubjects
               .filter((subject: any) => subject.has_access === true)
               .every((subject: any) => subject.progress === 0) ? (
               <Box className="w-full mx-auto">
@@ -148,27 +153,26 @@ const Overview = () => {
                   </Box>
                 </Center>
               </Box>
-            ) : null)} */}
+            ) : null)}
 
           {/* if no subjects exist in the user's grade lvl, display no subjects banner */}
-          {/* {gradeLevelSubjects.data &&
-            gradeLevelSubjects.data.data.length < 1 && (
-              <Box className="w-full mx-auto">
-                <Center className="h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl">
-                  <Box>
-                    <Image
-                      alt="icon"
-                      priority
-                      src={preview_subject}
-                      className="w-[20rem] mx-auto"
-                    />
-                    <Text className="text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center">
-                      There are no subjects in your grade yet
-                    </Text>
-                  </Box>
-                </Center>
-              </Box>
-            )} */}
+          {gradeLevelSubjects && gradeLevelSubjects.length < 1 && (
+            <Box className="w-full mx-auto">
+              <Center className="h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl">
+                <Box>
+                  <Image
+                    alt="icon"
+                    priority
+                    src={preview_subject}
+                    className="w-[20rem] mx-auto"
+                  />
+                  <Text className="text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center">
+                    There are no subjects in your grade yet
+                  </Text>
+                </Box>
+              </Center>
+            </Box>
+          )}
 
           {/* Other Subjects */}
           <Box>
@@ -188,21 +192,21 @@ const Overview = () => {
 
           <Box className="grid grid-cols-1 mt-6 md:grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 sm:gap-4 max-w-[57.5rem] sm:grid-cols-2 xl:grid-cols-3">
             {/* if user is not subscribed or has no subscription plan, display all subjects in the grade level */}
-            {/* {gradeLevelSubjects.data &&
-            gradeLevelSubjects.data.data.length > 0 &&
-            (!user.data.student.subscription ||
+            {gradeLevelSubjects &&
+            gradeLevelSubjects.length > 0 &&
+            (!profile?.data?.subscription ||
               user.data?.student?.subscription?.is_expired)
-              ? gradeLevelSubjects.data.data.map((subject: any) => (
+              ? gradeLevelSubjects.map((subject: any) => (
                   <SubjectCard key={subject.id} subject={subject} />
                 ))
-              : null} */}
+              : null}
 
             {/* if user is subscribed or has an ongoing subscription plan, display subjects without access */}
-            {gradeLevelSubjects.data &&
-            gradeLevelSubjects.data.data.length > 0 &&
-            (user.data.student.subscription ||
+            {gradeLevelSubjects &&
+            gradeLevelSubjects.length > 0 &&
+            (profile?.data?.subscription ||
               !user.data?.student?.subscription?.is_expired)
-              ? gradeLevelSubjects.data.data
+              ? gradeLevelSubjects
                   .filter((subject: any) => subject.has_access === false)
                   .map((subject: any) => (
                     <SubjectCard key={subject.id} subject={subject} />
@@ -210,36 +214,33 @@ const Overview = () => {
               : null}
 
             {/* if data is fetching, display loading skeletons */}
-            {gradeLevelSubjects.isLoading &&
+            {loading &&
               [1, 2, 3].map((num: number) => <SubjectCardSkeleton key={num} />)}
           </Box>
 
           {/* if no subjects exist in the user's grade lvl, display no subjects banner */}
-          {gradeLevelSubjects.data &&
-            gradeLevelSubjects.data.data.length < 1 && (
-              <Box className="w-full mx-auto">
-                <Center className="h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl">
-                  <Box>
-                    <Image
-                      alt="icon"
-                      priority
-                      src={preview_subject}
-                      className="w-[20rem] mx-auto"
-                    />
-                    <Text className="text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center">
-                      There are no subjects in your grade yet
-                    </Text>
-                  </Box>
-                </Center>
-              </Box>
-            )}
+          {gradeLevelSubjects && gradeLevelSubjects.length < 1 && (
+            <Box className="w-full mx-auto">
+              <Center className="h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl">
+                <Box>
+                  <Image
+                    alt="icon"
+                    priority
+                    src={preview_subject}
+                    className="w-[20rem] mx-auto"
+                  />
+                  <Text className="text-[#00433F] font-semibold mt-10 text-lg xl:text-2xl text-center">
+                    There are no subjects in your grade yet
+                  </Text>
+                </Box>
+              </Center>
+            </Box>
+          )}
 
           {/* Check if all subjects have has_access as true */}
-          {gradeLevelSubjects.data &&
-          gradeLevelSubjects.data.data.length > 0 &&
-          gradeLevelSubjects.data.data.every(
-            (subject: any) => subject.has_access
-          ) ? (
+          {gradeLevelSubjects &&
+          gradeLevelSubjects.length > 0 &&
+          gradeLevelSubjects.every((subject: any) => subject.has_access) ? (
             <Box className="w-full mx-auto">
               <Center className="h-[30rem] bg-gradient-to-br from-[#FAAB2E] to-[#d9f3f1] p-5 rounded-2xl">
                 <Box>
@@ -258,10 +259,10 @@ const Overview = () => {
           ) : null}
 
           {/* if data fetching returns error, display refetch button */}
-          {gradeLevelSubjects.isError && (
+          {error && (
             <RefetchButton
               message="Failed to fetch subjects in your grade"
-              retry={() => gradeLevelSubjects.refetch()}
+              retry={onLoad}
             />
           )}
         </Box>

@@ -1,14 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import PageLayout from "@/layouts/PageLayout";
 import Head from "next/head";
-import { UserContext } from "@/contexts/UserContext"
+import { UserContext } from "@/contexts/UserContext";
 import Image from "next/image";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { useDisclosure } from "@mantine/hooks";
-import { Box, Center, Flex, Text, UnstyledButton, Modal, Skeleton } from "@mantine/core";
+import {
+  Box,
+  Center,
+  Flex,
+  Text,
+  UnstyledButton,
+  Modal,
+  Skeleton,
+} from "@mantine/core";
 import Link from "next/link";
-import backArrow from '../../../../../assets/svgs/backarrow_icon.svg'
-import preview_subject from '../../../../../assets/svgs/empty_state.svg'
+import backArrow from "../../../../../assets/svgs/backarrow_icon.svg";
+import preview_subject from "../../../../../assets/svgs/empty_state.svg";
 import QuizCard from "@/components/assessments/QuizCard";
 import ProfileNav from "@/components/nav/ProfileNav";
 import { getQuizzes, submitQuizResponses } from "@/services/assessments";
@@ -19,61 +27,77 @@ import { Icon } from "@iconify/react";
 
 export default function Quiz() {
   const router = useRouter();
-  const { user } = useContext(UserContext)
-  const token = `Bearer ${user?.data?.access_token}`
-  const lessonId = router.query.lessonId ? (router.query.lessonId as string) : '';
-  const quizzes = useQuery(['quizzes', Number(lessonId)], () => getQuizzes(token, lessonId), {
-    enabled: false, // Disable automatic fetching
-  })
+  const { user } = useContext(UserContext);
+  const token = `Bearer ${user?.data?.access_token}`;
+  const lessonId = router.query.lessonId
+    ? (router.query.lessonId as string)
+    : "";
+  const quizzes = useQuery(
+    ["quizzes", Number(lessonId)],
+    () => getQuizzes(token, lessonId),
+    {
+      enabled: false, // Disable automatic fetching
+    }
+  );
   const [opened, { open, close }] = useDisclosure(false);
-  const [bulkAnswers, setBulkAnswers] = useState<any>([])
-  const [questions, setQuestions] = useState<any>({})
-  const [answer, setAnswer] = useState<any>('')
+  const [bulkAnswers, setBulkAnswers] = useState<any>([]);
+  const [questions, setQuestions] = useState<any>({});
+  const [answer, setAnswer] = useState<any>("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [assessmentResult, setAssessmentResult] = useState<any>({});
-  const [skipAble, setSkipAble] = useState(false)
-  const currentQuestion = questions?.data?.[currentQuestionIndex]
+  const [skipAble, setSkipAble] = useState(false);
+  const currentQuestion = questions?.data?.[currentQuestionIndex];
 
   useEffect(() => {
-    if (quizzes.isSuccess){
-      setQuestions(quizzes.data)
+    if (quizzes.isSuccess) {
+      setQuestions(quizzes.data);
     }
-  }, [quizzes.isSuccess, quizzes.data])
+  }, [quizzes.isSuccess, quizzes.data]);
 
   useEffect(() => {
     if (lessonId) {
       quizzes.refetch();
     }
-  }, [lessonId]);
+  }, [lessonId, quizzes]);
 
   useEffect(() => {
     if (questions?.data?.length > 0) {
-      const currentQuestionAnswer = bulkAnswers.find((answer: any) => answer.assessment_id === currentQuestion?.id);
+      const currentQuestionAnswer = bulkAnswers.find(
+        (answer: any) => answer.assessment_id === currentQuestion?.id
+      );
 
       if (currentQuestionAnswer) {
         setAnswer(currentQuestionAnswer.response);
       } else {
-        setAnswer('');
+        setAnswer("");
       }
     }
-  }, [currentQuestionIndex]);
+  }, [
+    bulkAnswers,
+    currentQuestion?.id,
+    currentQuestionIndex,
+    questions?.data?.length,
+  ]);
 
-  const submitResponsesMutation = useMutation((data: any) => submitQuizResponses(token, data), {
-    onError: (error: any) => {
-      setSkipAble(true)
-      toast.error(error.response.data.errors);
-    },
+  const submitResponsesMutation = useMutation(
+    (data: any) => submitQuizResponses(token, data),
+    {
+      onError: (error: any) => {
+        setSkipAble(true);
+        toast.error(error.response.data.errors);
+      },
 
-    onSuccess: (data: any) => {
-      setAssessmentResult(data)
-      open()
+      onSuccess: (data: any) => {
+        setAssessmentResult(data);
+        open();
+      },
     }
-  })
+  );
 
   const handleSubmit = () => {
     const last_response_object = {
       assessment_id: currentQuestion.id,
-      response: answer
+      response: answer,
     };
 
     // Find the index of the last response in bulkAnswers
@@ -90,10 +114,10 @@ export default function Quiz() {
 
     const payload = {
       lesson_id: Number(lessonId),
-      responses: bulkAnswers
+      responses: bulkAnswers,
     };
 
-    submitResponsesMutation.mutate(payload)
+    submitResponsesMutation.mutate(payload);
   };
 
   const handleNext = () => {
@@ -102,17 +126,19 @@ export default function Quiz() {
 
       const response_object = {
         assessment_id: currentQuestion.id,
-        response: answer
+        response: answer,
       };
 
-      const existingAnswerIndex = bulkAnswers.findIndex((answer: any) => answer.assessment_id === response_object.assessment_id);
+      const existingAnswerIndex = bulkAnswers.findIndex(
+        (answer: any) => answer.assessment_id === response_object.assessment_id
+      );
 
       if (existingAnswerIndex !== -1) {
         bulkAnswers[existingAnswerIndex] = response_object; // Update existing answer
       } else {
         bulkAnswers.push(response_object); // Add new answer
       }
-      setAnswer('');
+      setAnswer("");
     }
   };
 
@@ -132,14 +158,14 @@ export default function Quiz() {
 
       <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 hidden lg:block">
         <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
-          <Box className='w-fit'>
+          <Box className="w-fit">
             <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
               <Flex className="max-w-[97rem] mx-auto space-x-2">
                 <Center className="bg-[#FEEDD1] rounded-full p-2">
                   <Image
                     priority
                     src={backArrow}
-                    alt='back icon'
+                    alt="back icon"
                     className="w-2 h-2"
                   />
                 </Center>
@@ -151,7 +177,7 @@ export default function Quiz() {
         </Box>
       </Box>
 
-      {quizzes.isLoading &&
+      {quizzes.isLoading && (
         <Box className="w-full px-4 sm:px-8 md:px-10 mt-10">
           <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto ">
             <Skeleton className="h-14 rounded-xl" />
@@ -167,9 +193,9 @@ export default function Quiz() {
             </Box>
           </Box>
         </Box>
-      }
+      )}
 
-      {quizzes.isError &&
+      {quizzes.isError && (
         <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
           <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
             <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
@@ -177,10 +203,10 @@ export default function Quiz() {
                 <Box className="text-center">
                   <Box>
                     <Image
-                      alt='icon'
+                      alt="icon"
                       priority
                       src={preview_subject}
-                      className='w-[20rem] mx-auto'
+                      className="w-[20rem] mx-auto"
                     />
                   </Box>
 
@@ -190,17 +216,15 @@ export default function Quiz() {
 
                   <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
                     <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                      <UnstyledButton
-                        className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                      >
+                      <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                         Return to lessons
                       </UnstyledButton>
                     </Link>
 
-                    <Link href={`/dashboard/lessons/${router.query.lessonId}/theory`}>
-                      <UnstyledButton
-                        className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                      >
+                    <Link
+                      href={`/dashboard/lessons/${router.query.lessonId}/theory`}
+                    >
+                      <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                         Take Theory
                       </UnstyledButton>
                     </Link>
@@ -209,20 +233,19 @@ export default function Quiz() {
               </Center>
             </Box>
           </Box>
-        </Box> 
-      }
+        </Box>
+      )}
 
-      {quizzes.isError &&
+      {quizzes.isError && (
         <Box className="mx-auto mt-10">
           <RefetchButton
             message="Failed to fetch quiz questions"
             retry={() => quizzes.refetch()}
           />
         </Box>
-      }
+      )}
 
-      {quizzes.data &&
-        quizzes.data.data.length < 1 &&
+      {quizzes.data && quizzes.data.data.length < 1 && (
         <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
           <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
             <Box className="bg-[#FEEDD1] py-10 px-10 lg:px-20 mt-14 max-w-4xl rounded-xl mx-auto">
@@ -230,10 +253,10 @@ export default function Quiz() {
                 <Box className="text-center">
                   <Box>
                     <Image
-                      alt='icon'
+                      alt="icon"
                       priority
                       src={preview_subject}
-                      className='w-[20rem] mx-auto'
+                      className="w-[20rem] mx-auto"
                     />
                   </Box>
 
@@ -243,17 +266,15 @@ export default function Quiz() {
 
                   <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
                     <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                      <UnstyledButton
-                        className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                      >
+                      <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                         Return to lessons
                       </UnstyledButton>
                     </Link>
 
-                    <Link href={`/dashboard/lessons/${router.query.lessonId}/theory`}>
-                      <UnstyledButton
-                        className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                      >
+                    <Link
+                      href={`/dashboard/lessons/${router.query.lessonId}/theory`}
+                    >
+                      <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                         Take Theory
                       </UnstyledButton>
                     </Link>
@@ -262,14 +283,14 @@ export default function Quiz() {
               </Center>
             </Box>
           </Box>
-        </Box> 
-      } 
+        </Box>
+      )}
 
-      {quizzes.data && quizzes.data.data.length > 0 &&
+      {quizzes.data && quizzes.data.data.length > 0 && (
         <Box className="w-full px-4 sm:px-8 md:px-10 mt-4 mb-20">
           <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto ">
             <Flex className="bg-[#FEEDD1] sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
-              <Text className='font-semibold text-2xl truncate'>
+              <Text className="font-semibold text-2xl truncate">
                 Assessment
               </Text>
             </Flex>
@@ -296,15 +317,15 @@ export default function Quiz() {
                   </UnstyledButton>
                 )}
 
-                {skipAble &&
-                  <Link href={`/dashboard/lessons/${router.query.lessonId}/theory`}>
-                    <UnstyledButton
-                      className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                    >
+                {skipAble && (
+                  <Link
+                    href={`/dashboard/lessons/${router.query.lessonId}/theory`}
+                  >
+                    <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                       Take Theory
                     </UnstyledButton>
                   </Link>
-                }
+                )}
 
                 {currentQuestionIndex === questions?.data?.length - 1 ? (
                   <UnstyledButton
@@ -313,16 +334,17 @@ export default function Quiz() {
                     onClick={handleSubmit}
                     className="px-2 w-60 h-12 text-center font-bold disabled:opacity-50 transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
                   >
-                    {submitResponsesMutation.isLoading ?
+                    {submitResponsesMutation.isLoading ? (
                       <Icon
                         className={`animate-spin mx-auto`}
                         icon="icomoon-free:spinner2"
                         color="#white"
                         width="20"
                         height="20"
-                      /> :
-                      'Submit Assessment'
-                    }
+                      />
+                    ) : (
+                      "Submit Assessment"
+                    )}
                   </UnstyledButton>
                 ) : (
                   <UnstyledButton
@@ -336,10 +358,7 @@ export default function Quiz() {
                 )}
               </Flex>
 
-              <Toaster
-                position="bottom-right"
-                reverseOrder={false}
-              />
+              <Toaster position="bottom-right" reverseOrder={false} />
             </Box>
           </Box>
 
@@ -349,13 +368,13 @@ export default function Quiz() {
             fullScreen
             withCloseButton={false}
             padding={0}
-            transitionProps={{ transition: 'fade', duration: 200 }}
+            transitionProps={{ transition: "fade", duration: 200 }}
           >
             <ProfileNav />
 
             <Box className="w-full px-4 sm:px-8 md:px-10 mt-10 mb-20">
               <Flex className="bg-[#FEEDD1] max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto sm:items-center sm:space-x-4 flex-col sm:flex-row py-5 px-8 rounded-xl">
-                <Text className='font-semibold text-2xl truncate'>
+                <Text className="font-semibold text-2xl truncate">
                   Assessment
                 </Text>
 
@@ -376,22 +395,23 @@ export default function Quiz() {
                     </Text>
 
                     <Text className="text-lg mt-8">
-                      Great job on completing the assessment! Use your score as a stepping stone for improvement. Keep up the good work!
+                      Great job on completing the assessment! Use your score as
+                      a stepping stone for improvement. Keep up the good work!
                     </Text>
 
                     <Flex className="flex-col mt-8 space-y-3 sm:space-y-0 sm:justify-center sm:space-x-3 sm:flex-row">
-                      <Link href={`/dashboard/subjects/${router.query.lessonId}`}>
-                        <UnstyledButton
-                          className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                        >
+                      <Link
+                        href={`/dashboard/subjects/${router.query.lessonId}`}
+                      >
+                        <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                           Return to lessons
                         </UnstyledButton>
                       </Link>
 
-                      <Link href={`/dashboard/lessons/${router.query.lessonId}/theory`}>
-                        <UnstyledButton
-                          className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white"
-                        >
+                      <Link
+                        href={`/dashboard/lessons/${router.query.lessonId}/theory`}
+                      >
+                        <UnstyledButton className="px-4 w-52 h-12 text-center font-bold transition duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-2 bg-[#FAA61A] text-white">
                           Take Theory
                         </UnstyledButton>
                       </Link>
@@ -402,7 +422,7 @@ export default function Quiz() {
             </Box>
           </Modal>
         </Box>
-      }
+      )}
     </PageLayout>
-  )
+  );
 }

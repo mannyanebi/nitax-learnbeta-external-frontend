@@ -2,9 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 
 // ...
 import profile from "./slices/profile";
+import subject from "./slices/subject";
 
 export const store = configureStore({
-  reducer: { profile },
+  reducer: { profile, subject },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

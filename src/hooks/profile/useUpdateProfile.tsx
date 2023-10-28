@@ -7,7 +7,6 @@ import React from "react";
 
 const useUpdateProfile = () => {
   const dispatch = useAppDispatch();
-  const data: IAuthResponse | null = getCookieItem("learnbeta_user");
   const user = useAppSelector(({ profile }) => profile.profile);
 
   const [profile, profileSet] = React.useState<IUpdateProfile>({
@@ -26,22 +25,28 @@ const useUpdateProfile = () => {
     profileSet((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files) profileSet((prev) => ({ ...prev, image: files[0] }));
+  };
+
   const onProfileSet = React.useCallback(() => {
     if (user && user?.data) {
-      console.log(user);
-      // const { full_image_path, name, location } = data.data.student;
-      // profileSet((prev) => ({
-      //   ...prev,
-      //   name,
-      //   location,
-      //   // image: full_image_path || "",
-      // }));
-      // console.log(full_image_path, name, location);
+      const { full_image_path, name, location } = user.data;
+      profileSet((prev) => ({
+        ...prev,
+        name,
+        location,
+        image: full_image_path,
+      }));
     }
   }, [user]);
 
-  console.log(data, user);
-  return { profile, profileSet, handleSubmit, onSubmit };
+  React.useEffect(() => {
+    onProfileSet();
+  }, [onProfileSet]);
+
+  return { profile, profileSet, handleSubmit, handleFileSubmit, onSubmit };
 };
 
 export default useUpdateProfile;

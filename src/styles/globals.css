@@ -25,3 +25,7 @@
     margin: 0;
   }
 }
+
+.profile_banner {
+  background-image: url('/public/assets/svgs/hero_banner.png');
+}

@@ -9,7 +9,6 @@ import {
 import yellowBg from "../../assets/svgs/hero_banner.svg";
 import Image from "next/image";
 import noProfile from "../../assets/imgs/no_profile.png";
-import editIcon from "../../assets/svgs/edit_icon.svg";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import Form from "../custom/Form";

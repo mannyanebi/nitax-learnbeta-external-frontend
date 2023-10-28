@@ -4,3 +4,10 @@ export type IServiceReponse = {
   isLoading: boolean;
   isLoadingError: boolean;
 };
+
+export type ILoading = {
+  loading: boolean;
+  show: boolean;
+  update: boolean;
+  delete: boolean;
+};
