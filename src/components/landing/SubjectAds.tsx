@@ -12,18 +12,16 @@ type Props = {
   };
 };
 
-// className="border-2 rounded-3xl bg-white border-[#E2E2E2] p-4 h-[18.2rem] md:w-[18rem] flex flex-col relative"
-
-const SubjectAd: React.FC<Props> = ({ item }) => {
+const SubjectAds: React.FC<Props> = ({ item }) => {
   return (
-    <Box className="border-2 rounded-3xl bg-white border-[#E2E2E2] p-4 h-[18.2rem] w-[16rem] md:w-[18rem] flex flex-col">
-      <Box className="w-full h-[127px] rounded-xl overflow-hidden">
+    <div className="border-2 rounded-3xl bg-[white] border-[#E2E2E2] p-4 h-[18.2rem] w-[16rem] md:w-[18rem] flex flex-col">
+      <div className="w-full h-[127px] rounded-xl overflow-hidden">
         <Image
-          alt="subject banner"
+          alt={item.title + "Banner"}
           src={item.img}
-          className="w-full h-[127px] object-cover object-center rounded-xl hover:brightness-75 hover:scale-125 transition duration-200 delay-75 ease-linear"
+          className="w-full h-[127px] object-cover hover:brightness-75 hover:scale-125 transition duration-200 delay-75 ease-linear"
         />
-      </Box>
+      </div>
 
       <Text className="font-semibold text-lg mt-3">{item.title}</Text>
 
@@ -42,13 +40,13 @@ const SubjectAd: React.FC<Props> = ({ item }) => {
         </Text>
       </Box>
 
-      <Flex className="items-center justify-end absolute bottom-4 right-4 space-x-2">
+      <div className="flex items-center justify-end absolute bottom-4 right-6 space-x-2">
         <Image alt="icon" src={group_icon} className="w-8 h-8" />
 
-        <Text className="text-[#444444] font-semibold">{item.students}+</Text>
-      </Flex>
-    </Box>
+        <p className="text-[#444444] font-semibold ">{item.students}+</p>
+      </div>
+    </div>
   );
 };
 
-export default SubjectAd;
+export default SubjectAds;

@@ -35,7 +35,7 @@ export default function Carroussel(props: CarrousselProps) {
     }));
     setGoToSlide(0);
     cards.splice(0, cards.length, ...table);
-  }, [props.cards]);
+  }, [cards, props.cards]);
 
   useEffect(() => {
     const interval = setInterval(() => {

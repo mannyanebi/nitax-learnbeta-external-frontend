@@ -13,8 +13,8 @@ export default function ServicesSection() {
   };
 
   return (
-    <Box className="py-10" id="about_us">
-      <div className="w-full my-8">
+    <Box className="py-10">
+      <div className="w-full mb-8" id="about_us">
         <p className="font-bold text-3xl xl:text-4xl text-[#00433F] text-center">
           {about.title}
         </p>

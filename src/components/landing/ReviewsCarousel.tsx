@@ -15,7 +15,7 @@ export default function ReviewsCarousel() {
         <ReviewCard
           img={profile}
           name="Jane Nwachukwu"
-          review="“t’s great to have an all-in-one platform. My kids love how interactive learning has become.”"
+          review="“It’s great to have an all-in-one platform. My kids love how interactive learning has become.”"
         />
       ),
     },
@@ -78,11 +78,11 @@ export default function ReviewsCarousel() {
           </Text>
         </Box>
 
-        <Box className="flex justify-center w-full">
+        <Box className="flex justify-center w-full sm:overflow-hidden">
           <Carousel
             cards={cards}
             height="350px"
-            margin="0 50"
+            margin="0 0"
             offset={7}
             showArrows={false}
           />

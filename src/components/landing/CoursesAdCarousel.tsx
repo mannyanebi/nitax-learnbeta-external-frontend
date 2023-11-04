@@ -6,6 +6,7 @@ import math from "../../assets/svgs/social science.svg";
 import health from "../../assets/svgs/subject_icon.svg";
 import social from "../../assets/svgs/health science.svg";
 import SubjectAd from "@/components/landing/SubjectAd";
+import SubjectAds from "./SubjectAds";
 
 export default function CourseAdCarousel() {
   const autoplay = useRef(Autoplay({ delay: 3000 }));
@@ -62,22 +63,51 @@ export default function CourseAdCarousel() {
           </Text>
         </Box>
 
+        {/* <Box className="mt-12 px-10">
+          <Carousel
+            maw="100%"
+            onMouseEnter={autoplay.current.reset}
+            onMouseLeave={autoplay.current.reset}
+            // slideSize="30%"
+            // slideGap="md"
+            slideSize={{ base: "100%", sm: "100%", md: "33%" }}
+            // slideGap={{ base: "md", sm: "lg" }}
+            loop // Responsive styles
+            withControls={false}
+            plugins={[autoplay.current]}
+            align="start"
+            slidesToScroll={1}
+          >
+            {ads.map((item, index) => (
+              <Carousel.Slide
+                key={index}
+                className="border-[white] w-full flex justify-center"
+              >
+                <SubjectAd item={item} />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+        </Box> */}
+
         <Box className="mt-12 px-10">
           <Carousel
             maw="100%"
-            onMouseEnter={autoplay.current.stop}
+            onMouseEnter={autoplay.current.reset}
             onMouseLeave={autoplay.current.reset}
-            slideSize="25%"
-            slideGap="md"
+            slideSize={{ base: "100%", sm: "100%", md: "33%" }}
+            slideGap={{ base: "md", sm: "lg", md: "md" }}
             loop
             withControls={false}
             plugins={[autoplay.current]}
             align="start"
             slidesToScroll={1}
           >
-            {ads.map((item: any, index: number) => (
-              <Carousel.Slide key={index}>
-                <SubjectAd item={item} />
+            {ads.map((item, index) => (
+              <Carousel.Slide
+                key={index}
+                className="border-[white] w-full flex justify-center"
+              >
+                <SubjectAds item={item} />
               </Carousel.Slide>
             ))}
           </Carousel>
