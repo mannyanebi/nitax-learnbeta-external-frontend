@@ -1,5 +1,5 @@
 export const about = {
-  title: "About Us",
+  title: "In About Us",
   description: `Learnbeta NG is your gateway to the future of education. Established
   in 2023 by educators, we've meticulously designed our platform to
   elevate your child's learning journey, spanning from nursery to SS3.
