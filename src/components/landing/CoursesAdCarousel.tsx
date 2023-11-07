@@ -94,8 +94,10 @@ export default function CourseAdCarousel() {
             maw="100%"
             onMouseEnter={autoplay.current.reset}
             onMouseLeave={autoplay.current.reset}
-            slideSize={{ base: "100%", sm: "100%", md: "33%" }}
-            slideGap={{ base: "md", sm: "lg", md: "md" }}
+            slideSize="25%"
+            slideGap="md"
+            // slideSize={{ base: "100%", sm: "100%", md: "33%" }}
+            // slideGap={{ base: "md", sm: "lg", md: "md" }}
             loop
             withControls={false}
             plugins={[autoplay.current]}
