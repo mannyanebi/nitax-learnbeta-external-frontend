@@ -82,7 +82,17 @@ export default function GetStarted() {
         </Text>
       </Box>
 
-      <Flex className="flex-col items-center space-y-5 sm:space-y-0 mt-14 sm:flex-row justify-center sm:space-x-8">
+      <div className="flex items-center justify-center">
+        <Box className="text-center lg:text-left mt-6 lg:mt-12">
+          <Link href="/auth/signup">
+            <UnstyledButton className="text-[#00433F] font-semibold bg-[#FFCB05] hover:bg-[#ffcd05c9] w-52 h-14 rounded-full text-center animate-bounce shadow-2xl transition duration-75 delay-75 ease-linear">
+              Start learning!
+            </UnstyledButton>
+          </Link>
+        </Box>
+      </div>
+
+      {/* <Flex className="flex-col items-center space-y-5 sm:space-y-0 mt-14 sm:flex-row justify-center sm:space-x-8">
         <SubscribeCard
           plan="Premium Plan"
           price="5,000"
@@ -94,7 +104,7 @@ export default function GetStarted() {
           price="2,000"
           description="Access one subject including its lessons, activities & learning resources."
         />
-      </Flex>
+      </Flex> */}
     </BackgroundImage>
   );
 }
