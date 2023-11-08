@@ -14,14 +14,14 @@ export default function ServicesSection() {
 
   return (
     <Box className="py-10">
-      <div className="w-full mb-8" id="about_us">
+      {/* <div className="w-full mb-8" id="about_us">
         <p className="font-bold text-3xl xl:text-4xl text-[#00433F] text-center">
           {about.title}
         </p>
         <p className="text-[#000000] text-[14px] mt-6 w-full md:text-left text-center">
           {about.description}
         </p>
-      </div>
+      </div> */}
 
       <Box className="max-w-[38rem] mx-auto">
         <Text className="font-bold text-3xl xl:text-4xl text-[#00433F] text-center">

@@ -39,7 +39,7 @@ const HomeNav = () => {
                 </Link>
               ) : (
                 <Flex className="items-center space-x-3 font-bold">
-                  <Link href="/#about_us">
+                  <Link href="/about_us">
                     <UnstyledButton className="bg-transparent hover:bg-[#014340] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear">
                       About Us
                     </UnstyledButton>
