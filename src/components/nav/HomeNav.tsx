@@ -104,7 +104,7 @@ const HomeNav = () => {
         ) : (
           <Flex className="justify-center flex-col mt-10 space-y-6">
             <Box className="mx-auto">
-              <Link href="/#about_us">
+              <Link href="/about_us">
                 <UnstyledButton
                   style={{ border: "1px solid #014340" }}
                   className="bg-transparent hover:bg-[#014340] text-[#014340] py-3 w-60 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear"
