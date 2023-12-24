@@ -6,6 +6,7 @@ import subject from "../../assets/svgs/subjects.svg";
 import videos_subject from "../../assets/svgs/videos_subject.svg";
 import worksheet from "../../assets/svgs/worksheet.svg";
 import bg_rose from "../../assets/svgs/bg_rose.svg";
+
 const stats_desc = `With (100k+) sign-ups, we've thrilled countless
 families, making learning a joyful adventure for kids while
 keeping parents actively involved in their child's progress.`;

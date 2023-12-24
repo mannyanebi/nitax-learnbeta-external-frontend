@@ -1,56 +1,86 @@
-import React, { useState, useContext } from "react"
-import { Box, Drawer, Text, Flex, Radio, Select, UnstyledButton, Collapse } from "@mantine/core"
+import React, { useState, useContext } from "react";
+import {
+  Box,
+  Drawer,
+  Text,
+  Flex,
+  Radio,
+  Select,
+  UnstyledButton,
+  Collapse,
+} from "@mantine/core";
 import Paystack from "./Paystack";
 import Voucher from "./Voucher";
 import Airtime from "./Airtime";
-import backArrow from '../../assets/svgs/back-arw.svg'
+import backArrow from "../../assets/svgs/back-arw.svg";
 import Image from "next/image";
-import { UserContext } from "@/contexts/UserContext"
+import { UserContext } from "@/contexts/UserContext";
 import AirtimeSummaryCard from "./AirtimeSummaryCard";
-import PaystackSummaryCard from './PaystackSummaryCard'
+import PaystackSummaryCard from "./PaystackSummaryCard";
 import { useMutation } from "react-query";
-import { makeVoucherPayment, verifyPaystackPayment, verifyVoucher } from "@/services/subscriptions";
+import {
+  getSmartPayPaymentMethod,
+  makeVoucherPayment,
+  paySmartPayMethod,
+  verifyPaystackPayment,
+  verifyVoucher,
+} from "@/services/subscriptions";
 import toast, { Toaster } from "react-hot-toast";
-import { usePaystackPayment } from 'react-paystack';
+import { usePaystackPayment } from "react-paystack";
 import { convertNairaToKobo } from "@/helpers/functions/convertNairaToKobo";
 import { getCookieItem, setCookieItem } from "@/helpers/functions/cookie";
+import { IDataType, IPaymenmtType } from "@/store/@types/payment";
+import { ref_number } from "@/services/generate/reference";
+import SmartPay from "./SmartPay";
+import { useAppDispatch } from "@/store";
 
 export default function CheckoutDrawer({
   opened,
   close,
   openAddSubjects,
-  cart
+  cart,
 }: any) {
-  const { user, setUser } = useContext(UserContext)
-  const token = `Bearer ${user?.data?.access_token}`
-  const [step, setStep] = useState('cart')
-  const [paymentMethod, setPaymentMethod] = useState('paystack');
-  const [verifiedVoucher, setVerifiedVoucher] = useState<null | {}>(null)
-  const [networkProvider, setNetworkProvider] = useState('mtn');
-  const [billingPlan, setBillingPlan] = useState<string | null>('monthly');
-  const [voucherCode, setVoucherCode] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState<string | number>('')
+  const dispatch = useAppDispatch();
+  const { user, setUser } = useContext(UserContext);
+  const token = `Bearer ${user?.data?.access_token}`;
+  const [step, setStep] = useState("cart");
+  const [paymentMethod, setPaymentMethod] = useState("paystack");
+  const [verifiedVoucher, setVerifiedVoucher] = useState<null | {}>(null);
+  const [networkProvider, setNetworkProvider] = useState("mtn");
+  const [billingPlan, setBillingPlan] = useState<string | null>("monthly");
+  const [voucherCode, setVoucherCode] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<string | number>("");
+  const [payment, paymentSet] = React.useState<IPaymenmtType>({
+    channel: "WEB",
+    mobile_number: "",
+    payment_type_id: 0,
+    reference: ref_number(),
+    subscription_plan_id: 0,
+  });
   const [error, setError] = useState<any>({
     billingPlan: false,
     voucherCode: false,
-    phoneNumber: false
-  })
+    phoneNumber: false,
+  });
   const [errorMessage, setErrorMessage] = useState({
-    billingPlan: '',
-    voucherCode: '',
-    phoneNumber: ''
-  })
+    billingPlan: "",
+    voucherCode: "",
+    phoneNumber: "",
+  });
   const [isLoading, setIsLoading] = useState({
     paystack: false,
     voucher: false,
-    airtime: false
-  })
+    airtime: false,
+    smart_pay: false,
+  });
 
   const paystackConfig = {
-    reference: 'REF'+(new Date()).getTime().toString(),
+    reference: "REF" + new Date().getTime().toString(),
     email: user?.data?.student?.email,
     amount: convertNairaToKobo(cart.price),
-    publicKey: process.env.PAYSTACK_PUBLIC_KEY ? process.env.PAYSTACK_PUBLIC_KEY : ''
+    publicKey: process.env.PAYSTACK_PUBLIC_KEY
+      ? process.env.PAYSTACK_PUBLIC_KEY
+      : "",
   };
 
   const initializePayment: any = usePaystackPayment(paystackConfig);
@@ -59,207 +89,225 @@ export default function CheckoutDrawer({
     if (!billingPlan) {
       setError({
         ...error,
-        billingPlan: true
-      })
+        billingPlan: true,
+      });
       setErrorMessage({
         ...errorMessage,
-        billingPlan: 'Billing plan is required'
-      })
+        billingPlan: "Billing plan is required",
+      });
     } else if (!voucherCode) {
       setError({
         ...error,
-        voucherCode: true
-      })
+        voucherCode: true,
+      });
       setErrorMessage({
         ...errorMessage,
-        voucherCode: 'Voucher code is required'
-      })
+        voucherCode: "Voucher code is required",
+      });
     } else {
-      checkVoucherMutation.mutate()
+      checkVoucherMutation.mutate();
     }
-  }
+  };
 
   const handleAirtmePayment = () => {
     setIsLoading({
       ...isLoading,
-      airtime: true
-    })
-  }
+      airtime: true,
+    });
+  };
 
   const handlePaystack = () => {
     setIsLoading({
       ...isLoading,
-      paystack: true
-    })
+      paystack: true,
+    });
 
     const onSuccess = (invoice: any) => {
       const payload = {
         reference: invoice.reference,
-        subscription_plan_id: cart.id
-      }
+        subscription_plan_id: cart.id,
+      };
 
-      paystackPaymentMutation.mutate(payload)
+      paystackPaymentMutation.mutate(payload);
     };
 
     const onClose = () => {
       setIsLoading({
         ...isLoading,
-        paystack: false
-      })
-    }
+        paystack: false,
+      });
+    };
 
     initializePayment(onSuccess, onClose);
   };
 
-  const checkVoucherMutation = useMutation(() => verifyVoucher(token, voucherCode), {
-    onError: (error: any ) => {
-      setError({
-        ...error,
-        voucherCode: true
-      })
-      setErrorMessage({
-        ...errorMessage,
-        voucherCode: error.response.data.errors
-      })
-    },
-  
-    onSuccess: (data: any) => {
-      setVerifiedVoucher(data)
-      const payload = {
-        voucher_code: data.data.code,
-        subscription_plan_id: cart.id
-      }
+  const checkVoucherMutation = useMutation(
+    () => verifyVoucher(token, voucherCode),
+    {
+      onError: (error: any) => {
+        setError({
+          ...error,
+          voucherCode: true,
+        });
+        setErrorMessage({
+          ...errorMessage,
+          voucherCode: error.response.data.errors,
+        });
+      },
 
-      toast.success('Voucher redeemed! Making payments...')
+      onSuccess: (data: any) => {
+        setVerifiedVoucher(data);
+        const payload = {
+          voucher_code: data.data.code,
+          subscription_plan_id: cart.id,
+        };
 
-      voucherPaymentMutation.mutate(payload)
+        toast.success("Voucher redeemed! Making payments...");
+
+        voucherPaymentMutation.mutate(payload);
+      },
     }
-  })
+  );
 
-  const paystackPaymentMutation = useMutation((data: any) => verifyPaystackPayment(token, data), {
-    onError: (error: any) => {
-      toast.error(error.response.data.errors);
-      setIsLoading({
-        ...isLoading,
-        paystack: false
-      })
-    },
+  const paystackPaymentMutation = useMutation(
+    (data: any) => verifyPaystackPayment(token, data),
+    {
+      onError: (error: any) => {
+        toast.error(error.response.data.errors);
+        setIsLoading({
+          ...isLoading,
+          paystack: false,
+        });
+      },
 
-    onSuccess: (data: any) => {
-      console.log('Payment success', data)
-      let user = getCookieItem('learnbeta_user')
+      onSuccess: (data: any) => {
+        console.log("Payment success", data);
+        let user = getCookieItem("learnbeta_user");
 
-      user.data.student.subscription = data.data
+        user.data.student.subscription = data.data;
 
-      setCookieItem('learnbeta_user', user) // update cookies with new data
-      setUser(user)
+        setCookieItem("learnbeta_user", user); // update cookies with new data
+        setUser(user);
 
-      toast.success('Paystack payment successful');
+        toast.success("Paystack payment successful");
 
-      if (cart.subjects_allowed === -1) {
-        setPaymentMethod('paystack')
-        close()
-        setStep('cart')
-      } else {
-        setPaymentMethod('paystack')
-        setStep('cart')
-        close()
-        openAddSubjects()
-      }
+        if (cart.subjects_allowed === -1) {
+          setPaymentMethod("paystack");
+          close();
+          setStep("cart");
+        } else {
+          setPaymentMethod("paystack");
+          setStep("cart");
+          close();
+          openAddSubjects();
+        }
+      },
     }
-  })
-  
-  const voucherPaymentMutation = useMutation((data: any) => makeVoucherPayment(token, data), {
-    onError: (error: any) => {
-      toast.error(error.response.data.errors);
-    },
+  );
 
-    onSuccess: (data: any) => {
-      let user = getCookieItem('learnbeta_user')
+  const voucherPaymentMutation = useMutation(
+    (data: any) => makeVoucherPayment(token, data),
+    {
+      onError: (error: any) => {
+        toast.error(error.response.data.errors);
+      },
 
-      user.data.student.subscription = data.data 
+      onSuccess: (data: any) => {
+        let user = getCookieItem("learnbeta_user");
 
-      setCookieItem('learnbeta_user', user) // update cookies with new data
-      setUser(user)
+        user.data.student.subscription = data.data;
 
-      toast.success('Voucher payment successful');
+        setCookieItem("learnbeta_user", user); // update cookies with new data
+        setUser(user);
 
-      if (cart.subjects_allowed === -1) {
-        setPaymentMethod('paystack')
-        close()
-      } else {
-        setPaymentMethod('paystack')
-        close()
-        openAddSubjects()
-      }
+        toast.success("Voucher payment successful");
+
+        if (cart.subjects_allowed === -1) {
+          setPaymentMethod("paystack");
+          close();
+        } else {
+          setPaymentMethod("paystack");
+          close();
+          openAddSubjects();
+        }
+      },
     }
-  })
+  );
+
+  const onLoad = React.useCallback(() => {
+    if (cart?.id && Number(cart?.id))
+      paymentSet((prev) => ({
+        ...prev,
+        subscription_plan_id: Number(cart?.id),
+      }));
+  }, [cart?.id]);
+
+  React.useEffect(() => {
+    onLoad();
+  }, [onLoad]);
+
+  // console.log(paymentMethod, cart, payment);
 
   return (
     <Drawer
       opened={opened}
       size="38rem"
-      position='right'
+      position="right"
       withCloseButton={true}
       padding={30}
       onClose={close}
       title={
         <Flex className="space-x-3 items-center">
-          {(step === 'airtimeSummary' || step === 'paystackSummary') &&
-            <UnstyledButton 
-              disabled={isLoading.airtime || isLoading.paystack && true}
-              onClick={() => setStep('cart')}
+          {(step === "airtimeSummary" || step === "paystackSummary") && (
+            <UnstyledButton
+              disabled={isLoading.airtime || (isLoading.paystack && true)}
+              onClick={() => setStep("cart")}
             >
               <Image
-                alt='icon'
+                alt="icon"
                 src={backArrow}
-                className='w-6 h-6 hover:brightness-75 transition duration-75 delay-75 ease-linear'
+                className="w-6 h-6 hover:brightness-75 transition duration-75 delay-75 ease-linear"
               />
             </UnstyledButton>
-          }
+          )}
 
-          <Text className="font-semibold text-lg">
-            Checkout
-          </Text>
+          <Text className="font-semibold text-lg">Checkout</Text>
         </Flex>
       }
     >
       <Collapse
-        transitionDuration={200} transitionTimingFunction="linear"
-        in={step === 'cart' && true}
+        transitionDuration={200}
+        transitionTimingFunction="linear"
+        in={step === "cart" && true}
       >
         <Box>
           <Flex className="items-center justify-between bg-[#FAA61A] px-3 rounded-md text-white text-lg py-5">
-            <Text>
-              TOTAL PRICE
-            </Text>
+            <Text>TOTAL PRICE</Text>
 
-            <Text className="font-semibold">
-              &#x20A6; {cart.price}
-            </Text>
+            <Text className="font-semibold">&#x20A6; {cart.price}</Text>
           </Flex>
 
           <Box className="mt-8">
             <Select
-              size='xl'
+              size="xl"
               radius={8}
-              disabled={isLoading.paystack && true || isLoading.voucher && true}
+              disabled={
+                (isLoading.paystack && true) || (isLoading.voucher && true)
+              }
               value={billingPlan}
-              placeholder='Billing Plan'
+              placeholder="Billing Plan"
               onChange={(val) => {
                 setError({
                   ...error,
-                  billingPlan: false
-                })
+                  billingPlan: false,
+                });
                 setErrorMessage({
                   ...errorMessage,
-                  billingPlan: ''
-                })
-                setBillingPlan(val)
+                  billingPlan: "",
+                });
+                setBillingPlan(val);
               }}
-              data={[
-                { value: 'monthly', label: 'Monthly' },
-              ]}
+              data={[{ value: "monthly", label: "Monthly" }]}
               label={
                 <span className="font-semibold text-sm text-[#444444]">
                   Select Billing Plan
@@ -267,30 +315,32 @@ export default function CheckoutDrawer({
               }
               styles={() => ({
                 input: {
-                  border: `${error.billingPlan ? '2px solid red' : '2px solid #E2E2E2'}`,
-                  '&:focus-within': {
-                    borderColor: `${error.billingPlan ? 'red' : '#FAA61A'}`,
+                  border: `${
+                    error.billingPlan ? "2px solid red" : "2px solid #E2E2E2"
+                  }`,
+                  "&:focus-within": {
+                    borderColor: `${error.billingPlan ? "red" : "#FAA61A"}`,
                   },
-                  color: '#555555'
+                  color: "#555555",
                 },
                 item: {
-                  '&[data-selected]': {
-                    '&, &:hover': {
-                      backgroundColor: '#FAA61A',
-                      color: 'white',
+                  "&[data-selected]": {
+                    "&, &:hover": {
+                      backgroundColor: "#FAA61A",
+                      color: "white",
                     },
-                  }
+                  },
                 },
               })}
             />
 
-            {error.billingPlan &&
+            {error.billingPlan && (
               <Box className="mt-[0.2rem]">
                 <Text className="text-red-500 text-sm">
                   {errorMessage.billingPlan}
                 </Text>
               </Box>
-            }
+            )}
           </Box>
 
           <Box className="mt-8">
@@ -300,7 +350,11 @@ export default function CheckoutDrawer({
 
             <Radio.Group
               value={paymentMethod}
-              onChange={setPaymentMethod}
+              // onChange={setPaymentMethod}
+              onChange={(e) => {
+                setPaymentMethod(e);
+                if (e === "smart_pay") getSmartPayPaymentMethod(dispatch);
+              }}
               name="paymentMethod"
               className="mt-2"
             >
@@ -312,32 +366,40 @@ export default function CheckoutDrawer({
                   color="yellow"
                   label={
                     <Box>
-                      <Text className="hidden sm:block">
-                        Airtime Billing
-                      </Text>
-                      <Text className="sm:hidden">
-                        Airtime
-                      </Text>
+                      <Text className="hidden sm:block">Airtime Billing</Text>
+                      <Text className="sm:hidden">Airtime</Text>
                     </Box>
                   }
                 />
                 <Radio
-                  disabled={isLoading.paystack && true || isLoading.voucher && true}
+                  disabled={
+                    (isLoading.paystack && true) || (isLoading.voucher && true)
+                  }
                   value="paystack"
                   label="Paystack"
                   color="yellow"
                 />
                 <Radio
-                  disabled={isLoading.paystack && true || isLoading.voucher && true}
+                  disabled={
+                    (isLoading.paystack && true) || (isLoading.voucher && true)
+                  }
                   value="voucher"
                   label="Voucher"
+                  color="yellow"
+                />
+                <Radio
+                  disabled={
+                    (isLoading.paystack && true) || (isLoading.voucher && true)
+                  }
+                  value="smart_pay"
+                  label="Smart Pay"
                   color="yellow"
                 />
               </Flex>
             </Radio.Group>
           </Box>
 
-          {paymentMethod === 'airtime' &&
+          {paymentMethod === "airtime" && (
             <Airtime
               setStep={setStep}
               phoneNumber={phoneNumber}
@@ -351,9 +413,9 @@ export default function CheckoutDrawer({
               networkProvider={networkProvider}
               setNetworkProvider={setNetworkProvider}
             />
-          }
+          )}
 
-          {paymentMethod === 'paystack' &&
+          {paymentMethod === "paystack" && (
             <Paystack
               setStep={setStep}
               error={error}
@@ -362,9 +424,9 @@ export default function CheckoutDrawer({
               setErrorMessage={setErrorMessage}
               billingPlan={billingPlan}
             />
-          }
+          )}
 
-          {paymentMethod === 'voucher' &&
+          {paymentMethod === "voucher" && (
             <Voucher
               error={error}
               verifiedVoucher={verifiedVoucher}
@@ -377,13 +439,27 @@ export default function CheckoutDrawer({
               handleVoucher={handleVoucher}
               setVoucherCode={setVoucherCode}
             />
-          }
+          )}
+
+          {paymentMethod === "smart_pay" && (
+            <SmartPay
+              handleSubmit={(res: IDataType) => {
+                if (Number(res?.payment_type_id) && res?.mobile_number)
+                  paySmartPayMethod(dispatch, {
+                    ...payment,
+                    payment_type_id: Number(res?.payment_type_id),
+                    mobile_number: res?.mobile_number,
+                  });
+              }}
+            />
+          )}
         </Box>
       </Collapse>
 
-      <Collapse 
-        transitionDuration={200} transitionTimingFunction="linear"
-        in={step === 'airtimeSummary' && true}
+      <Collapse
+        transitionDuration={200}
+        transitionTimingFunction="linear"
+        in={step === "airtimeSummary" && true}
       >
         <AirtimeSummaryCard
           isLoading={isLoading}
@@ -392,8 +468,9 @@ export default function CheckoutDrawer({
       </Collapse>
 
       <Collapse
-        transitionDuration={200} transitionTimingFunction="linear"
-        in={step === 'paystackSummary' && true}
+        transitionDuration={200}
+        transitionTimingFunction="linear"
+        in={step === "paystackSummary" && true}
       >
         <PaystackSummaryCard
           invoice={cart}
@@ -402,5 +479,5 @@ export default function CheckoutDrawer({
         />
       </Collapse>
     </Drawer>
-  )
+  );
 }
