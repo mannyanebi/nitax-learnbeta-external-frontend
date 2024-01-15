@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Logo from "../brand/Logo";
 import { Modal, Box, Flex, Text, UnstyledButton, Radio, Skeleton } from "@mantine/core";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import toast from 'react-hot-toast';
 import { useQuery, useMutation, UseMutationResult, useQueryClient } from "react-query";
-import { useState } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { getGradeLevels, onboardGrade } from "@/services/grades";
 import { EmptyState } from '../onboarding/EmptyState'
@@ -56,33 +55,22 @@ const GradeCheckCardSkeleton = () => {
 
 export default function EnrollGradeModal({ opened, close }: Props) {
   const queryClient = useQueryClient();
-
   const [grade, setGrade] = useState('');
-
   const { user, setUser } = useContext(UserContext)
   const token = `Bearer ${user?.data?.access_token}`
-
   const gradeLevels = useQuery('gradeLevels', () => getGradeLevels(token))
-
   const mutation = useMutation(() => onboardGrade(grade, token), {
     onError: () => {
       toast.error('Failed to enroll grade')
     },
-
     onSuccess: (data) => {
       let user = getCookieItem('learnbeta_user')
-
       user.data.student = data.data 
-
       setCookieItem('learnbeta_user', user) // update cookies with new data
       setUser(user)
-
       setGrade('')
-
       toast.success(data.message)
-
       queryClient.invalidateQueries('gradeLevelSubjects')
-
       setTimeout(() => {
         close()
       }, 2000)
@@ -108,16 +96,13 @@ export default function EnrollGradeModal({ opened, close }: Props) {
               <Logo />
             </Link>
           </Flex>
-
           <Box className="text-center lg:my-20 my-10">
             <Text className="font-semibold text-2xl lg:text-3xl">
               Welcome to LearnBeta
             </Text>
-
             <Text className="lg:text-lg mt-3">
               You are almost there, select your grade to get started
             </Text>
-
             <Radio.Group
               onChange={setGrade}
               value={grade}
@@ -132,8 +117,8 @@ export default function EnrollGradeModal({ opened, close }: Props) {
                     key={gradeLevel.id}
                     gradeLevel={gradeLevel}
                   />
-                ))}
-
+                ))
+              }
               {gradeLevels.isLoading &&
                 [1, 2, 3, 4, 5, 6].map((num: number) => (
                   <GradeCheckCardSkeleton key={num} />
