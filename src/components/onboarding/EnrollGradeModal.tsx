@@ -87,9 +87,9 @@ export default function EnrollGradeModal({ opened, close }: Props) {
       opened={opened}
       onClose={close}
       withCloseButton={false}
-      fullScreen
+      fullScreen      
     >
-      <Box className="px-4 sm:px-8 md:px-10">
+      <Box className="px-4 sm:px-8 md:px-10 mb-4 md:mb-0">
         <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
           <Flex className="justify-end">
             <Link href='/'>
@@ -150,7 +150,7 @@ export default function EnrollGradeModal({ opened, close }: Props) {
                 disabled={mutation.isLoading || !grade}
                 type="button"
                 onClick={handleOnboarding}
-                className="px-4 w-60 h-14 text-center font-bold transition disabled:opacity-50 duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
+                className="mb-4 px-4 w-60 h-14 text-center font-bold transition disabled:opacity-50 duration-75 delay-75 ease-linear hover:bg-[#da9217] rounded-full py-4 bg-[#FAA61A] text-white"
               >
                 {mutation.isLoading ?
                   <Icon
@@ -166,6 +166,9 @@ export default function EnrollGradeModal({ opened, close }: Props) {
             </Box>
           }
         </Box>
+      </Box>
+      <Box className="h-2">
+
       </Box>
     </Modal>
   )
