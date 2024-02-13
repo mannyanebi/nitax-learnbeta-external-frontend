@@ -29,3 +29,6 @@
 .profile_banner {
   background-image: url('/public/assets/svgs/hero_banner.png');
 }
+html, body {
+  overscroll-behavior-y: none;
+}
