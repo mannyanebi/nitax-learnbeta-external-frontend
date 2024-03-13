@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Center, Divider, Modal, Text, UnstyledButton } from '@mantine/core';
+import { Box, Center, Divider, Modal, ScrollArea, Text, UnstyledButton } from '@mantine/core';
 import preview_subject from '../../assets/svgs/empty_state.svg'
 import SelectSubjectCard, { SelectSubjectSkeleton } from "../subjects/SelectSubjectCard";
 import Image from "next/image";
@@ -79,6 +79,8 @@ export default function AddSubjectModal({
         color: 'black',
         blur: 5
       }}
+      yOffset="1vh"
+      scrollAreaComponent={ScrollArea.Autosize}
       transitionProps={{
         duration: 100,
         timingFunction: 'linear'

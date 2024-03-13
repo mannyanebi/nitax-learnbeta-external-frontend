@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import Logo from "../brand/Logo";
-import { Modal, Box, Flex, Text, UnstyledButton, Radio, Skeleton } from "@mantine/core";
+import { ScrollArea, Modal, Box, Flex, Text, UnstyledButton, Radio, Skeleton } from "@mantine/core";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import toast from 'react-hot-toast';
@@ -87,10 +87,11 @@ export default function EnrollGradeModal({ opened, close }: Props) {
       opened={opened}
       onClose={close}
       withCloseButton={false}
-      fullScreen      
+      fullScreen    
+      scrollAreaComponent={ScrollArea.Autosize}
     >
-      <Box className="px-4 sm:px-8 md:px-10 mb-4 md:mb-0">
-        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto">
+      <Box className="px-4 sm:px-8 md:px-10 mb-4 md:mb-0 overflow-y-scroll">
+        <Box className="max-w-[40rem] lg:max-w-[62rem] xl:max-w-[65rem] mx-auto overflow-y-scroll">
           <Flex className="justify-end">
             <Link href='/'>
               <Logo />
@@ -168,7 +169,6 @@ export default function EnrollGradeModal({ opened, close }: Props) {
         </Box>
       </Box>
       <Box className="h-2">
-
       </Box>
     </Modal>
   )
