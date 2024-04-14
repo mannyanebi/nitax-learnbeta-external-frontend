@@ -88,7 +88,7 @@ const SignupForm: React.FC<Props> = ({ form, mutation, handleSignup }) => {
             {...form.getInputProps("phoneNumber")}
             type="number"
             error={form.errors.phoneNumber}
-            placeholder="Phonenumber"
+            placeholder="Phone Number"
             disabled={mutation.isLoading}
             className={`w-full ${
               form.errors.phoneNumber
