@@ -49,14 +49,6 @@ export default class _Document extends Document {
               `,
             }}
           />
-          <noscript>
-            <Image
-              src="https://www.facebook.com/tr?id=2155365261466671&ev=PageView&noscript=1"
-              height={1}
-              width={1}
-              alt=""
-            />
-          </noscript>
         </Head>
 
         <body>
