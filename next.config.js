@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["learnbeta.fra1.digitaloceanspaces.com"],
+    domains: ["learnbeta.fra1.digitaloceanspaces.com", "www.facebook.com"],
   },
   env: {
     HOST: process.env.HOST,
