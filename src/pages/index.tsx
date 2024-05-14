@@ -13,6 +13,7 @@ import WelcomeFace from "@/components/landing/WelcomeFace";
 import ServicesSection from "@/components/landing/ServicesSection";
 import GetStarted from "@/components/landing/GetStarted";
 import OurStats from "@/components/landing/OurStats";
+import GeneralCourses from "@/components/landing/GeneralCourses";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
       <MockupBackground />
 
       <Box className="w-full max-w-[65rem] xl:max-w-[80rem] 2xl:max-w-[85rem] lg:mt-[-2rem] 2xl:mt-[-5rem] mx-auto px-4 sm:px-8 md:px-10 bg-[#FDFDFE]">
+        <GeneralCourses />
         <ServicesSection />
 
         <CourseAdCarousel />

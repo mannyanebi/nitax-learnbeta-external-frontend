@@ -10,6 +10,7 @@ import Head from "next/head";
 import Router from "next/router";
 import { UserContext } from "@/contexts/UserContext";
 import { setCookieItem } from "@/helpers/functions/cookie";
+import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js";
 
 export interface SigninData {
   email: string;
@@ -20,16 +21,31 @@ const Signin = () => {
   const { setUser } = useContext(UserContext);
   const [checked, setChecked] = useState(true);
 
-  const isValidEmailOrPhoneNumber = (value: string): boolean => {
-    return /^\S+@\S+$/.test(value) || /^(?:\+\d{1,3})?\d{10,}$/.test(value);
+  const isValidPhoneNumber = (value: string): boolean => {
+    const phoneNumber = parsePhoneNumberFromString(value);
+    return phoneNumber ? phoneNumber.isValid() : false;
   };
 
-  const validateEmailOrPhoneNumber = (value: string): string | null => {
+  const validateEmailOrPhoneNumber = (value: string) => {
     if (!value) {
       return "Email or Phone number is required";
     }
-    if (!isValidEmailOrPhoneNumber(value)) {
-      return "Invalid email or phone number";
+
+    const isNumericOrIncludesPlus = /^\d+$/.test(value) || value.includes("+");
+    const isValidEmail = /^\S+@\S+\.\S+$/.test(value);
+
+    if (!isNumericOrIncludesPlus && !isValidEmail) {
+      return "Invalid email address";
+    }
+
+    if (!value.startsWith("+")) {
+      value = `+${value}`;
+    }
+
+    const isValidPhone = isValidPhoneNumber(value);
+
+    if (!isValidPhone && isNumericOrIncludesPlus) {
+      return "Invalid phone number format. Eg: +234";
     }
     return null;
   };
@@ -87,6 +103,13 @@ const Signin = () => {
   });
 
   const handleSignin = async (values: SigninData) => {
+    let phoneNumber = parsePhoneNumberFromString(
+      values.email.startsWith("+") ? values.email : `+${values.email}`
+    );
+
+    if (phoneNumber) {
+      values.email = phoneNumber.number;
+    }
     mutation.mutate(values);
   };
 
