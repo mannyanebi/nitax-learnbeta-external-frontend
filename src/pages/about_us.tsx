@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <PageLayout>
       <Head>
-        <title>Learn Beta | Home</title>
+        <title>LearnBeta | Home</title>
       </Head>
 
       <HomeNav />

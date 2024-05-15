@@ -13,7 +13,7 @@ const PrivacyPolicy = () => {
   return (
     <PageLayout>
       <Head>
-        <title>Learn Beta | Privacy Policy</title>
+        <title>LearnBeta | Privacy Policy</title>
       </Head>
 
       <HomeNav />
