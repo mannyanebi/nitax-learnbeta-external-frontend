@@ -27,7 +27,7 @@ const ServiceTerms = () => {
   return (
     <PageLayout>
       <Head>
-        <title>Learn Beta | FAQ</title>
+        <title>LearnBeta | FAQ</title>
       </Head>
 
       <HomeNav />

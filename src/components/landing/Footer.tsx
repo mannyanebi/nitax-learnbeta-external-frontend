@@ -6,6 +6,9 @@ import Image from "next/image";
 import twitter from "../../assets/svgs/twitter_icon.svg";
 import facebook from "../../assets/svgs/facebook_icon.svg";
 import linkedin_icon from "../../assets/svgs/linkedIn_icon.svg";
+import instagram from "../../assets/svgs/instagram.svg";
+import tiktok from "../../assets/svgs/tiktok.svg";
+import snapchat from "../../assets/svgs/snapchat.svg";
 
 const Footer = () => {
   const year = new Date().getFullYear();
@@ -60,7 +63,19 @@ const Footer = () => {
 
             <Flex className="space-x-5 justify-center lg:mt-2 mt-3">
               <Box>
-                <Link target="_blank" href="https://www.twitter.com/">
+                <Link
+                  target="_blank"
+                  href="https://www.instagram.com/learnbeta_?igsh=MWVxMGhheXozaDBpZw=="
+                >
+                  <Image
+                    alt="icon"
+                    src={instagram}
+                    className="h-[30px] w-[30px] lg:h-[24px] lg:w-[24px] rounded-full hover:brightness-75 transition delay-75 duration-75 ease-linear"
+                  />
+                </Link>
+              </Box>
+              <Box>
+                <Link target="_blank" href="https://twitter.com/learnbeta_">
                   <Image
                     alt="icon"
                     src={twitter}
@@ -70,7 +85,10 @@ const Footer = () => {
               </Box>
 
               <Box>
-                <Link target="_blank" href="https://www.facebook.com/">
+                <Link
+                  target="_blank"
+                  href="https://www.facebook.com/profile.php?id=61557924677798"
+                >
                   <Image
                     alt="icon"
                     src={facebook}
@@ -80,11 +98,34 @@ const Footer = () => {
               </Box>
 
               <Box>
-                <Link target="_blank" href="https://www.linkedin.com/">
+                <Link
+                  target="_blank"
+                  href="https://www.linkedin.com/company/learnbeta/"
+                >
                   <Image
                     alt="icon"
                     src={linkedin_icon}
                     className="h-[30px] w-[30px] lg:h-[24px] lg:w-[24px] rounded-full hover:brightness-75 transition delay-75 duration-75 ease-linear"
+                  />
+                </Link>
+              </Box>
+
+              <Box className="flex items-center justify-center">
+                <Link target="_blank" href="https://snapchat.com/t/DtDsSo48">
+                  <Image
+                    alt="icon"
+                    src={snapchat}
+                    className="h-[22px] w-[22px] lg:h-[23px] lg:w-[23px] rounded-full hover:brightness-75 transition delay-75 duration-75 ease-linear"
+                  />
+                </Link>
+              </Box>
+
+              <Box className="flex items-center justify-center">
+                <Link target="_blank" href="https://www.tiktok.com/@learnbeta">
+                  <Image
+                    alt="icon"
+                    src={tiktok}
+                    className="h-[26px] w-[26px] lg:h-[20px] lg:w-[20px]  hover:brightness-75 transition delay-75 duration-75 ease-linear"
                   />
                 </Link>
               </Box>

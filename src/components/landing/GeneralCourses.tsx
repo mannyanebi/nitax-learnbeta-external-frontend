@@ -2,9 +2,6 @@ import React, { useRef } from "react";
 import { Box, Text, BackgroundImage } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import math from "../../assets/svgs/social science.svg";
-import health from "../../assets/svgs/subject_icon.svg";
-import social from "../../assets/svgs/health science.svg";
 import GeneralCoursesAds from "./GeneralCoursesAds";
 import bg_hero from "../../assets/svgs/bg_yellow.svg";
 import bg_light_blue from "../../assets/svgs/bg_light_blue.svg";
@@ -14,29 +11,28 @@ export default function GeneralCourses() {
 
   const ads = [
     {
-      title: "Mathematics",
-      topic: "Topic",
-      img: math,
+      title: "Reproductive System",
+      link: "https://www.youtube.com/watch?v=TucxiIB76bo",
     },
     {
-      title: "Social Studies",
-      topic: "Topic",
-      img: health,
+      title: "Nursery Rhyme",
+      link: "https://www.youtube.com/watch?v=IARQDNSsUuQ",
     },
     {
-      title: "Health Science",
-      topic: "Topic",
-      img: social,
+      title: "Chemistry",
+      link: "https://www.youtube.com/watch?v=UsnwpCQIuno",
     },
     {
-      title: "Computer Science",
-      topic: "Topic",
-      img: health,
+      title: "Mathematics (Volume and Capacity)",
+      link: "https://www.youtube.com/watch?v=0kVp0_D5Xfw",
     },
     {
-      title: "Agric Science",
-      topic: "Topic",
-      img: social,
+      title: "Reproductive System",
+      link: "https://www.youtube.com/watch?v=TucxiIB76bo",
+    },
+    {
+      title: "Nursery Rhyme",
+      link: "https://www.youtube.com/watch?v=IARQDNSsUuQ",
     },
   ];
   return (
@@ -62,12 +58,12 @@ export default function GeneralCourses() {
         <Box className="mt-12 px-10">
           <Carousel
             maw="100%"
-            onMouseEnter={autoplay.current.reset}
+            onMouseEnter={autoplay.current.stop}
             onMouseLeave={autoplay.current.reset}
             slideSize="25%"
             slideGap="lg"
             loop
-            withControls={false}
+            dragFree
             plugins={[autoplay.current]}
             align="start"
             slidesToScroll={1}

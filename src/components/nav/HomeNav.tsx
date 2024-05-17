@@ -44,6 +44,11 @@ const HomeNav = () => {
                       About Us
                     </UnstyledButton>
                   </Link>
+                  <Link href="/grades">
+                    <UnstyledButton className="bg-transparent hover:bg-[#014340] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear">
+                      Grades
+                    </UnstyledButton>
+                  </Link>
 
                   <Link href="/auth/signin">
                     <UnstyledButton className="bg-transparent hover:bg-[#014340] py-3 w-32 rounded-full hover:shadow-sm text-center hover:text-white transition duration-75 delay-[40ms] ease-linear">
